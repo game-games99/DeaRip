@@ -2,50 +2,73 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Dearip v1.0.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dearip v1.0.2</title>
     <style>
-        body { background-color: #121212; color: #e0e0e0; font-family: 'Courier New', Courier, monospace; margin: 20px; }
-        h1 { border-bottom: 2px solid #555; padding-bottom: 10px; color: #fff; }
-        .container { display: flex; gap: 20px; }
-        .panel { border: 1px solid #444; padding: 15px; flex: 1; background: #1a1a1a; }
-        .skill-btn { display: block; width: 100%; margin: 5px 0; padding: 10px; background: #333; color: #fff; border: 1px solid #666; cursor: pointer; text-align: left; }
-        .skill-btn:hover { background: #444; border-color: #888; }
-        #log { height: 150px; overflow-y: auto; background: #000; padding: 10px; font-size: 0.9em; color: #0f0; border: 1px solid #333; }
-        .rip-panel { margin-top: 20px; border: 2px solid #a00; padding: 15px; display: none; }
-        .part-item { cursor: pointer; padding: 5px; border: 1px solid #555; margin: 5px 0; }
-        .part-item:hover { background: #333; }
-        .accent { color: #ff3e3e; font-weight: bold; }
+        :root {
+            --bg-color: #0a0a0a;
+            --panel-bg: #161616;
+            --text-color: #e0e0e0;
+            --accent-color: #ff3e3e;
+            --log-bg: #000;
+        }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 10px; line-height: 1.4; }
+        h1 { font-size: 1.5rem; border-bottom: 2px solid #333; margin-bottom: 15px; padding-bottom: 5px; color: #fff; text-align: center; }
+        h2 { font-size: 1.1rem; margin: 0 0 10px 0; color: #bbb; }
+        .panel { border: 1px solid #333; padding: 15px; background: var(--panel-bg); border-radius: 8px; margin-bottom: 15px; }
+        
+        /* ステータス周り */
+        .status-grid { font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        
+        /* スキルボタン */
+        .skill-btn { display: block; width: 100%; margin-bottom: 10px; padding: 12px; background: #252525; color: #fff; border: 1px solid #444; border-radius: 6px; cursor: pointer; text-align: left; -webkit-tap-highlight-color: transparent; }
+        .skill-btn:active { background: #333; transform: scale(0.98); }
+        .skill-btn small { display: block; color: #aaa; font-size: 0.8rem; margin-top: 4px; }
+
+        /* ログエリア */
+        #log { height: 180px; overflow-y: auto; background: var(--log-bg); padding: 10px; font-size: 0.95rem; color: #00ff41; border: 1px solid #222; border-radius: 4px; margin-bottom: 15px; }
+        
+        /* 敵情報 */
+        #enemy-area { text-align: center; }
+        #enemy-status { font-size: 1.3rem; color: var(--accent-color); font-weight: bold; margin: 10px 0; }
+
+        /* 探索ボタン */
+        #search-btn { width: 100%; padding: 15px; font-size: 1.1rem; background: #333; color: #fff; border: 1px solid #555; border-radius: 8px; cursor: pointer; }
+        #search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Ripセクション */
+        .rip-panel { border: 2px solid var(--accent-color); background: #1a0505; padding: 15px; border-radius: 10px; margin-top: 10px; }
+        .part-item { padding: 12px; border: 1px solid #551111; background: #2a0a0a; margin: 8px 0; border-radius: 6px; font-size: 0.9rem; }
+        .shred-btn { width: 100%; padding: 10px; background: transparent; color: #aaa; border: 1px solid #444; margin-top: 10px; font-size: 0.8rem; }
+        
+        .accent { color: var(--accent-color); }
     </style>
 </head>
 <body>
-    <h1>Dearip <small>v1.0.1</small></h1>
+    <h1>Dearip <small>v1.0.2</small></h1>
     
-    <div class="container">
-        <div class="panel">
-            <h2>SOUL: <span id="soul-name">覚醒前の魂</span></h2>
-            <div id="status-display"></div>
-            <div id="skill-display"></div>
-        </div>
-
-        <div class="panel">
-            <h2>ENEMY: <span id="enemy-name">探索中...</span></h2>
-            <div id="enemy-status"></div>
-            <div id="log">探索を開始してください...</div>
-            <button id="search-btn" onclick="encounter()">深層へ進む</button>
-        </div>
+    <div class="panel">
+        <h2>SOUL: <span id="soul-name">覚醒前の魂</span></h2>
+        <div id="status-display" class="status-grid"></div>
+        <div id="skill-display"></div>
     </div>
 
-    <div id="rip-section" class="rip-panel">
-        <h2 class="accent">解体（Rip）の刻</h2>
-        <p>敵の残骸から部位を一つ選び、ソウルに縫い付けよ。さもなくば全てを引き裂け。</p>
+    <div class="panel" id="enemy-area">
+        <h2>ENEMY: <span id="enemy-name">待機中</span></h2>
+        <div id="enemy-status"></div>
+        <div id="log">深層へ進み、パーツを求めよ...</div>
+        <button id="search-btn" onclick="encounter()">深層へ進む</button>
+    </div>
+
+    <div id="rip-section" class="rip-panel" style="display:none;">
+        <h2 class="accent">解体（Rip）</h2>
         <div id="loot-list"></div>
-        <button onclick="shredAll()">全て引き裂いてソウル経験値にする</button>
+        <button class="shred-btn" onclick="shredAll()">全て引き裂いて経験値にする</button>
     </div>
 
     <script>
-        const VERSION = "1.0.1";
+        const VERSION = "1.0.2";
         
-        // 二つ名とパーツのライブラリ（ランダム生成の種）
         const prefixData = ["神速の", "因果の", "虚無の", "疾風の", "強欲の", "焦熱の"];
         const skillData = {
             "HEAD": ["反転の理", "支配の眼", "空想の回路"],
@@ -54,7 +77,6 @@
             "LEG": ["抜刀の舞", "虚空歩行", "追撃の歩法"]
         };
 
-        // プレイヤー初期装備
         let player = {
             hp: 300, maxHp: 300, atk: 50, soulExp: 0,
             equipment: {
@@ -67,21 +89,25 @@
 
         let enemy = null;
 
-        // ステータス更新
         function updateUI() {
             let totalHp = 0, totalAtk = 0;
             let skillHtml = "";
             for (let key in player.equipment) {
                 let p = player.equipment[key];
                 totalHp += p.hp; totalAtk += p.atk;
-                skillHtml += `<button class="skill-btn" onclick="attack('${key}')">【${key}】${p.prefix}${p.name}<br>┗ Skill: ${p.skill}</button>`;
+                skillHtml += `<button class="skill-btn" onclick="attack('${key}')">
+                    【${key}】${p.prefix}${p.name}
+                    <small>Skill: ${p.skill} (ATK+${p.atk})</small>
+                </button>`;
             }
             player.maxHp = totalHp;
-            document.getElementById("status-display").innerHTML = `<p>HP: ${player.hp} / ${player.maxHp}<br>ATK: ${totalAtk}<br>SOUL EXP: ${player.soulExp}</p>`;
+            document.getElementById("status-display").innerHTML = 
+                `<div>HP: ${player.hp} / ${player.maxHp}</div>
+                 <div style="text-align:right">ATK: ${totalAtk}</div>
+                 <div style="font-size:0.8rem; color:#888;">SOUL EXP: ${player.soulExp}</div>`;
             document.getElementById("skill-display").innerHTML = skillHtml;
         }
 
-        // 敵遭遇
         function encounter() {
             document.getElementById("rip-section").style.display = "none";
             const parts = ["HEAD", "BODY", "ARM", "LEG"];
@@ -100,32 +126,38 @@
             };
             document.getElementById("enemy-name").innerText = enemy.name;
             document.getElementById("enemy-status").innerText = `HP: ${enemy.hp}`;
-            log(`警告：<span class="accent">${enemy.name}</span> が現れた。`);
+            log(`<span class="accent">${enemy.name}</span> に遭遇。`);
             document.getElementById("search-btn").disabled = true;
         }
 
-        // 戦闘
         function attack(partKey) {
             if (!enemy) return;
             let p = player.equipment[partKey];
-            let dmg = player.equipment.ARM.atk + player.equipment[partKey].atk; // 簡易計算
+            let totalAtk = 0;
+            for(let k in player.equipment) totalAtk += player.equipment[k].atk;
+            
+            let dmg = Math.floor(totalAtk * (1 + Math.random() * 0.2));
             enemy.hp -= dmg;
-            log(`ソウルが鳴動する。${p.skill}！ ${enemy.name}に ${dmg} のダメージ。`);
+            log(`${p.skill}! 敵に ${dmg} のダメージ。`);
 
             if (enemy.hp <= 0) {
                 win();
             } else {
                 let eDmg = enemy.atk;
                 player.hp -= eDmg;
-                log(`${enemy.name}の反撃！ ${eDmg} のダメージを受けた。`);
-                if (player.hp <= 0) log("ソウルが霧散した……（敗北）");
+                log(`反撃を受けた！ ${eDmg} のダメージ。`);
+                if (player.hp <= 0) {
+                    player.hp = 0;
+                    log("ソウルが砕け散った……。");
+                    setTimeout(() => { location.reload(); }, 2000);
+                }
             }
             updateUI();
             if (enemy) document.getElementById("enemy-status").innerText = `HP: ${enemy.hp}`;
         }
 
         function win() {
-            log(`<span class="accent">${enemy.name} を解体した。</span>`);
+            log(`${enemy.name} を解体した。`);
             enemy.hp = 0;
             document.getElementById("search-btn").disabled = false;
             showRipSection();
@@ -137,19 +169,19 @@
             l.scrollTop = l.scrollHeight;
         }
 
-        // Ripセクション表示
         function showRipSection() {
             const list = document.getElementById("loot-list");
             list.innerHTML = "";
             enemy.loot.forEach((item, index) => {
                 list.innerHTML += `<div class="part-item" onclick="equip(${index})">
-                    【${item.part}】${item.prefix}パーツ (Skill: ${item.skill} / HP+${item.hp} ATK+${item.atk})
+                    <strong>【${item.part}】${item.prefix}パーツ</strong><br>
+                    <small>Skill: ${item.skill} (HP+${item.hp} ATK+${item.atk})</small>
                 </div>`;
             });
             document.getElementById("rip-section").style.display = "block";
+            window.scrollTo(0, document.body.scrollHeight);
         }
 
-        // 換装（Equip）
         function equip(index) {
             const newItem = enemy.loot[index];
             player.equipment[newItem.part] = {
@@ -159,20 +191,19 @@
                 hp: newItem.hp,
                 atk: newItem.atk
             };
-            log(`${newItem.part} を ${newItem.prefix}パーツ に換装した。`);
+            log(`${newItem.part} を換装。`);
             endRip();
         }
 
-        // 全て引き裂く（Shred）
         function shredAll() {
             player.soulExp += 10;
-            log("全てのパーツを引き裂き、ソウルを強化した。");
+            log("全てを引き裂き、ソウルを強化した。");
             endRip();
         }
 
         function endRip() {
             enemy = null;
-            document.getElementById("enemy-name").innerText = "探索中...";
+            document.getElementById("enemy-name").innerText = "待機中";
             document.getElementById("enemy-status").innerText = "";
             document.getElementById("rip-section").style.display = "none";
             updateUI();
