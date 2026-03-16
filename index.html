@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dearip v1.0.5</title>
+    <title>Dearip v1.0.6</title>
     <style>
         :root {
             --bg-color: #050505;
@@ -11,6 +11,8 @@
             --text-color: #d0d0d0;
             --soul-color: #ffffff;
             --accent-color: #ff3e3e;
+            --up-color: #00ff41;
+            --down-color: #ff3e3e;
             --log-bg: #000;
         }
         body { background-color: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; margin: 0; padding: 10px; }
@@ -22,36 +24,48 @@
         .soul-hp { font-size: 1.8rem; font-weight: bold; color: var(--soul-color); }
         .soul-atk { font-size: 1rem; color: #888; }
 
+        /* ソウル拡張（強化）ボタン */
+        .upgrade-area { display: flex; gap: 5px; margin-top: 10px; justify-content: center; }
+        .upgrade-btn { background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; font-size: 0.7rem; cursor: pointer; border-radius: 4px; }
+        .upgrade-btn:disabled { opacity: 0.3; }
+
         /* パーツ構成 */
-        .component-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-        .component-item { padding: 8px; background: #1a1a1a; border-left: 3px solid #444; font-size: 0.8rem; }
-        .component-item b { display: block; color: #aaa; font-size: 0.7rem; }
+        .component-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .component-item { padding: 8px; background: #1a1a1a; border-left: 3px solid #444; font-size: 0.75rem; }
+        .component-item b { display: block; color: #aaa; font-size: 0.65rem; }
 
         /* ログ */
-        #log { height: 180px; overflow-y: auto; background: var(--log-bg); padding: 10px; font-size: 0.9rem; color: #aaa; border: 1px solid #222; margin-bottom: 15px; line-height: 1.6; }
-        .log-atk { color: #fff; font-weight: bold; border-left: 2px solid var(--accent-color); padding-left: 8px; margin: 4px 0; }
+        #log { height: 160px; overflow-y: auto; background: var(--log-bg); padding: 10px; font-size: 0.85rem; color: #aaa; border: 1px solid #222; margin-bottom: 15px; line-height: 1.5; }
+        .log-atk { color: #fff; font-weight: bold; border-left: 2px solid var(--accent-color); padding-left: 8px; }
 
-        /* メインアクションボタン */
-        .main-action-btn { width: 100%; padding: 22px; font-size: 1.2rem; font-weight: bold; color: #fff; border-radius: 4px; cursor: pointer; transition: 0.2s; border: 1px solid #444; -webkit-tap-highlight-color: transparent; }
+        /* メインボタン */
+        .main-action-btn { width: 100%; padding: 22px; font-size: 1.2rem; font-weight: bold; color: #fff; border-radius: 4px; cursor: pointer; border: 1px solid #444; }
         .btn-search { background: #111; }
         .btn-attack { background: var(--accent-color); border-color: #ff6e6e; color: #000; }
-        .btn-attack:active { background: #cc0000; transform: scale(0.98); }
 
-        /* Ripセクション */
+        /* Ripセクション（比較表示付き） */
         .rip-panel { border-top: 2px solid var(--accent-color); background: #0a0000; padding: 20px 15px; }
-        .part-item { padding: 15px; border: 1px solid #331111; background: #150505; margin: 10px 0; font-size: 0.9rem; }
-        .shred-btn { width: 100%; padding: 15px; background: transparent; color: #666; border: none; font-size: 0.7rem; text-decoration: underline; }
+        .part-item { padding: 15px; border: 1px solid #331111; background: #150505; margin: 10px 0; font-size: 0.85rem; position: relative; }
+        .diff { font-weight: bold; margin-left: 5px; font-size: 0.75rem; }
+        .diff-up { color: var(--up-color); }
+        .diff-down { color: var(--down-color); }
         
+        .shred-btn { width: 100%; padding: 15px; background: transparent; color: #666; border: none; font-size: 0.7rem; text-decoration: underline; }
         .accent { color: var(--accent-color); }
     </style>
 </head>
 <body>
-    <h1>DEARIP <small>v1.0.5</small></h1>
+    <h1>DEARIP <small>v1.0.6</small></h1>
     
     <div class="panel">
         <div class="soul-status">
             <div id="hp-display" class="soul-hp">--- / ---</div>
-            <div id="atk-display" class="soul-atk">ATK: ---</div>
+            <div id="atk-display" class="soul-atk">こうげき力: ---</div>
+            <div id="exp-display" style="font-size:0.75rem; color:#888; margin-top:5px;">SOUL EXP: ---</div>
+            <div class="upgrade-area">
+                <button class="upgrade-btn" onclick="upgradeSoul('HP')" id="up-hp">HP拡張 (30exp)</button>
+                <button class="upgrade-btn" onclick="upgradeSoul('ATK')" id="up-atk">ATK拡張 (30exp)</button>
+            </div>
         </div>
         <div id="component-display" class="component-grid"></div>
     </div>
@@ -63,13 +77,13 @@
     </div>
 
     <div id="rip-section" class="rip-panel" style="display:none;">
-        <div style="text-align:center; font-size:0.8rem; color:var(--accent-color); margin-bottom:15px;">パーツの奪取</div>
+        <div style="text-align:center; font-size:0.8rem; color:var(--accent-color); margin-bottom:15px;">適合パーツの選択（現在のパーツと比較）</div>
         <div id="loot-list"></div>
         <button class="shred-btn" onclick="shredAll()">すべて引き裂く（経験値+10）</button>
     </div>
 
     <script>
-        const VERSION = "1.0.5";
+        const VERSION = "1.0.6";
         
         const prefixData = ["神速の", "因果の", "虚無の", "疾風の", "強欲の", "焦熱の"];
         const skillData = {
@@ -100,14 +114,19 @@
                 let p = player.equipment[key];
                 totalHp += p.hp;
                 totalAtk += p.atk;
-                compHtml += `<div class="component-item"><b>${key}</b>${p.prefix}${p.name}</div>`;
+                compHtml += `<div class="component-item"><b>${key} (H:${p.hp} A:${p.atk})</b>${p.prefix}${p.name}</div>`;
             }
 
             if (player.hp <= 0 && enemy === null) player.hp = totalHp;
 
             document.getElementById("hp-display").innerText = `${player.hp} / ${totalHp}`;
-            document.getElementById("atk-display").innerText = `こうげき力: ${totalAtk}`;
+            document.getElementById("atk-display").innerText = `総こうげき力: ${totalAtk}`;
+            document.getElementById("exp-display").innerText = `SOUL EXP: ${player.soulExp}`;
             document.getElementById("component-display").innerHTML = compHtml;
+
+            // 強化ボタンの制御
+            document.getElementById("up-hp").disabled = player.soulExp < 30;
+            document.getElementById("up-atk").disabled = player.soulExp < 30;
 
             const btn = document.getElementById("main-btn");
             if (enemy) {
@@ -118,6 +137,21 @@
                 btn.innerText = "すすむ";
                 btn.className = "main-action-btn btn-search";
                 document.getElementById("enemy-info").innerText = "";
+            }
+        }
+
+        // ソウル拡張（経験値消費）
+        function upgradeSoul(type) {
+            if (player.soulExp >= 30) {
+                player.soulExp -= 30;
+                if (type === 'HP') {
+                    player.baseHp += 20;
+                    log("ソウルの器を拡張。最大HPが上昇。");
+                } else {
+                    player.baseAtk += 5;
+                    log("ソウルの密度を拡張。ベースATKが上昇。");
+                }
+                updateUI();
             }
         }
 
@@ -137,8 +171,8 @@
                     part: p,
                     prefix: prefixData[Math.floor(Math.random() * prefixData.length)],
                     skill: skillData[p][Math.floor(Math.random() * skillData[p].length)],
-                    hp: 50 + Math.floor(Math.random() * 60),
-                    atk: 10 + Math.floor(Math.random() * 25)
+                    hp: 50 + Math.floor(Math.random() * 100),
+                    atk: 10 + Math.floor(Math.random() * 40)
                 }))
             };
             log(`敵に遭遇：<span class="accent">${enemy.name}</span>`);
@@ -147,18 +181,13 @@
 
         function executeAttack() {
             if (!enemy) return;
-            
             let totalAtk = player.baseAtk;
             for(let k in player.equipment) totalAtk += player.equipment[k].atk;
-            
             let dmg = Math.floor(totalAtk * (1.2 + Math.random() * 0.4));
             enemy.hp -= dmg;
-            
             log(`<div class="log-atk">こうげき：${dmg} のダメージ</div>`);
-
-            if (enemy.hp <= 0) {
-                win();
-            } else {
+            if (enemy.hp <= 0) win();
+            else {
                 let eDmg = enemy.atk;
                 player.hp -= eDmg;
                 log(`反撃：${eDmg} のダメージを受けた。`);
@@ -187,9 +216,22 @@
             const list = document.getElementById("loot-list");
             list.innerHTML = "";
             enemy.loot.forEach((item, index) => {
+                const current = player.equipment[item.part];
+                const hpDiff = item.hp - current.hp;
+                const atkDiff = item.atk - current.atk;
+
+                const hpClass = hpDiff >= 0 ? "diff-up" : "diff-down";
+                const atkClass = atkDiff >= 0 ? "diff-up" : "diff-down";
+                const hpSymbol = hpDiff >= 0 ? "+" : "";
+                const atkSymbol = atkDiff >= 0 ? "+" : "";
+
                 list.innerHTML += `<div class="part-item" onclick="equip(${index})">
                     <strong>${item.prefix}パーツ [${item.part}]</strong><br>
-                    <small>HP+${item.hp} / ATK+${item.atk} (スキル: ${item.skill})</small>
+                    <small>
+                        HP: ${item.hp} <span class="diff ${hpClass}">(${hpSymbol}${hpDiff})</span> / 
+                        ATK: ${item.atk} <span class="diff ${atkClass}">(${atkSymbol}${atkDiff})</span><br>
+                        スキル: ${item.skill}
+                    </small>
                 </div>`;
             });
             document.getElementById("rip-section").style.display = "block";
@@ -205,7 +247,7 @@
                 hp: newItem.hp,
                 atk: newItem.atk
             };
-            log(`${newItem.part} を入れ替えた。`);
+            log(`${newItem.part} を換装。`);
             endRip();
         }
 
