@@ -3,160 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dearip v1.1.0</title>
+    <title>Dearip v1.1.1</title>
     <style>
-        :root {
-            --bg-color: #050505;
-            --panel-bg: #121212;
-            --text-color: #d0d0d0;
-            --soul-color: #ffffff;
-            --accent-color: #ff3e3e;
-            --up-color: #00ff41;
-            --down-color: #ff3e3e;
-            --log-bg: #000;
-        }
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; margin: 0; padding: 10px; }
-        h1 { font-size: 1.4rem; letter-spacing: 2px; border-bottom: 1px solid #333; margin-bottom: 10px; text-align: center; color: var(--soul-color); }
-        .panel { border: 1px solid #222; padding: 15px; background: var(--panel-bg); border-radius: 4px; margin-bottom: 10px; }
-        
-        /* ステータス */
-        .soul-status { text-align: center; margin-bottom: 10px; }
-        .soul-hp { font-size: 1.5rem; font-weight: bold; color: var(--soul-color); }
-        .soul-atk { font-size: 0.9rem; color: #888; }
-        .upgrade-area { display: flex; gap: 5px; margin-top: 8px; justify-content: center; }
-        .upgrade-btn { background: #222; color: #fff; border: 1px solid #444; padding: 4px 8px; font-size: 0.7rem; cursor: pointer; }
-        
-        /* ダンジョン情報 */
-        .dungeon-info { font-size: 0.8rem; color: #aaa; text-align: center; margin-bottom: 5px; }
-
-        /* パーツ構成 */
-        .component-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-        .component-item { padding: 6px; background: #1a1a1a; border-left: 2px solid #444; font-size: 0.7rem; }
-
-        /* ログ */
-        #log { height: 140px; overflow-y: auto; background: var(--log-bg); padding: 10px; font-size: 0.8rem; color: #aaa; border: 1px solid #222; margin-bottom: 10px; }
-        .log-atk { color: #fff; font-weight: bold; }
-
-        /* アクションボタン */
-        .main-action-btn { width: 100%; padding: 18px; font-size: 1.1rem; font-weight: bold; color: #fff; border-radius: 4px; cursor: pointer; border: 1px solid #444; }
-        .btn-search { background: #111; }
-        .btn-attack { background: var(--accent-color); color: #000; }
-        
-        /* シード投入UI */
-        .seed-ui { text-align: center; padding: 10px; border: 1px dashed #444; margin-bottom: 10px; }
-        .seed-count { font-size: 1.2rem; color: #00ff41; font-weight: bold; }
-
-        /* Rip */
-        .rip-panel { border-top: 2px solid var(--accent-color); background: #0a0000; padding: 15px; }
-        .part-item { padding: 12px; border: 1px solid #331111; background: #150505; margin: 8px 0; font-size: 0.8rem; }
-        .diff-up { color: var(--up-color); }
-        .diff-down { color: var(--down-color); }
-
-        .accent { color: var(--accent-color); }
+        :root { --bg-color: #050505; --panel-bg: #121212; --text-color: #d0d0d0; --accent-color: #ff3e3e; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; margin: 0; padding: 10px; }
+        .panel { border: 1px solid #333; padding: 15px; background: var(--panel-bg); margin-bottom: 10px; border-radius: 4px; }
+        .soul-hp { font-size: 1.5rem; font-weight: bold; color: #fff; text-align: center; }
+        .main-action-btn { width: 100%; padding: 18px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+        #log { height: 140px; overflow-y: auto; background: #000; padding: 10px; font-size: 0.8rem; margin-bottom: 10px; border: 1px solid #222; }
     </style>
 </head>
 <body>
-    <h1>DEARIP <small>v1.1.0</small></h1>
+    <h1>DEARIP <small>v1.1.1</small></h1>
     
-    <div id="dungeon-container" style="display:none;">
-        <div class="dungeon-info">
-            階層: <span id="floor-display">1</span> / 30 | シード補正: x<span id="multiplier-display">1</span>
+    <div id="game-container" style="display:none;">
+        <div class="panel">
+            <div id="hp-display" class="soul-hp">---</div>
+            <div id="status-text" style="text-align:center; font-size:0.8rem;"></div>
         </div>
         <div class="panel">
-            <div class="soul-status">
-                <div id="hp-display" class="soul-hp">--- / ---</div>
-                <div id="atk-display" class="soul-atk">こうげき力: ---</div>
-                <div id="exp-display" style="font-size:0.7rem; color:#888;">SOUL EXP: --- | SEED: <span id="seed-display">0</span></div>
-                <div class="upgrade-area">
-                    <button class="upgrade-btn" onclick="upgradeSoul('HP')" id="up-hp">HP拡張(30e)</button>
-                    <button class="upgrade-btn" onclick="upgradeSoul('ATK')" id="up-atk">ATK拡張(30e)</button>
-                </div>
-            </div>
-            <div id="component-display" class="component-grid"></div>
-        </div>
-
-        <div class="panel">
-            <div id="log">探索中...</div>
-            <div id="enemy-info" style="margin-bottom:8px; text-align:center; height:20px; font-weight:bold;"></div>
-            <button id="main-btn" class="main-action-btn btn-search" onclick="handleAction()">すすむ</button>
+            <div id="log"></div>
+            <button id="main-btn" class="main-action-btn" onclick="handleAction()">すすむ</button>
         </div>
     </div>
 
-    <div id="seed-container" class="panel">
-        <h2 style="text-align:center; font-size:1rem;">ダンジョン生成</h2>
-        <div class="seed-ui">
-            所持シード: <span class="seed-count" id="seed-total">0</span><br><br>
-            投入数: <span class="seed-count" id="seed-input">0</span><br>
-            <button onclick="adjustSeed(1)">＋</button>
-            <button onclick="adjustSeed(-1)">－</button>
-        </div>
-        <button class="main-action-btn btn-search" onclick="generateDungeon()">探索を開始する</button>
-    </div>
-
-    <div id="rip-section" class="rip-panel" style="display:none;">
-        <div style="text-align:center; font-size:0.8rem; color:var(--accent-color); margin-bottom:10px;">ボス解体：パーツ奪取</div>
-        <div id="loot-list"></div>
+    <div id="base-container" class="panel">
+        <h2>拠点</h2>
+        <p>EXP: <span id="exp-total">0</span> | SEED: <span id="seed-total">0</span></p>
+        <button onclick="startDungeon()">探索を開始する</button>
     </div>
 
     <script>
-        const VERSION = "1.1.0";
-        const SAVE_KEY = "DEARIP_SAVE_DATA";
-
-        const prefixData = ["神速の", "因果の", "虚無の", "疾風の", "強欲の", "焦熱の"];
-        const skillData = { "HEAD": ["反転の理"], "BODY": ["拒絶の領域"], "ARM": ["瞬閃"], "LEG": ["抜刀の舞"] };
-
-        let player = {
-            baseHp: 100, baseAtk: 10, hp: 150, soulExp: 0, seed: 0,
-            equipment: {
-                HEAD: { name: "初期殻", prefix: "平穏な", hp: 50, atk: 5 },
-                BODY: { name: "初期殻", prefix: "平穏な", hp: 100, atk: 0 },
-                ARM: { name: "初期殻", prefix: "平穏な", hp: 30, atk: 15 },
-                LEG: { name: "初期殻", prefix: "平穏な", hp: 20, atk: 10 }
-            }
-        };
-
-        let dungeon = { active: false, floor: 0, multiplier: 1, seedIn: 0 };
+        let player = { baseHp: 100, baseAtk: 10, hp: 100, exp: 0, seed: 0, equipment: { HEAD: {hp:50, atk:5}, BODY: {hp:100, atk:0}, ARM: {hp:30, atk:15}, LEG: {hp:20, atk:10} } };
+        let dungeon = { floor: 0, active: false };
         let enemy = null;
-        let seedToUse = 0;
-
-        // --- セーブ/ロード ---
-        function saveGame() {
-            localStorage.setItem(SAVE_KEY, JSON.stringify({ player, dungeon }));
-        }
-
-        function loadGame() {
-            const saved = localStorage.getItem(SAVE_KEY);
-            if (saved) {
-                const data = JSON.parse(saved);
-                player = data.player;
-                dungeon = data.dungeon;
-                if (dungeon.active) {
-                    document.getElementById("seed-container").style.display = "none";
-                    document.getElementById("dungeon-container").style.display = "block";
-                }
-            }
-            updateUI();
-        }
-
-        // --- ダンジョン管理 ---
-        function adjustSeed(val) {
-            seedToUse = Math.max(0, Math.min(player.seed, seedToUse + val));
-            document.getElementById("seed-input").innerText = seedToUse;
-        }
-
-        function generateDungeon() {
-            dungeon.active = true;
-            dungeon.floor = 1;
-            dungeon.seedIn = seedToUse;
-            dungeon.multiplier = 1 + (seedToUse * 0.5);
-            player.seed -= seedToUse;
-            seedToUse = 0;
-            document.getElementById("seed-container").style.display = "none";
-            document.getElementById("dungeon-container").style.display = "block";
-            log("ダンジョンが生成された。深層へ潜る。");
-            saveGame();
-            updateUI();
-        }
 
         function handleAction() {
             if (enemy) executeAttack();
@@ -164,139 +44,62 @@
         }
 
         function encounter() {
-            document.getElementById("rip-section").style.display = "none";
-            const isBoss = dungeon.floor % 30 === 0;
-            const levelMult = dungeon.multiplier * (1 + dungeon.floor * 0.1);
-            
-            enemy = {
-                name: (isBoss ? "【BOSS】" : "") + prefixData[Math.floor(Math.random() * prefixData.length)] + "異形",
-                hp: Math.floor((isBoss ? 1000 : 150) * levelMult),
-                atk: Math.floor((isBoss ? 50 : 15) * levelMult),
-                isBoss: isBoss
-            };
-            
-            log(`${enemy.name} が立ち塞がった。`);
+            if (dungeon.floor >= 30) { dungeon.floor = 0; returnToBase("深層を制覇した。"); return; }
+            enemy = { name: "異形", hp: 100 + dungeon.floor * 10, atk: 5 + dungeon.floor * 2 };
             updateUI();
         }
 
         function executeAttack() {
             let totalAtk = player.baseAtk;
             for(let k in player.equipment) totalAtk += player.equipment[k].atk;
+            enemy.hp -= totalAtk;
             
-            let dmg = Math.floor(totalAtk * (1.2 + Math.random() * 0.4));
-            enemy.hp -= dmg;
-            log(`<span class="log-atk">こうげき：${dmg}</span>`);
-
             if (enemy.hp <= 0) {
-                if (enemy.isBoss) winBoss();
-                else winNormal();
+                log("撃破。");
+                player.exp += 10;
+                if(Math.random() < 0.3) player.seed++;
+                dungeon.floor++;
+                enemy = null;
             } else {
-                let eDmg = enemy.atk;
-                player.hp -= eDmg;
-                log(`反撃：${eDmg} のダメージ。`);
+                player.hp -= enemy.atk;
+                log(`被ダメ ${enemy.atk}。現在HP: ${Math.max(0, player.hp)}`);
                 if (player.hp <= 0) {
-                    log("ソウル消滅。リセット。");
-                    localStorage.removeItem(SAVE_KEY);
-                    setTimeout(() => location.reload(), 2000);
+                    returnToBase("敗北。拠点へ帰還した。");
+                    return;
                 }
             }
             updateUI();
         }
 
-        function winNormal() {
-            log(`${enemy.name} を撃破。経験値+5。`);
-            player.soulExp += 5;
-            if (Math.random() < 0.2) {
-                player.seed += 1;
-                log("ダンジョンシードを拾った！");
-            }
+        function returnToBase(msg) {
+            alert(msg);
+            dungeon.active = false;
             enemy = null;
-            dungeon.floor++;
-            saveGame();
-        }
-
-        function winBoss() {
-            log(`ボス撃破！パーツを剥ぎ取れ。`);
-            // ボスドロップ生成
-            enemy.loot = ["HEAD", "BODY", "ARM", "LEG"].map(p => ({
-                part: p, prefix: prefixData[Math.floor(Math.random() * prefixData.length)],
-                hp: Math.floor(50 * dungeon.multiplier * 2), atk: Math.floor(10 * dungeon.multiplier * 2)
-            }));
-            showRipSection();
-        }
-
-        function showRipSection() {
-            const list = document.getElementById("loot-list");
-            list.innerHTML = "";
-            enemy.loot.forEach((item, index) => {
-                const current = player.equipment[item.part];
-                list.innerHTML += `<div class="part-item" onclick="equip(${index})">
-                    <strong>${item.prefix}部位 [${item.part}]</strong><br>
-                    HP: ${item.hp} (${item.hp-current.hp >= 0 ? '+' : ''}${item.hp-current.hp}) / 
-                    ATK: ${item.atk} (${item.atk-current.atk >= 0 ? '+' : ''}${item.atk-current.atk})
-                </div>`;
-            });
-            document.getElementById("rip-section").style.display = "block";
-        }
-
-        function equip(index) {
-            const newItem = enemy.loot[index];
-            player.equipment[newItem.part] = newItem;
-            log(`${newItem.part} を換装。`);
-            enemy = null;
-            dungeon.floor++;
-            document.getElementById("rip-section").style.display = "none";
-            saveGame();
+            document.getElementById("game-container").style.display = "none";
+            document.getElementById("base-container").style.display = "block";
             updateUI();
         }
 
-        function upgradeSoul(type) {
-            if (player.soulExp >= 30) {
-                player.soulExp -= 30;
-                if (type === 'HP') player.baseHp += 20;
-                else player.baseAtk += 5;
-                saveGame();
-                updateUI();
-            }
+        function startDungeon() {
+            dungeon.active = true;
+            dungeon.floor = 1;
+            player.hp = player.baseHp; // 全回復
+            for(let k in player.equipment) player.hp += player.equipment[k].hp;
+            document.getElementById("base-container").style.display = "none";
+            document.getElementById("game-container").style.display = "block";
+            updateUI();
         }
 
         function updateUI() {
-            let totalHp = player.baseHp;
-            let totalAtk = player.baseAtk;
-            let compHtml = "";
-            for (let key in player.equipment) {
-                let p = player.equipment[key];
-                totalHp += p.hp; totalAtk += p.atk;
-                compHtml += `<div class="component-item"><b>${key}</b>${p.hp}/${p.atk}</div>`;
-            }
-            document.getElementById("hp-display").innerText = `${player.hp} / ${totalHp}`;
-            document.getElementById("atk-display").innerText = `こうげき力: ${totalAtk}`;
-            document.getElementById("exp-display").innerHTML = `EXP: ${player.soulExp} | SEED: ${player.seed}`;
+            document.getElementById("hp-display").innerText = `HP: ${Math.max(0, player.hp)}`;
+            document.getElementById("exp-total").innerText = player.exp;
             document.getElementById("seed-total").innerText = player.seed;
-            document.getElementById("component-display").innerHTML = compHtml;
-            document.getElementById("floor-display").innerText = dungeon.floor;
-            document.getElementById("multiplier-display").innerText = dungeon.multiplier;
-            document.getElementById("seed-display").innerText = player.seed;
-
             const btn = document.getElementById("main-btn");
-            if (enemy) {
-                btn.innerText = "こうげき"; btn.className = "main-action-btn btn-attack";
-                document.getElementById("enemy-info").innerText = `${enemy.name} HP:${enemy.hp}`;
-            } else {
-                btn.innerText = "すすむ"; btn.className = "main-action-btn btn-search";
-                document.getElementById("enemy-info").innerText = "";
-            }
-            document.getElementById("up-hp").disabled = player.soulExp < 30;
-            document.getElementById("up-atk").disabled = player.soulExp < 30;
+            btn.innerText = enemy ? "こうげき" : "すすむ";
         }
-
-        function log(msg) {
-            const l = document.getElementById("log");
-            l.innerHTML += `<div>> ${msg}</div>`;
-            l.scrollTop = l.scrollHeight;
-        }
-
-        loadGame();
+        
+        function log(m) { document.getElementById("log").innerHTML += `<div>${m}</div>`; }
+        updateUI();
     </script>
 </body>
 </html>
