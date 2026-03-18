@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DeaRip - v0.38 (Red Log & Soul Parts)</title>
+    <title>DeaRip - v0.39 (Enemy & Parts Expansion)</title>
     <style>
         :root { --bg: #050505; --panel: #121212; --accent: #dcdcdc; --danger: #ff3333; --win: #ffffff; --skill: #0077be; --sp: #ffcc00; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -98,10 +98,20 @@
 <script>
 class DeaRip {
     constructor() {
-        this.SAVE_KEY = "DEARIP_SAVE_DATA_V038";
+        this.SAVE_KEY = "DEARIP_SAVE_DATA_V039";
         this.load();
         
-        this.jobs = ["村人", "兵士", "騎士", "魔導師", "商人", "貴族"];
+        // 敵バリエーションの追加
+        this.jobs = [
+            {n:"村人", prefix:"素朴な", stat:{hp:1.0, atk:1.0}},
+            {n:"兵士", prefix:"軍属の", stat:{hp:1.2, atk:1.1}},
+            {n:"騎士", prefix:"高潔な", stat:{hp:1.5, atk:1.3}},
+            {n:"魔導師", prefix:"叡智の", stat:{hp:0.8, atk:1.8}},
+            {n:"暗殺者", prefix:"潜伏者の", stat:{hp:0.7, atk:2.0}},
+            {n:"狂戦士", prefix:"獣性の", stat:{hp:2.0, atk:2.2}},
+            {n:"守護者", prefix:"鉄壁の", stat:{hp:2.5, atk:0.9}},
+            {n:"司祭", prefix:"祈念の", stat:{hp:1.1, atk:1.2}}
+        ];
         this.ranks = [{n:"ただの", m:1.0}, {n:"生きたかった", m:1.3}, {n:"狂気に染まる", m:1.8}, {n:"支配された", m:2.5}];
         this.areaNames = ["嘆きの", "静寂の", "狂乱の", "歪な", "見捨てられた"];
         this.areaTypes = ["村", "街", "砦", "城"];
@@ -148,15 +158,8 @@ class DeaRip {
         this.seed = { name: name, diff: 1.0 + (Math.random() * 0.4) };
     }
 
-    // パーツ加算ロジックの実装確認
     get stats() {
-        let s = { 
-            hp: this.p.baseHp + this.p.plusHp, 
-            atk: this.p.baseAtk + this.p.plusAtk, 
-            def: this.p.baseDef, 
-            spd: this.p.baseSpd + this.p.plusSpd 
-        };
-        // パーツのステータスをソウルに帰属させる
+        let s = { hp: this.p.baseHp + this.p.plusHp, atk: this.p.baseAtk + this.p.plusAtk, def: this.p.baseDef, spd: this.p.baseSpd + this.p.plusSpd };
         for(let k in this.p.eq) {
             if(this.p.eq[k]) {
                 s.hp += (this.p.eq[k].hp || 0);
@@ -174,7 +177,7 @@ class DeaRip {
             this.enemy = {
                 name: `${this.seed.name}主：崩御せし異形`,
                 hp: Math.floor(800 * this.seed.diff), maxHp: Math.floor(800 * this.seed.diff),
-                atk: Math.floor(45 * this.seed.diff), isBoss: true
+                atk: Math.floor(45 * this.seed.diff), isBoss: true, jobRef: {n:"異形", prefix:"崩御せし"}
             };
             this.log(`<span style="color:#f44;">【警告】強大な異形を感知。</span>`);
         } else {
@@ -182,9 +185,9 @@ class DeaRip {
             const rank = this.ranks[Math.floor(Math.random()*Math.min(this.ranks.length, Math.ceil(this.floor/8)))];
             const scale = 1 + (this.floor * 0.12) * this.seed.diff;
             this.enemy = {
-                name: `${rank.n}${job}`,
-                hp: Math.floor(50 * rank.m * scale), maxHp: Math.floor(50 * rank.m * scale),
-                atk: Math.floor(10 * rank.m * scale), isBoss: false
+                name: `${rank.n}${job.n}`,
+                hp: Math.floor(50 * rank.m * job.stat.hp * scale), maxHp: Math.floor(50 * rank.m * job.stat.hp * scale),
+                atk: Math.floor(10 * rank.m * job.stat.atk * scale), isBoss: false, jobRef: job
             };
         }
         this.state = "battle";
@@ -213,7 +216,7 @@ class DeaRip {
         let dmg = s.atk + Math.floor(Math.random()*5);
         if(mode === 'skill' && this.p.eq.arm) {
             dmg = Math.floor(dmg * 2.5);
-            this.log(`<span style="color:var(--skill);">『${this.p.eq.arm.skill}』</span>`);
+            this.log(`<span style="color:var(--skill);">『${this.p.eq.arm.skill}』発動</span>`);
         }
         this.enemy.hp -= dmg;
         this.log(`${this.enemy.name} に ${dmg} dmg`);
@@ -222,7 +225,6 @@ class DeaRip {
             await new Promise(r => setTimeout(r, 400));
             const eDmg = Math.max(1, this.enemy.atk - Math.floor(s.def/2));
             this.p.hp -= eDmg;
-            // 敵のこうげきは赤文字で表示
             this.log(`<span style="color:var(--danger);">${this.enemy.name} から ${eDmg} dmg</span>`);
             if(this.p.hp <= 0) {
                 this.p.hp = 0;
@@ -239,7 +241,8 @@ class DeaRip {
         const exp = this.enemy.isBoss ? 1000 : 30 + (this.floor * 5);
         this.p.exp += exp;
         if(this.p.exp >= this.p.next) this.levelUp();
-        if(this.enemy.isBoss) { this.dropPart(); this.generateSeed(); }
+        if(this.enemy.isBoss || Math.random() < 0.3) { this.dropPart(); } // ボスは確定、通常は30%でパーツ
+        if(this.enemy.isBoss) { this.generateSeed(); }
     }
 
     levelUp() {
@@ -249,17 +252,24 @@ class DeaRip {
         this.log(`<span style="color:#0f0;">Level Up. 魂が純化した。</span>`);
     }
 
+    // 敵のバリエーションに合わせたパーツ生成
     dropPart() {
         const slots = ["head", "body", "arm", "leg"];
         const s = slots[Math.floor(Math.random()*slots.length)];
-        const names = {head:"の思考回路", body:"の防護殻", arm:"の執行腕", leg:"の加速脚"};
-        const skills = ["重圧破断", "魂の連撃", "虚空斬り", "絶命の閃き"];
-        const part = { name: this.enemy.name.split('：')[0] + names[s] };
+        const suffix = {head:"の思考回路", body:"の防護殻", arm:"の執行腕", leg:"の加速脚"};
+        const skills = ["重圧破断", "魂の連撃", "虚空斬り", "絶命の閃き", "星彩の瞬き"];
         
-        if(s === 'head') part.def = 15;
-        if(s === 'body') part.hp = 150;
-        if(s === 'arm') { part.atk = 20; part.skill = skills[Math.floor(Math.random()*skills.length)]; }
-        if(s === 'leg') part.spd = 15;
+        // 倒した敵の種類に基づいたパーツ名
+        const part = { name: this.enemy.jobRef.prefix + suffix[s] };
+        
+        // 性能決定（敵の種類によって補正）
+        if(s === 'head') part.def = Math.floor(15 * (this.enemy.jobRef.stat.hp || 1));
+        if(s === 'body') part.hp = Math.floor(150 * (this.enemy.jobRef.stat.hp || 1));
+        if(s === 'arm') { 
+            part.atk = Math.floor(20 * (this.enemy.jobRef.stat.atk || 1)); 
+            part.skill = skills[Math.floor(Math.random()*skills.length)]; 
+        }
+        if(s === 'leg') part.spd = Math.floor(15 * (this.enemy.jobRef.stat.atk || 1));
         
         this.p.eq[s] = part;
         this.log(`<span style="color:gold;">パーツ獲得：${part.name}</span>`);
@@ -306,13 +316,8 @@ class DeaRip {
         document.getElementById('btn-skill').disabled = (sk === "---" || this.busy || this.state === "win");
         
         const mainBtn = document.getElementById('btn-main');
-        if(this.state === "battle") {
-            mainBtn.innerText = "こうげき";
-            mainBtn.style.borderColor = "#444";
-        } else {
-            mainBtn.innerText = "深層へ";
-            mainBtn.style.borderColor = "#fff";
-        }
+        mainBtn.innerText = (this.state === "battle") ? "こうげき" : "深層へ";
+        mainBtn.style.borderColor = (this.state === "battle") ? "#444" : "#fff";
 
         document.getElementById('skill-desc').innerText = this.p.eq.arm ? `『${sk}』発動可能` : "腕を装備すると技が解放されます。";
     }
