@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DeaRip - v0.37 (Parts Restored)</title>
+    <title>DeaRip - v0.38 (Red Log & Soul Parts)</title>
     <style>
-        :root { --bg: #050505; --panel: #121212; --accent: #dcdcdc; --danger: #b30000; --win: #ffffff; --skill: #0077be; --sp: #ffcc00; }
+        :root { --bg: #050505; --panel: #121212; --accent: #dcdcdc; --danger: #ff3333; --win: #ffffff; --skill: #0077be; --sp: #ffcc00; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--accent); font-family: 'Hiragino Mincho ProN', 'serif'; margin: 0; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
         
@@ -15,7 +15,7 @@
         .status-row { display: flex; justify-content: space-between; font-size: 0.7rem; color: #888; }
         .hp-bar-container { width: 100%; height: 5px; background: #222; margin: 4px 0; border-radius: 2px; overflow: hidden; }
         .hp-bar { height: 100%; background: #2a2; transition: width 0.3s; }
-        .e-hp-bar { background: var(--danger); }
+        .e-hp-bar { background: #b30000; }
         
         #display { padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; min-height: 100px; }
         #enemy-name { font-size: 0.95rem; margin-bottom: 4px; letter-spacing: 1px; }
@@ -98,7 +98,7 @@
 <script>
 class DeaRip {
     constructor() {
-        this.SAVE_KEY = "DEARIP_SAVE_DATA_V037";
+        this.SAVE_KEY = "DEARIP_SAVE_DATA_V038";
         this.load();
         
         this.jobs = ["村人", "兵士", "騎士", "魔導師", "商人", "貴族"];
@@ -148,14 +148,15 @@ class DeaRip {
         this.seed = { name: name, diff: 1.0 + (Math.random() * 0.4) };
     }
 
+    // パーツ加算ロジックの実装確認
     get stats() {
-        // 基本ステータス + 強化分 + パーツ性能を合算
         let s = { 
             hp: this.p.baseHp + this.p.plusHp, 
             atk: this.p.baseAtk + this.p.plusAtk, 
             def: this.p.baseDef, 
             spd: this.p.baseSpd + this.p.plusSpd 
         };
+        // パーツのステータスをソウルに帰属させる
         for(let k in this.p.eq) {
             if(this.p.eq[k]) {
                 s.hp += (this.p.eq[k].hp || 0);
@@ -212,7 +213,7 @@ class DeaRip {
         let dmg = s.atk + Math.floor(Math.random()*5);
         if(mode === 'skill' && this.p.eq.arm) {
             dmg = Math.floor(dmg * 2.5);
-            this.log(`<span style="color:var(--skill);">『${this.p.eq.arm.skill}』発動</span>`);
+            this.log(`<span style="color:var(--skill);">『${this.p.eq.arm.skill}』</span>`);
         }
         this.enemy.hp -= dmg;
         this.log(`${this.enemy.name} に ${dmg} dmg`);
@@ -221,7 +222,8 @@ class DeaRip {
             await new Promise(r => setTimeout(r, 400));
             const eDmg = Math.max(1, this.enemy.atk - Math.floor(s.def/2));
             this.p.hp -= eDmg;
-            this.log(`${this.enemy.name} から ${eDmg} dmg`);
+            // 敵のこうげきは赤文字で表示
+            this.log(`<span style="color:var(--danger);">${this.enemy.name} から ${eDmg} dmg</span>`);
             if(this.p.hp <= 0) {
                 this.p.hp = 0;
                 this.gameOver();
@@ -269,7 +271,7 @@ class DeaRip {
     }
 
     gameOver() {
-        this.log(`<span style="color:red;">意識が消失。1層へ戻ります。</span>`);
+        this.log(`<span style="color:var(--danger);">意識が消失。1層へ戻ります。</span>`);
         this.floor = 1;
         this.p.hp = this.stats.hp;
         this.generateSeed();
@@ -294,7 +296,6 @@ class DeaRip {
         document.getElementById('enemy-name').innerText = this.enemy ? this.enemy.name : "---";
         document.getElementById('e-hp-bar').style.width = this.enemy ? `${(this.enemy.hp/this.enemy.maxHp)*100}%` : "0%";
         
-        // 4部位のUI表示
         document.getElementById('eq-head').innerText = `頭: ${this.p.eq.head ? this.p.eq.head.name : '---'}`;
         document.getElementById('eq-body').innerText = `体: ${this.p.eq.body ? this.p.eq.body.name : '---'}`;
         document.getElementById('eq-arm').innerText = `腕: ${this.p.eq.arm ? this.p.eq.arm.name : '---'}`;
