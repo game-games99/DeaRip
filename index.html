@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DeaRip - v0.43 (Full Jobs & Fixes)</title>
+    <title>DeaRip - v0.44 (Tab UI & Log Cleaned)</title>
     <style>
         :root { 
             --bg: #050505; 
@@ -99,7 +99,7 @@
         .tab-content { 
             display: none; 
             padding: 12px; 
-            height: 100px; 
+            height: 120px; 
             font-size: 0.75rem; 
             overflow-y: auto; 
         }
@@ -116,6 +116,17 @@
             border-radius: 3px; 
             cursor: pointer;
         }
+
+        /* 装備リスト用 */
+        .equip-slot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #222;
+        }
+        .equip-name { color: #ccc; }
+        .equip-val { color: #8af; font-size: 0.65rem; }
 
         #controls { 
             padding: 12px; 
@@ -162,10 +173,6 @@
             <span id="p-hp-text">HP: 100/100</span>
         </div>
         <div class="hp-bar-container"><div id="p-hp-bar" class="hp-bar"></div></div>
-        <div style="display:flex; justify-content: space-between; font-size: 0.6rem; color: #555;">
-            <span id="p-stats">A:15 / D:5 / S:10</span>
-            <span id="p-exp">Next: 100 exp</span>
-        </div>
     </div>
 
     <div id="display">
@@ -176,26 +183,36 @@
 
     <div id="tab-container">
         <div class="tab-buttons">
-            <button class="tab-btn active" onclick="game.switchTab(0)">強化</button>
-            <button class="tab-btn" onclick="game.switchTab(1)">パーツ</button>
-            <button class="tab-btn" onclick="game.switchTab(2)">技</button>
+            <button class="tab-btn active" onclick="game.switchTab(0)">ステータス</button>
+            <button class="tab-btn" onclick="game.switchTab(1)">装備</button>
+            <button class="tab-btn" onclick="game.switchTab(2)">スキル</button>
         </div>
-        <div id="tab-growth" class="tab-content active">
-            <div>Soul Point: <span id="p-sp" style="color:var(--sp)">0</span></div>
+        
+        <div id="tab-status" class="tab-content active">
+            <div style="display:flex; justify-content:space-between;">
+                <span>Soul Point: <span id="p-sp" style="color:var(--sp)">0</span></span>
+                <span id="p-exp" style="color:#555">Next: 100 exp</span>
+            </div>
+            <div id="stat-list" style="margin: 8px 0; line-height: 1.4;">
+                </div>
             <div class="growth-grid">
                 <button class="growth-btn" onclick="game.grow('atk')">力(ATK)+</button>
                 <button class="growth-btn" onclick="game.grow('hp')">器(HP)+</button>
                 <button class="growth-btn" onclick="game.grow('spd')">迅(SPD)+</button>
             </div>
         </div>
+
         <div id="tab-equip" class="tab-content">
-            <div id="eq-head" style="margin-bottom:4px; border-bottom: 1px solid #222;">頭: 未装着</div>
-            <div id="eq-body" style="margin-bottom:4px; border-bottom: 1px solid #222;">体: 未装着</div>
-            <div id="eq-arm" style="margin-bottom:4px; border-bottom: 1px solid #222;">腕: 未装着</div>
-            <div id="eq-leg">脚: 未装着</div>
+            <div class="equip-slot"><span>頭</span><span id="eq-head-n" class="equip-name">未装着</span><span id="eq-head-v" class="equip-val"></span></div>
+            <div class="equip-slot"><span>体</span><span id="eq-body-n" class="equip-name">未装着</span><span id="eq-body-v" class="equip-val"></span></div>
+            <div class="equip-slot"><span>腕</span><span id="eq-arm-n" class="equip-name">未装着</span><span id="eq-arm-v" class="equip-val"></span></div>
+            <div class="equip-slot"><span>脚</span><span id="eq-leg-n" class="equip-name">未装着</span><span id="eq-leg-v" class="equip-val"></span></div>
         </div>
+
         <div id="tab-skill" class="tab-content">
-            <div id="skill-desc" style="color:#8af; font-size: 0.7rem;">腕パーツの適合により技が解放されます。</div>
+            <div id="skill-desc" style="color:#8af; font-size: 0.7rem; line-height: 1.4;">
+                腕パーツを適合させると技が解放されます。
+            </div>
         </div>
     </div>
 
@@ -210,8 +227,8 @@
 <script>
 class DeaRip {
     constructor() {
-        this.VERSION = "0.43";
-        this.SAVE_KEY = "DEARIP_SAVE_DATA_V043";
+        this.VERSION = "0.44";
+        this.SAVE_KEY = "DEARIP_SAVE_DATA_V044";
         
         this.jobs = [
             {n:"村人", p:"素朴な", s:{h:1.0, a:1.0}}, {n:"兵士", p:"軍属の", s:{h:1.2, a:1.1}}, {n:"騎士", p:"高潔な", s:{h:1.5, a:1.3}}, {n:"魔導師", p:"叡智の", s:{h:0.8, a:1.8}}, {n:"暗殺者", p:"潜伏者の", s:{h:0.7, a:2.0}},
@@ -255,12 +272,7 @@ class DeaRip {
                 lv: 1, exp: 0, next: 100, sp: 0,
                 baseHp: 100, baseAtk: 15, baseDef: 5, baseSpd: 10,
                 hp: 100, plusAtk: 0, plusHp: 0, plusSpd: 0,
-                eq: { 
-                    head: { name: "忘却のボロ布", def: 2 },
-                    body: { name: "忘却の骸殻", hp: 30 },
-                    arm: { name: "忘却の錆びた腕", atk: 3, skill: "微かな火花" },
-                    leg: { name: "忘却の足枷", spd: 2 }
-                }
+                eq: { head: null, body: null, arm: null, leg: null }
             };
             this.seed = null; 
             this.floor = 1;
@@ -280,14 +292,15 @@ class DeaRip {
             def: this.p.baseDef, 
             spd: this.p.baseSpd + this.p.plusSpd 
         };
+        let eqBonus = { hp: 0, atk: 0, def: 0, spd: 0 };
         for(let slot in this.p.eq) {
             const item = this.p.eq[slot];
             if(item) {
-                s.hp += (item.hp || 0); s.atk += (item.atk || 0);
-                s.def += (item.def || 0); s.spd += (item.spd || 0);
+                eqBonus.hp += (item.hp || 0); eqBonus.atk += (item.atk || 0);
+                eqBonus.def += (item.def || 0); eqBonus.spd += (item.spd || 0);
             }
         }
-        return s;
+        return { total: { hp: s.hp + eqBonus.hp, atk: s.atk + eqBonus.atk, def: s.def + eqBonus.def, spd: s.spd + eqBonus.spd }, base: s, bonus: eqBonus };
     }
 
     spawn() {
@@ -320,7 +333,6 @@ class DeaRip {
         if(type === 'atk') this.p.plusAtk += 3;
         if(type === 'hp') { this.p.plusHp += 15; this.p.hp += 15; }
         if(type === 'spd') this.p.plusSpd += 2;
-        this.log(`<span style="color:var(--sp);">Soul Pointを捧げ、基幹能力を強化。</span>`);
         this.save(); this.updateUI();
     }
 
@@ -337,7 +349,7 @@ class DeaRip {
     async battle(mode) {
         if(this.busy) return;
         this.busy = true;
-        const s = this.stats;
+        const s = this.stats.total;
         
         let dmgValue = s.atk + Math.floor(Math.random()*5);
         if(mode === 'skill' && this.p.eq.arm) {
@@ -361,9 +373,10 @@ class DeaRip {
 
     async win() {
         this.enemy.hp = 0;
-        this.log(`<span style="color:var(--win);">${this.enemy.name} を救済。</span>`);
+        const exp = (this.enemy.isBoss ? 1000 : 30 + (this.floor * 5));
+        this.log(`${exp} exp 獲得`);
         this.state = "win";
-        this.p.exp += (this.enemy.isBoss ? 1000 : 30 + (this.floor * 5));
+        this.p.exp += exp;
         if(this.p.exp >= this.p.next) this.levelUp();
         if(this.enemy.isBoss) { this.dropPart(); this.generateSeed(); } 
     }
@@ -371,8 +384,8 @@ class DeaRip {
     levelUp() {
         this.p.lv++; this.p.exp -= this.p.next;
         this.p.next = Math.floor(this.p.next * 1.6);
-        this.p.sp += 2; this.p.hp = this.stats.hp;
-        this.log(`<span style="color:#0f0;">Level Up. 器の純度が向上。</span>`);
+        this.p.sp += 2; this.p.hp = this.stats.total.hp;
+        this.log(`Level Up`);
     }
 
     dropPart() {
@@ -390,7 +403,7 @@ class DeaRip {
         }
         if(s === 'leg') part.spd = Math.floor(15 * mult.a);
         this.p.eq[s] = part;
-        this.log(`<span style="color:gold;">適合完了：${part.name}</span>`);
+        this.log(`適合完了：${part.name}`);
     }
 
     nextFloor() {
@@ -399,7 +412,7 @@ class DeaRip {
 
     gameOver() {
         this.log(`<span style="color:var(--danger);">意識が消失。1層へ回帰。</span>`);
-        this.floor = 1; this.p.hp = this.stats.hp;
+        this.floor = 1; this.p.hp = this.stats.total.hp;
         this.spawn(); this.save();
     }
 
@@ -413,22 +426,46 @@ class DeaRip {
         const s = this.stats;
         document.getElementById('area-title').innerText = `${this.seed.name} (${this.floor}層)`;
         document.getElementById('p-lv').innerText = `Soul Lv.${this.p.lv}`;
-        document.getElementById('p-hp-text').innerText = `HP: ${Math.max(0,this.p.hp)}/${s.hp}`;
-        document.getElementById('p-hp-bar').style.width = `${(this.p.hp/s.hp)*100}%`;
+        document.getElementById('p-hp-text').innerText = `HP: ${Math.max(0,this.p.hp)}/${s.total.hp}`;
+        document.getElementById('p-hp-bar').style.width = `${(this.p.hp/s.total.hp)*100}%`;
         document.getElementById('p-exp').innerText = `Next: ${Math.max(0, this.p.next - this.p.exp)} exp`;
-        document.getElementById('p-stats').innerText = `A:${s.atk} / D:${s.def} / S:${s.spd}`;
         document.getElementById('p-sp').innerText = this.p.sp;
+        
+        // ステータスタブ詳細表示
+        document.getElementById('stat-list').innerHTML = `
+            <div>攻撃力: ${s.total.atk} <span style="color:#555; font-size:0.6rem;">(素:${s.base.atk} + 装備:${s.bonus.atk})</span></div>
+            <div>防御力: ${s.total.def} <span style="color:#555; font-size:0.6rem;">(素:${s.base.def} + 装備:${s.bonus.def})</span></div>
+            <div>俊敏性: ${s.total.spd} <span style="color:#555; font-size:0.6rem;">(素:${s.base.spd} + 装備:${s.bonus.spd})</span></div>
+        `;
+
         document.getElementById('enemy-name').innerText = this.enemy ? this.enemy.name : "---";
         document.getElementById('e-hp-bar').style.width = this.enemy ? `${(this.enemy.hp/this.enemy.maxHp)*100}%` : "0%";
-        document.getElementById('eq-head').innerText = `頭: ${this.p.eq.head ? this.p.eq.head.name : '未装着'}`;
-        document.getElementById('eq-body').innerText = `体: ${this.p.eq.body ? this.p.eq.body.name : '未装着'}`;
-        document.getElementById('eq-arm').innerText = `腕: ${this.p.eq.arm ? this.p.eq.arm.name : '未装着'}`;
-        document.getElementById('eq-leg').innerText = `脚: ${this.p.eq.leg ? this.p.eq.leg.name : '未装着'}`;
+        
+        // 装備タブの更新
+        const slots = ["head", "body", "arm", "leg"];
+        slots.forEach(slot => {
+            const item = this.p.eq[slot];
+            const nameEl = document.getElementById(`eq-${slot}-n`);
+            const valEl = document.getElementById(`eq-${slot}-v`);
+            if(item) {
+                nameEl.innerText = item.name;
+                let bonusTxt = "";
+                if(item.hp) bonusTxt += `HP+${item.hp} `;
+                if(item.atk) bonusTxt += `ATK+${item.atk} `;
+                if(item.def) bonusTxt += `DEF+${item.def} `;
+                if(item.spd) bonusTxt += `SPD+${item.spd} `;
+                valEl.innerText = bonusTxt;
+            } else {
+                nameEl.innerText = "未装着";
+                valEl.innerText = "";
+            }
+        });
+
         const sk = this.p.eq.arm ? this.p.eq.arm.skill : "---";
         document.getElementById('btn-skill').innerText = `技：${sk}`;
         document.getElementById('btn-skill').disabled = (sk === "---" || this.busy || this.state === "win");
         document.getElementById('btn-main').innerText = (this.state === "battle") ? "こうげき" : "深層へ";
-        document.getElementById('skill-desc').innerText = this.p.eq.arm ? `『${sk}』が発動可能です。` : "腕パーツを適合させると技が解放されます。";
+        document.getElementById('skill-desc').innerText = this.p.eq.arm ? `適合中の腕パーツにより『${sk}』が発動可能です。` : "腕パーツを適合させると技が解放されます。";
     }
 }
 const game = new DeaRip();
