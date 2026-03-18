@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DeaRip - v0.36</title>
+    <title>DeaRip - v0.37 (Parts Restored)</title>
     <style>
         :root { --bg: #050505; --panel: #121212; --accent: #dcdcdc; --danger: #b30000; --win: #ffffff; --skill: #0077be; --sp: #ffcc00; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -25,7 +25,7 @@
         .tab-buttons { display: flex; border-bottom: 1px solid #222; }
         .tab-btn { flex: 1; padding: 10px; background: #111; border: none; color: #555; font-size: 0.7rem; cursor: pointer; }
         .tab-btn.active { background: #1a1a1a; color: var(--accent); border-bottom: 2px solid var(--accent); }
-        .tab-content { display: none; padding: 10px; height: 75px; font-size: 0.75rem; }
+        .tab-content { display: none; padding: 10px; height: 85px; font-size: 0.75rem; overflow-y: auto; }
         .tab-content.active { display: block; }
         .growth-grid { display: flex; gap: 6px; margin-top: 5px; }
         .growth-btn { flex: 1; background: #222; border: 1px solid #444; color: #aaa; padding: 8px 0; font-size: 0.7rem; border-radius: 3px; }
@@ -78,12 +78,12 @@
         </div>
         <div id="tab-equip" class="tab-content">
             <div id="eq-head" style="margin-bottom:2px;">頭: ---</div>
-            <div id="eq-arm" style="margin-bottom:2px;">腕: ---</div>
             <div id="eq-body" style="margin-bottom:2px;">体: ---</div>
+            <div id="eq-arm" style="margin-bottom:2px;">腕: ---</div>
             <div id="eq-leg">脚: ---</div>
         </div>
         <div id="tab-skill" class="tab-content">
-            <div id="skill-desc" style="color:#8af; font-size: 0.7rem;">腕を装備するとスキルが解放されます。</div>
+            <div id="skill-desc" style="color:#8af; font-size: 0.7rem;">腕を装備すると技が解放されます。</div>
         </div>
     </div>
 
@@ -98,7 +98,7 @@
 <script>
 class DeaRip {
     constructor() {
-        this.SAVE_KEY = "DEARIP_SAVE_DATA_V036";
+        this.SAVE_KEY = "DEARIP_SAVE_DATA_V037";
         this.load();
         
         this.jobs = ["村人", "兵士", "騎士", "魔導師", "商人", "貴族"];
@@ -108,7 +108,7 @@ class DeaRip {
 
         this.enemy = null;
         this.busy = false;
-        this.state = "battle"; // battle or win
+        this.state = "battle"; 
 
         if(!this.seed) this.generateSeed();
         this.spawn();
@@ -136,13 +136,11 @@ class DeaRip {
                 lv: 1, exp: 0, next: 100, sp: 0,
                 baseHp: 100, baseAtk: 15, baseDef: 5, baseSpd: 10,
                 hp: 100, plusAtk: 0, plusHp: 0, plusSpd: 0,
-                eq: { head: null, arm: null, body: null, leg: null }
+                eq: { head: null, body: null, arm: null, leg: null }
             };
             this.seed = null; this.floor = 1;
         }
     }
-
-    reset() { localStorage.removeItem(this.SAVE_KEY); location.reload(); }
 
     generateSeed() {
         const name = this.areaNames[Math.floor(Math.random()*this.areaNames.length)] + 
@@ -151,10 +149,20 @@ class DeaRip {
     }
 
     get stats() {
-        let s = { hp: this.p.baseHp + this.p.plusHp, atk: this.p.baseAtk + this.p.plusAtk, def: this.p.baseDef, spd: this.p.baseSpd + this.p.plusSpd };
-        for(let k in this.p.eq) if(this.p.eq[k]) {
-            s.hp += (this.p.eq[k].hp || 0); s.atk += (this.p.eq[k].atk || 0);
-            s.def += (this.p.eq[k].def || 0); s.spd += (this.p.eq[k].spd || 0);
+        // 基本ステータス + 強化分 + パーツ性能を合算
+        let s = { 
+            hp: this.p.baseHp + this.p.plusHp, 
+            atk: this.p.baseAtk + this.p.plusAtk, 
+            def: this.p.baseDef, 
+            spd: this.p.baseSpd + this.p.plusSpd 
+        };
+        for(let k in this.p.eq) {
+            if(this.p.eq[k]) {
+                s.hp += (this.p.eq[k].hp || 0);
+                s.atk += (this.p.eq[k].atk || 0);
+                s.def += (this.p.eq[k].def || 0);
+                s.spd += (this.p.eq[k].spd || 0);
+            }
         }
         return s;
     }
@@ -204,7 +212,7 @@ class DeaRip {
         let dmg = s.atk + Math.floor(Math.random()*5);
         if(mode === 'skill' && this.p.eq.arm) {
             dmg = Math.floor(dmg * 2.5);
-            this.log(`<span style="color:var(--skill);">『${this.p.eq.arm.skill}』</span>`);
+            this.log(`<span style="color:var(--skill);">『${this.p.eq.arm.skill}』発動</span>`);
         }
         this.enemy.hp -= dmg;
         this.log(`${this.enemy.name} に ${dmg} dmg`);
@@ -240,15 +248,17 @@ class DeaRip {
     }
 
     dropPart() {
-        const slots = ["head", "arm", "body", "leg"];
+        const slots = ["head", "body", "arm", "leg"];
         const s = slots[Math.floor(Math.random()*slots.length)];
-        const names = {head:"の思考回路", arm:"の執行腕", body:"の防護殻", leg:"の加速脚"};
+        const names = {head:"の思考回路", body:"の防護殻", arm:"の執行腕", leg:"の加速脚"};
         const skills = ["重圧破断", "魂の連撃", "虚空斬り", "絶命の閃き"];
         const part = { name: this.enemy.name.split('：')[0] + names[s] };
+        
         if(s === 'head') part.def = 15;
-        if(s === 'arm') { part.atk = 20; part.skill = skills[Math.floor(Math.random()*skills.length)]; }
         if(s === 'body') part.hp = 150;
+        if(s === 'arm') { part.atk = 20; part.skill = skills[Math.floor(Math.random()*skills.length)]; }
         if(s === 'leg') part.spd = 15;
+        
         this.p.eq[s] = part;
         this.log(`<span style="color:gold;">パーツ獲得：${part.name}</span>`);
     }
@@ -260,7 +270,6 @@ class DeaRip {
 
     gameOver() {
         this.log(`<span style="color:red;">意識が消失。1層へ戻ります。</span>`);
-        // 即座に1層に戻る処理
         this.floor = 1;
         this.p.hp = this.stats.hp;
         this.generateSeed();
@@ -285,9 +294,10 @@ class DeaRip {
         document.getElementById('enemy-name').innerText = this.enemy ? this.enemy.name : "---";
         document.getElementById('e-hp-bar').style.width = this.enemy ? `${(this.enemy.hp/this.enemy.maxHp)*100}%` : "0%";
         
+        // 4部位のUI表示
         document.getElementById('eq-head').innerText = `頭: ${this.p.eq.head ? this.p.eq.head.name : '---'}`;
-        document.getElementById('eq-arm').innerText = `腕: ${this.p.eq.arm ? this.p.eq.arm.name : '---'}`;
         document.getElementById('eq-body').innerText = `体: ${this.p.eq.body ? this.p.eq.body.name : '---'}`;
+        document.getElementById('eq-arm').innerText = `腕: ${this.p.eq.arm ? this.p.eq.arm.name : '---'}`;
         document.getElementById('eq-leg').innerText = `脚: ${this.p.eq.leg ? this.p.eq.leg.name : '---'}`;
 
         const sk = this.p.eq.arm ? this.p.eq.arm.skill : "---";
