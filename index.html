@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DeaRip - v0.41 (Full 50 Jobs & Seed Protection)</title>
+    <title>DeaRip - v0.42 (Initial Equipment Update)</title>
     <style>
         :root { 
             --bg: #050505; 
@@ -116,7 +116,6 @@
             border-radius: 3px; 
             cursor: pointer;
         }
-        .growth-btn:active { background: #333; }
 
         #controls { 
             padding: 12px; 
@@ -137,8 +136,7 @@
             border-radius: 4px; 
             font-size: 0.95rem; 
         }
-        button.action-btn:active { background: #252525; }
-        button.action-btn:disabled { opacity: 0.2; cursor: default; }
+        button.action-btn:disabled { opacity: 0.2; }
         .btn-skill { border-color: var(--skill) !important; color: #8af !important; }
 
         #log { 
@@ -191,13 +189,13 @@
             </div>
         </div>
         <div id="tab-equip" class="tab-content">
-            <div id="eq-head" style="margin-bottom:4px; border-bottom: 1px solid #222; padding-bottom: 2px;">頭: 未装備</div>
-            <div id="eq-body" style="margin-bottom:4px; border-bottom: 1px solid #222; padding-bottom: 2px;">体: 未装備</div>
-            <div id="eq-arm" style="margin-bottom:4px; border-bottom: 1px solid #222; padding-bottom: 2px;">腕: 未装備</div>
+            <div id="eq-head" style="margin-bottom:4px; border-bottom: 1px solid #222;">頭: 未装備</div>
+            <div id="eq-body" style="margin-bottom:4px; border-bottom: 1px solid #222;">体: 未装備</div>
+            <div id="eq-arm" style="margin-bottom:4px; border-bottom: 1px solid #222;">腕: 未装備</div>
             <div id="eq-leg">脚: 未装備</div>
         </div>
         <div id="tab-skill" class="tab-content">
-            <div id="skill-desc" style="color:#8af; font-size: 0.7rem;">腕パーツを修復すると、固有の「技」が解放されます。</div>
+            <div id="skill-desc" style="color:#8af; font-size: 0.7rem;">腕パーツの修復により技が解放されます。</div>
         </div>
     </div>
 
@@ -212,10 +210,10 @@
 <script>
 class DeaRip {
     constructor() {
-        this.VERSION = "0.41";
-        this.SAVE_KEY = "DEARIP_SAVE_DATA_V041";
+        this.VERSION = "0.42";
+        this.SAVE_KEY = "DEARIP_SAVE_DATA_V042";
         
-        // ジョブ50種の完全定義
+        // ジョブ50種定義（全件提示）
         this.jobs = [
             {n:"村人", p:"素朴な", s:{h:1.0, a:1.0}}, {n:"兵士", p:"軍属の", s:{h:1.2, a:1.1}}, {n:"騎士", p:"高潔な", s:{h:1.5, a:1.3}}, {n:"魔導師", p:"叡智の", s:{h:0.8, a:1.8}}, {n:"暗殺者", p:"潜伏者の", s:{h:0.7, a:2.0}},
             {n:"狂戦士", p:"獣性の", s:{h:2.0, a:2.2}}, {n:"守護者", p:"鉄壁の", s:{h:2.5, a:0.9}}, {n:"司祭", p:"祈念の", s:{h:1.1, a:1.2}}, {n:"狩人", p:"追跡の", s:{h:1.0, a:1.4}}, {n:"格闘家", p:"剛腕の", s:{h:1.4, a:1.5}},
@@ -250,16 +248,21 @@ class DeaRip {
     load() {
         const saved = localStorage.getItem(this.SAVE_KEY);
         if(saved) {
-            const d = JSON.parse(saved);
-            this.p = d.p; 
-            this.seed = d.seed; 
-            this.floor = d.floor;
+            this.p = JSON.parse(saved).p;
+            this.seed = JSON.parse(saved).seed;
+            this.floor = JSON.parse(saved).floor;
         } else {
+            // 新規開始時の初期装備生成
             this.p = {
                 lv: 1, exp: 0, next: 100, sp: 0,
                 baseHp: 100, baseAtk: 15, baseDef: 5, baseSpd: 10,
                 hp: 100, plusAtk: 0, plusHp: 0, plusSpd: 0,
-                eq: { head: null, body: null, arm: null, leg: null }
+                eq: { 
+                    head: { name: "忘却のボロ布", def: 2 },
+                    body: { name: "忘却の骸殻", hp: 30 },
+                    arm: { name: "忘却の錆びた腕", atk: 3, skill: "微かな火花" },
+                    leg: { name: "忘却の足枷", spd: 2 }
+                }
             };
             this.seed = null; 
             this.floor = 1;
@@ -272,7 +275,6 @@ class DeaRip {
         this.seed = { name: name, diff: 1.0 + (Math.random() * 0.4) };
     }
 
-    // 主人公にパーツを装着するコアロジック
     get stats() {
         let s = { 
             hp: this.p.baseHp + this.p.plusHp, 
@@ -280,14 +282,11 @@ class DeaRip {
             def: this.p.baseDef, 
             spd: this.p.baseSpd + this.p.plusSpd 
         };
-        // 各装備パーツの能力値をソウルに帰属させる
         for(let slot in this.p.eq) {
             const item = this.p.eq[slot];
             if(item) {
-                s.hp += (item.hp || 0);
-                s.atk += (item.atk || 0);
-                s.def += (item.def || 0);
-                s.spd += (item.spd || 0);
+                s.hp += (item.hp || 0); s.atk += (item.atk || 0);
+                s.def += (item.def || 0); s.spd += (item.spd || 0);
             }
         }
         return s;
@@ -298,10 +297,8 @@ class DeaRip {
         if(isBoss) {
             this.enemy = {
                 name: `${this.seed.name}主：崩御せし異形`,
-                hp: Math.floor(800 * this.seed.diff), 
-                maxHp: Math.floor(800 * this.seed.diff),
-                atk: Math.floor(45 * this.seed.diff), 
-                isBoss: true,
+                hp: Math.floor(800 * this.seed.diff), maxHp: Math.floor(800 * this.seed.diff),
+                atk: Math.floor(45 * this.seed.diff), isBoss: true,
                 jobRef: { p: "崩御せし", s: { h: 1.2, a: 1.2 } }
             };
             this.log(`<span style="color:#f44;">【警告】領域の主を感知。</span>`);
@@ -311,11 +308,8 @@ class DeaRip {
             const scale = 1 + (this.floor * 0.12) * this.seed.diff;
             this.enemy = {
                 name: `${rank.n}${job.n}`,
-                hp: Math.floor(50 * rank.m * job.s.h * scale), 
-                maxHp: Math.floor(50 * rank.m * job.s.h * scale),
-                atk: Math.floor(10 * rank.m * job.s.a * scale), 
-                isBoss: false,
-                jobRef: job
+                hp: Math.floor(50 * rank.m * job.s.h * scale), maxHp: Math.floor(50 * rank.m * job.s.h * scale),
+                atk: Math.floor(10 * rank.m * job.s.a * scale), isBoss: false, jobRef: job
             };
         }
         this.state = "battle";
@@ -328,16 +322,13 @@ class DeaRip {
         if(type === 'atk') this.p.plusAtk += 3;
         if(type === 'hp') { this.p.plusHp += 15; this.p.hp += 15; }
         if(type === 'spd') this.p.plusSpd += 2;
-        this.log(`<span style="color:var(--sp);">Soul Pointを消費。強化が完了した。</span>`);
-        this.save(); 
-        this.updateUI();
+        this.log(`<span style="color:var(--sp);">Soul Pointを捧げ、基幹能力を強化。</span>`);
+        this.save(); this.updateUI();
     }
 
     switchTab(index) {
-        const btns = document.querySelectorAll('.tab-btn');
-        const contents = document.querySelectorAll('.tab-content');
-        btns.forEach((b, i) => b.classList.toggle('active', i === index));
-        contents.forEach((c, i) => c.classList.toggle('active', i === index));
+        document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === index));
+        document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === index));
     }
 
     handleMainBtn() {
@@ -350,7 +341,6 @@ class DeaRip {
         this.busy = true;
         const s = this.stats;
         
-        // 主人公の攻撃
         let dmg = s.atk + Math.floor(Math.random()*5);
         if(mode === 'skill' && this.p.eq.arm) {
             dmg = Math.floor(dmg * 2.5);
@@ -362,47 +352,29 @@ class DeaRip {
         if(this.enemy.hp <= 0) { 
             await this.win(); 
         } else {
-            // 敵の反撃
             await new Promise(r => setTimeout(r, 400));
             const eDmg = Math.max(1, this.enemy.atk - Math.floor(s.def/2));
             this.p.hp -= eDmg;
-            // 敵の攻撃は赤文字
             this.log(`<span style="color:var(--danger);">${this.enemy.name} から ${eDmg} dmg</span>`);
-            
-            if(this.p.hp <= 0) {
-                this.p.hp = 0;
-                this.gameOver();
-            }
+            if(this.p.hp <= 0) { this.p.hp = 0; this.gameOver(); }
         }
-        this.updateUI(); 
-        this.busy = false; 
-        this.save();
+        this.updateUI(); this.busy = false; this.save();
     }
 
     async win() {
         this.enemy.hp = 0;
         this.log(`<span style="color:var(--win);">${this.enemy.name} を救済。 R.I.P.</span>`);
         this.state = "win";
-        
-        const exp = this.enemy.isBoss ? 1000 : 30 + (this.floor * 5);
-        this.p.exp += exp;
-        
+        this.p.exp += (this.enemy.isBoss ? 1000 : 30 + (this.floor * 5));
         if(this.p.exp >= this.p.next) this.levelUp();
-        
-        // ボスからのみ確定ドロップ
-        if(this.enemy.isBoss) { 
-            this.dropPart(); 
-            this.generateSeed(); 
-        }
+        if(this.enemy.isBoss) { this.dropPart(); this.generateSeed(); } 
     }
 
     levelUp() {
-        this.p.lv++; 
-        this.p.exp -= this.p.next;
+        this.p.lv++; this.p.exp -= this.p.next;
         this.p.next = Math.floor(this.p.next * 1.6);
-        this.p.sp += 2; 
-        this.p.hp = this.stats.hp; // 全快
-        this.log(`<span style="color:#0f0;">Level Up. 魂がより純化した。</span>`);
+        this.p.sp += 2; this.p.hp = this.stats.hp;
+        this.log(`<span style="color:#0f0;">Level Up. 器の純度が向上。</span>`);
     }
 
     dropPart() {
@@ -410,10 +382,7 @@ class DeaRip {
         const s = slots[Math.floor(Math.random()*slots.length)];
         const suffix = {head:"の思考回路", body:"の防護殻", arm:"の執行腕", leg:"の加速脚"};
         const skills = ["絶命の一撃", "魂の解放", "無の咆哮", "因果の逆転"];
-        
         const part = { name: this.enemy.jobRef.p + suffix[s] };
-        
-        // 敵の補正をパーツ性能に反映
         const mult = this.enemy.jobRef.s;
         if(s === 'head') part.def = Math.floor(15 * mult.h);
         if(s === 'body') part.hp = Math.floor(150 * mult.h);
@@ -422,30 +391,23 @@ class DeaRip {
             part.skill = skills[Math.floor(Math.random()*skills.length)]; 
         }
         if(s === 'leg') part.spd = Math.floor(15 * mult.a);
-        
         this.p.eq[s] = part;
-        this.log(`<span style="color:gold;">パーツを剥ぎ取り、適合させた：${part.name}</span>`);
+        this.log(`<span style="color:gold;">適合完了：${part.name}</span>`);
     }
 
     nextFloor() {
-        this.floor++; 
-        this.spawn();
-        this.save();
+        this.floor++; this.spawn(); this.save();
     }
 
     gameOver() {
         this.log(`<span style="color:var(--danger);">意識が消失。1層へ回帰。</span>`);
-        this.floor = 1;
-        this.p.hp = this.stats.hp;
-        // generateSeed()を呼ばないことで現在のシード（ダンジョン名）を維持
-        this.spawn();
-        this.save();
+        this.floor = 1; this.p.hp = this.stats.hp;
+        this.spawn(); this.save();
     }
 
     log(m) {
         const l = document.getElementById('log');
         l.innerHTML = `<div class="log-entry">> ${m}</div>` + l.innerHTML;
-        // ログが増えすぎた場合は古いものを削除
         if(l.children.length > 50) l.removeChild(l.lastChild);
     }
 
@@ -455,37 +417,22 @@ class DeaRip {
         document.getElementById('p-lv').innerText = `Soul Lv.${this.p.lv}`;
         document.getElementById('p-hp-text').innerText = `HP: ${Math.max(0,this.p.hp)}/${s.hp}`;
         document.getElementById('p-hp-bar').style.width = `${(this.p.hp/s.hp)*100}%`;
-        document.getElementById('p-exp').innerText = `Next: ${this.p.next - this.p.exp} exp`;
+        document.getElementById('p-exp').innerText = `Next: ${Math.max(0, this.p.next - this.p.exp)} exp`;
         document.getElementById('p-stats').innerText = `A:${s.atk} / D:${s.def} / S:${s.spd}`;
         document.getElementById('p-sp').innerText = this.p.sp;
-        
         document.getElementById('enemy-name').innerText = this.enemy ? this.enemy.name : "---";
         document.getElementById('e-hp-bar').style.width = this.enemy ? `${(this.enemy.hp/this.enemy.maxHp)*100}%` : "0%";
-        
-        // 装備パーツの表示
         document.getElementById('eq-head').innerText = `頭: ${this.p.eq.head ? this.p.eq.head.name : '未装備'}`;
         document.getElementById('eq-body').innerText = `体: ${this.p.eq.body ? this.p.eq.body.name : '未装備'}`;
         document.getElementById('eq-arm').innerText = `腕: ${this.p.eq.arm ? this.p.eq.arm.name : '未装備'}`;
         document.getElementById('eq-leg').innerText = `脚: ${this.p.eq.leg ? this.p.eq.leg.name : '未装備'}`;
-
         const sk = this.p.eq.arm ? this.p.eq.arm.skill : "---";
         document.getElementById('btn-skill').innerText = `技：${sk}`;
         document.getElementById('btn-skill').disabled = (sk === "---" || this.busy || this.state === "win");
-        
-        const mainBtn = document.getElementById('btn-main');
-        if(this.state === "battle") {
-            mainBtn.innerText = "こうげき";
-            mainBtn.style.borderColor = "#444";
-        } else {
-            mainBtn.innerText = "深層へ";
-            mainBtn.style.borderColor = "#fff";
-        }
-
-        document.getElementById('skill-desc').innerText = this.p.eq.arm ? `修復された腕により『${sk}』が使用可能。` : "腕パーツを修復すると、固有の「技」が解放されます。";
+        document.getElementById('btn-main').innerText = (this.state === "battle") ? "こうげき" : "深層へ";
+        document.getElementById('skill-desc').innerText = this.p.eq.arm ? `『${sk}』が発動可能です。` : "腕パーツを修復すると技が解放されます。";
     }
 }
-
-// ゲーム起動
 const game = new DeaRip();
 </script>
 </body>
