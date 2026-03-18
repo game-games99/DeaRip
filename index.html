@@ -1,160 +1,177 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>Dearip Core</title>
-<style>
-body { background:#111; color:#ccc; font-family:sans-serif; padding:10px; }
-button { padding:10px; margin:5px; font-size:16px; }
-.log { height:300px; overflow:auto; border:1px solid #333; padding:5px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeaRip - Prototype v0.1</title>
+    <style>
+        body { background: #0a0a0a; color: #d0d0d0; font-family: 'Georgia', serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        #game-container { width: 400px; height: 600px; border: 2px solid #333; position: relative; background: #111; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        #header { padding: 10px; border-bottom: 1px solid #333; text-align: center; }
+        #display { flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: space-around; align-items: center; text-align: center; position: relative; }
+        #enemy-sprite { font-size: 1.2rem; color: #888; min-height: 100px; transition: all 0.5s; }
+        .hp-bar-container { width: 80%; height: 10px; background: #222; border: 1px solid #444; margin-top: 10px; }
+        .hp-bar { height: 100%; background: #a00; transition: width 0.3s; }
+        #log { height: 120px; overflow-y: auto; font-size: 0.85rem; padding: 10px; border-top: 1px solid #333; background: #050505; color: #aaa; text-align: left; }
+        #controls { padding: 15px; display: flex; gap: 10px; justify-content: center; border-top: 1px solid #333; }
+        button { background: #222; color: #ddd; border: 1px solid #444; padding: 10px 20px; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #333; border-color: #666; }
+        button:disabled { color: #555; border-color: #222; cursor: default; }
+        .released { animation: fadeUp 1s forwards; color: #fff !important; text-shadow: 0 0 10px #fff; }
+        @keyframes fadeUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-50px); } }
+    </style>
 </head>
 <body>
 
-<h2>Dearip - ダンジョン</h2>
+<div id="game-container">
+    <div id="header">
+        <div id="location-name">村 - 1層</div>
+        <div id="player-status" style="font-size: 0.8rem; margin-top:5px;">Soul Lv.1 | HP: 100/100</div>
+    </div>
 
-<div id="status"></div>
-<div id="enemy"></div>
+    <div id="display">
+        <div id="enemy-container">
+            <div id="enemy-name">---</div>
+            <div id="enemy-sprite"></div>
+            <div class="hp-bar-container"><div id="enemy-hp" class="hp-bar" style="width: 100%;"></div></div>
+        </div>
+    </div>
 
-<button onclick="attack()">攻撃</button>
-<button onclick="nextFloor()">次の階層へ</button>
+    <div id="log"></div>
 
-<div class="log" id="log"></div>
+    <div id="controls">
+        <button id="btn-attack" onclick="game.attack()">こうげき</button>
+        <button id="btn-next" onclick="game.nextFloor()" style="display:none;">深部へ進む</button>
+    </div>
+</div>
 
 <script>
-let player = {
-  level:1,
-  exp:0,
-  hp:100,
-  maxHp:100,
-  atk:10
-};
+class DeaRip {
+    constructor() {
+        this.player = { lv: 1, hp: 100, maxHp: 100, atk: 15, exp: 0 };
+        this.dungeon = { name: "村", floor: 1, maxFloor: 30 };
+        this.enemy = null;
+        this.isBattle = false;
 
-let floor = 1;
-let enemy = null;
+        this.jobs = [
+            { id: 'villager', name: '村人', hp: 40, atk: 8 },
+            { id: 'soldier', name: '兵士', hp: 70, atk: 12 }
+        ];
+        this.ranks = [
+            { name: "ただの", multi: 1.0 },
+            { name: "生きたかった", multi: 1.2 },
+            { name: "狂気に染まる", multi: 1.5 },
+            { name: "支配された", multi: 2.0 }
+        ];
 
-/* ログ */
-function log(msg){
-  const el = document.getElementById("log");
-  el.innerHTML = msg + "<br>" + el.innerHTML;
-}
-
-/* 敵生成 */
-function spawnEnemy(){
-  if(floor === 30){
-    enemy = {
-      name: "城主の歪な異形",
-      hp: 500,
-      atk: 25,
-      exp: 100
-    };
-  }else{
-    const types = ["村人","兵士","魔導師","騎士"];
-    const stages = ["ただの","生きたかった","狂気に染まる","支配された"];
-
-    let t = types[Math.floor(Math.random()*types.length)];
-    let s = stages[Math.floor(Math.random()*stages.length)];
-
-    enemy = {
-      name: s + t,
-      hp: 50 + floor * 10,
-      atk: 5 + floor * 2,
-      exp: 10 + floor * 2
-    };
-  }
-}
-
-/* UI更新 */
-function update(){
-  document.getElementById("status").innerHTML =
-    `Lv:${player.level} HP:${player.hp}/${player.maxHp} ATK:${player.atk} EXP:${player.exp}`;
-
-  document.getElementById("enemy").innerHTML =
-    `【${floor}層】 ${enemy.name} HP:${enemy.hp}`;
-}
-
-/* 攻撃 */
-function attack(){
-  if(player.hp <= 0) return;
-
-  let dmg = Math.floor(player.atk * (0.8 + Math.random()*0.4));
-  enemy.hp -= dmg;
-
-  log("攻撃 → " + dmg);
-
-  if(enemy.hp <= 0){
-    log(enemy.name + " 撃破");
-
-    player.exp += enemy.exp;
-
-    levelUpCheck();
-
-    floor++;
-    if(floor > 30){
-      log("ダンジョンクリア！");
-      reset();
-      return;
+        this.init();
     }
 
-    spawnEnemy();
-  }else{
-    enemyAttack();
-  }
+    init() {
+        this.spawnEnemy();
+        this.updateUI();
+    }
 
-  update();
+    spawnEnemy() {
+        this.isBattle = true;
+        document.getElementById('btn-attack').style.display = 'block';
+        document.getElementById('btn-next').style.display = 'none';
+
+        if (this.dungeon.floor === this.dungeon.maxFloor) {
+            // ボス生成
+            this.enemy = {
+                name: "村長の歪な異形",
+                hp: 500, maxHp: 500, atk: 35,
+                isBoss: true
+            };
+            this.log(`<span style="color:#f00;">警告：強大な異形の気配を感じる...</span>`);
+        } else {
+            // 雑魚敵生成
+            const job = this.jobs[Math.floor(Math.random() * this.jobs.length)];
+            const rank = this.ranks[Math.floor(Math.random() * Math.min(this.ranks.length, Math.ceil(this.dungeon.floor / 7)))];
+            const lvBonus = 1 + (this.dungeon.floor * 0.1);
+
+            this.enemy = {
+                name: `${rank.name}${job.name}`,
+                hp: Math.floor(job.hp * rank.multi * lvBonus),
+                maxHp: Math.floor(job.hp * rank.multi * lvBonus),
+                atk: Math.floor(job.atk * rank.multi * lvBonus),
+                isBoss: false
+            };
+        }
+        
+        const sprite = document.getElementById('enemy-sprite');
+        sprite.classList.remove('released');
+        sprite.innerHTML = this.enemy.isBoss ? "【深淵の異形】" : "【彷徨う魂】";
+        this.updateUI();
+    }
+
+    attack() {
+        if (!this.isBattle) return;
+
+        // プレイヤー攻撃
+        const pDmg = Math.max(1, this.player.atk + Math.floor(Math.random() * 5));
+        this.enemy.hp -= pDmg;
+        this.log(`${this.enemy.name} を切り裂いた。 ${pDmg}のダメージ。`);
+
+        if (this.enemy.hp <= 0) {
+            this.enemy.hp = 0;
+            this.win();
+        } else {
+            // 敵の反撃
+            setTimeout(() => {
+                const eDmg = Math.max(1, this.enemy.atk + Math.floor(Math.random() * 3));
+                this.player.hp -= eDmg;
+                this.log(`${this.enemy.name} の拒絶。 ${eDmg}のダメージを受けた。`);
+                if (this.player.hp <= 0) this.gameOver();
+                this.updateUI();
+            }, 400);
+        }
+        this.updateUI();
+    }
+
+    win() {
+        this.isBattle = false;
+        this.log(`<span style="color:#fff;">${this.enemy.name} を救済した。 R.I.P.</span>`);
+        document.getElementById('enemy-sprite').classList.add('released');
+        
+        document.getElementById('btn-attack').style.display = 'none';
+        document.getElementById('btn-next').style.display = 'block';
+
+        if(this.enemy.isBoss) {
+            this.log(`<b>【深淵への門が開かれた。パーツ：村人の腕 を獲得】</b>`);
+        }
+    }
+
+    nextFloor() {
+        if (this.dungeon.floor < this.dungeon.maxFloor) {
+            this.dungeon.floor++;
+            this.spawnEnemy();
+        } else {
+            this.log("このエリアの救済は完了した。");
+        }
+    }
+
+    log(msg) {
+        const logEl = document.getElementById('log');
+        logEl.innerHTML = `> ${msg}<br>` + logEl.innerHTML;
+    }
+
+    updateUI() {
+        document.getElementById('location-name').innerText = `${this.dungeon.name} - ${this.dungeon.floor}層`;
+        document.getElementById('player-status').innerText = `Soul Lv.${this.player.lv} | HP: ${this.player.hp}/${this.player.maxHp}`;
+        document.getElementById('enemy-name').innerText = this.enemy ? this.enemy.name : "---";
+        const hpPercent = this.enemy ? (this.enemy.hp / this.enemy.maxHp) * 100 : 0;
+        document.getElementById('enemy-hp').style.width = `${hpPercent}%`;
+    }
+
+    gameOver() {
+        this.log(`<span style="color:red;">意識が遠のく... 再構築を開始します。</span>`);
+        location.reload();
+    }
 }
 
-/* 敵攻撃 */
-function enemyAttack(){
-  let dmg = Math.floor(enemy.atk * (0.8 + Math.random()*0.4));
-  player.hp -= dmg;
-
-  log("敵攻撃 → " + dmg);
-
-  if(player.hp <= 0){
-    log("敗北…最初から");
-    reset();
-  }
-}
-
-/* レベルアップ */
-function levelUpCheck(){
-  let need = player.level * 20;
-
-  if(player.exp >= need){
-    player.exp -= need;
-    player.level++;
-    player.maxHp += 20;
-    player.hp = player.maxHp;
-    player.atk += 5;
-
-    log("レベルアップ！");
-  }
-}
-
-/* 次の階層 */
-function nextFloor(){
-  floor++;
-  if(floor > 30){
-    log("ダンジョンクリア！");
-    reset();
-    return;
-  }
-  spawnEnemy();
-  update();
-}
-
-/* リセット */
-function reset(){
-  player = { level:1, exp:0, hp:100, maxHp:100, atk:10 };
-  floor = 1;
-  spawnEnemy();
-  update();
-}
-
-/* 初期化 */
-spawnEnemy();
-update();
+const game = new DeaRip();
 </script>
 
 </body>
