@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DeaRip - v0.42 (Initial Equipment Update)</title>
+    <title>DeaRip - v0.43 (Full Jobs & Fixes)</title>
     <style>
         :root { 
             --bg: #050505; 
@@ -177,7 +177,7 @@
     <div id="tab-container">
         <div class="tab-buttons">
             <button class="tab-btn active" onclick="game.switchTab(0)">強化</button>
-            <button class="tab-btn" onclick="game.switchTab(1)">装備</button>
+            <button class="tab-btn" onclick="game.switchTab(1)">パーツ</button>
             <button class="tab-btn" onclick="game.switchTab(2)">技</button>
         </div>
         <div id="tab-growth" class="tab-content active">
@@ -189,13 +189,13 @@
             </div>
         </div>
         <div id="tab-equip" class="tab-content">
-            <div id="eq-head" style="margin-bottom:4px; border-bottom: 1px solid #222;">頭: 未装備</div>
-            <div id="eq-body" style="margin-bottom:4px; border-bottom: 1px solid #222;">体: 未装備</div>
-            <div id="eq-arm" style="margin-bottom:4px; border-bottom: 1px solid #222;">腕: 未装備</div>
-            <div id="eq-leg">脚: 未装備</div>
+            <div id="eq-head" style="margin-bottom:4px; border-bottom: 1px solid #222;">頭: 未装着</div>
+            <div id="eq-body" style="margin-bottom:4px; border-bottom: 1px solid #222;">体: 未装着</div>
+            <div id="eq-arm" style="margin-bottom:4px; border-bottom: 1px solid #222;">腕: 未装着</div>
+            <div id="eq-leg">脚: 未装着</div>
         </div>
         <div id="tab-skill" class="tab-content">
-            <div id="skill-desc" style="color:#8af; font-size: 0.7rem;">腕パーツの修復により技が解放されます。</div>
+            <div id="skill-desc" style="color:#8af; font-size: 0.7rem;">腕パーツの適合により技が解放されます。</div>
         </div>
     </div>
 
@@ -210,10 +210,9 @@
 <script>
 class DeaRip {
     constructor() {
-        this.VERSION = "0.42";
-        this.SAVE_KEY = "DEARIP_SAVE_DATA_V042";
+        this.VERSION = "0.43";
+        this.SAVE_KEY = "DEARIP_SAVE_DATA_V043";
         
-        // ジョブ50種定義（全件提示）
         this.jobs = [
             {n:"村人", p:"素朴な", s:{h:1.0, a:1.0}}, {n:"兵士", p:"軍属の", s:{h:1.2, a:1.1}}, {n:"騎士", p:"高潔な", s:{h:1.5, a:1.3}}, {n:"魔導師", p:"叡智の", s:{h:0.8, a:1.8}}, {n:"暗殺者", p:"潜伏者の", s:{h:0.7, a:2.0}},
             {n:"狂戦士", p:"獣性の", s:{h:2.0, a:2.2}}, {n:"守護者", p:"鉄壁の", s:{h:2.5, a:0.9}}, {n:"司祭", p:"祈念の", s:{h:1.1, a:1.2}}, {n:"狩人", p:"追跡の", s:{h:1.0, a:1.4}}, {n:"格闘家", p:"剛腕の", s:{h:1.4, a:1.5}},
@@ -252,7 +251,6 @@ class DeaRip {
             this.seed = JSON.parse(saved).seed;
             this.floor = JSON.parse(saved).floor;
         } else {
-            // 新規開始時の初期装備生成
             this.p = {
                 lv: 1, exp: 0, next: 100, sp: 0,
                 baseHp: 100, baseAtk: 15, baseDef: 5, baseSpd: 10,
@@ -341,13 +339,13 @@ class DeaRip {
         this.busy = true;
         const s = this.stats;
         
-        let dmg = s.atk + Math.floor(Math.random()*5);
+        let dmgValue = s.atk + Math.floor(Math.random()*5);
         if(mode === 'skill' && this.p.eq.arm) {
-            dmg = Math.floor(dmg * 2.5);
+            dmgValue = Math.floor(dmgValue * 2.5);
             this.log(`<span style="color:var(--skill);">『${this.p.eq.arm.skill}』</span>`);
         }
-        this.enemy.hp -= dmg;
-        this.log(`${this.enemy.name} に ${dmg} dmg`);
+        this.enemy.hp -= dmgValue;
+        this.log(`${this.enemy.name} に ${dmgValue} ダメージ`);
 
         if(this.enemy.hp <= 0) { 
             await this.win(); 
@@ -355,7 +353,7 @@ class DeaRip {
             await new Promise(r => setTimeout(r, 400));
             const eDmg = Math.max(1, this.enemy.atk - Math.floor(s.def/2));
             this.p.hp -= eDmg;
-            this.log(`<span style="color:var(--danger);">${this.enemy.name} から ${eDmg} dmg</span>`);
+            this.log(`<span style="color:var(--danger);">${this.enemy.name} から ${eDmg} ダメージ</span>`);
             if(this.p.hp <= 0) { this.p.hp = 0; this.gameOver(); }
         }
         this.updateUI(); this.busy = false; this.save();
@@ -363,7 +361,7 @@ class DeaRip {
 
     async win() {
         this.enemy.hp = 0;
-        this.log(`<span style="color:var(--win);">${this.enemy.name} を救済。 R.I.P.</span>`);
+        this.log(`<span style="color:var(--win);">${this.enemy.name} を救済。</span>`);
         this.state = "win";
         this.p.exp += (this.enemy.isBoss ? 1000 : 30 + (this.floor * 5));
         if(this.p.exp >= this.p.next) this.levelUp();
@@ -422,15 +420,15 @@ class DeaRip {
         document.getElementById('p-sp').innerText = this.p.sp;
         document.getElementById('enemy-name').innerText = this.enemy ? this.enemy.name : "---";
         document.getElementById('e-hp-bar').style.width = this.enemy ? `${(this.enemy.hp/this.enemy.maxHp)*100}%` : "0%";
-        document.getElementById('eq-head').innerText = `頭: ${this.p.eq.head ? this.p.eq.head.name : '未装備'}`;
-        document.getElementById('eq-body').innerText = `体: ${this.p.eq.body ? this.p.eq.body.name : '未装備'}`;
-        document.getElementById('eq-arm').innerText = `腕: ${this.p.eq.arm ? this.p.eq.arm.name : '未装備'}`;
-        document.getElementById('eq-leg').innerText = `脚: ${this.p.eq.leg ? this.p.eq.leg.name : '未装備'}`;
+        document.getElementById('eq-head').innerText = `頭: ${this.p.eq.head ? this.p.eq.head.name : '未装着'}`;
+        document.getElementById('eq-body').innerText = `体: ${this.p.eq.body ? this.p.eq.body.name : '未装着'}`;
+        document.getElementById('eq-arm').innerText = `腕: ${this.p.eq.arm ? this.p.eq.arm.name : '未装着'}`;
+        document.getElementById('eq-leg').innerText = `脚: ${this.p.eq.leg ? this.p.eq.leg.name : '未装着'}`;
         const sk = this.p.eq.arm ? this.p.eq.arm.skill : "---";
         document.getElementById('btn-skill').innerText = `技：${sk}`;
         document.getElementById('btn-skill').disabled = (sk === "---" || this.busy || this.state === "win");
         document.getElementById('btn-main').innerText = (this.state === "battle") ? "こうげき" : "深層へ";
-        document.getElementById('skill-desc').innerText = this.p.eq.arm ? `『${sk}』が発動可能です。` : "腕パーツを修復すると技が解放されます。";
+        document.getElementById('skill-desc').innerText = this.p.eq.arm ? `『${sk}』が発動可能です。` : "腕パーツを適合させると技が解放されます。";
     }
 }
 const game = new DeaRip();
