@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DeaRip - v1.2</title>
+    <title>DeaRip - v1.4</title>
     <style>
         :root { 
             --bg: #050505; 
@@ -15,7 +15,11 @@
             --sp: #ffcc00; 
             --exp-bar: #666666;
         }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            touch-action: manipulation; 
+        }
         body { 
             background: var(--bg); 
             color: var(--accent); 
@@ -147,6 +151,7 @@
             font-family: inherit; 
             border-radius: 4px; 
             font-size: 0.95rem; 
+            touch-action: none;
         }
         button.action-btn:disabled { opacity: 0.2; }
         .btn-skill { border-color: var(--skill) !important; color: #8af !important; }
@@ -204,9 +209,7 @@
                 <span>Soul Point: <span id="p-sp" style="color:var(--sp)">0</span></span>
                 <span id="p-exp-text" style="color:#666; font-size:0.65rem;">exp: 0 / 100</span>
             </div>
-            
             <div id="stat-list" style="margin: 8px 0; line-height: 1.6;"></div>
-            
             <div class="growth-grid">
                 <button class="growth-btn" onclick="game.grow('atk')">力(ATK)+</button>
                 <button class="growth-btn" onclick="game.grow('hp')">器(HP)+</button>
@@ -240,8 +243,9 @@
 <script>
 class DeaRip {
     constructor() {
-        this.VERSION = "1.2";
-        this.SAVE_KEY = "DEARIP_SAVE_DATA_V1_2";
+        this.VERSION = "1.4";
+        // 今後はこのキーを固定して使用
+        this.SAVE_KEY = "DEARIP_PERMANENT_SAVE";
         
         this.jobs = [
             {n:"村人", p:"素朴な", s:{h:1.0, a:1.0}}, {n:"兵士", p:"軍属の", s:{h:1.2, a:1.1}}, {n:"騎士", p:"高潔な", s:{h:1.5, a:1.3}}, {n:"魔導師", p:"叡智の", s:{h:0.8, a:1.8}}, {n:"暗殺者", p:"潜伏者の", s:{h:0.7, a:2.0}},
@@ -275,11 +279,27 @@ class DeaRip {
     }
 
     load() {
-        const saved = localStorage.getItem(this.SAVE_KEY);
+        // 過去バージョンのキーを探してマイグレーション
+        const oldKeys = ["DEARIP_SAVE_DATA_V1_1", "DEARIP_SAVE_DATA_V1_2", "DEARIP_SAVE_DATA_V1_3"];
+        let migratedData = null;
+
+        for(const oldKey of oldKeys) {
+            const data = localStorage.getItem(oldKey);
+            if(data) {
+                migratedData = JSON.parse(data);
+                localStorage.removeItem(oldKey); // 救出したら古いのは消す
+                break;
+            }
+        }
+
+        const saved = migratedData ? JSON.stringify(migratedData) : localStorage.getItem(this.SAVE_KEY);
+        
         if(saved) {
-            this.p = JSON.parse(saved).p;
-            this.seed = JSON.parse(saved).seed;
-            this.floor = JSON.parse(saved).floor;
+            const parsed = JSON.parse(saved);
+            this.p = parsed.p;
+            this.seed = parsed.seed;
+            this.floor = parsed.floor;
+            if(migratedData) this.save(); // 共通キーへ保存
         } else {
             this.p = {
                 lv: 1, exp: 0, next: 100, sp: 0,
@@ -288,7 +308,7 @@ class DeaRip {
                 eq: { 
                     head: { name: "忘却のボロ布", def: 2 },
                     body: { name: "忘却の骸殻", hp: 30 },
-                    arm: { name: "忘却の錆びた腕", atk: 3, skill: "微かな火花" },
+                    arm: { name: "忘却 of 錆びた腕", atk: 3, skill: "微かな火花" },
                     leg: { name: "忘却の足枷", spd: 2 }
                 }
             };
@@ -447,11 +467,9 @@ class DeaRip {
         document.getElementById('p-hp-text').innerText = `HP: ${Math.max(0,this.p.hp)}/${s.total.hp}`;
         document.getElementById('p-hp-bar').style.width = `${(this.p.hp/s.total.hp)*100}%`;
         
-        // EXPバー更新
         const expPct = Math.min(100, (this.p.exp / this.p.next) * 100);
         document.getElementById('p-exp-bar').style.width = `${expPct}%`;
         
-        // ステータスタブ内表示
         document.getElementById('p-exp-text').innerText = `exp: ${this.p.exp} / ${this.p.next}`;
         document.getElementById('p-sp').innerText = this.p.sp;
         
