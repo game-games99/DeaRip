@@ -533,22 +533,24 @@ border-bottom: 1px solid rgba(74,158,255,0.3);
 
 /* Dungeon Grid */
 .dungeon-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-gap: 1rem;
+display: flex;
+flex-direction: column;
+gap: 0.7rem;
 }
 
 .dungeon-card {
 background: var(–bg2);
 border: 1px solid var(–border);
-border-radius: 4px;
-padding: 1rem;
+border-radius: 6px;
+padding: 0.85rem 1rem;
 cursor: pointer;
-transition: all 0.3s;
+transition: all 0.2s;
 position: relative;
 overflow: hidden;
+display: flex;
+align-items: center;
+gap: 0.8rem;
 }
-
 .dungeon-card::before {
 content: ‘’;
 position: absolute;
@@ -556,69 +558,77 @@ inset: 0;
 opacity: 0;
 transition: opacity 0.3s;
 }
-
-.dungeon-card:hover { transform: translateY(-2px); }
+.dungeon-card:hover { transform: translateX(3px); border-color: var(–accent2); }
 .dungeon-card:hover::before { opacity: 1; }
-
-.dungeon-card.rank-S-card::before { background: radial-gradient(ellipse at center, rgba(255,102,0,0.1) 0%, transparent 70%); border: 1px solid rgba(255,102,0,0.4); }
-.dungeon-card.rank-A-card::before { background: radial-gradient(ellipse at center, rgba(204,68,255,0.1) 0%, transparent 70%); }
-.dungeon-card.rank-B-card::before { background: radial-gradient(ellipse at center, rgba(68,136,255,0.1) 0%, transparent 70%); }
-.dungeon-card.rank-C-card::before { background: radial-gradient(ellipse at center, rgba(68,221,255,0.1) 0%, transparent 70%); }
-.dungeon-card.rank-D-card::before { background: radial-gradient(ellipse at center, rgba(68,255,136,0.1) 0%, transparent 70%); }
-.dungeon-card.rank-E-card::before { background: radial-gradient(ellipse at center, rgba(170,170,170,0.1) 0%, transparent 70%); }
-
-.dungeon-card:hover.rank-S-card { border-color: var(–s-rank); }
-.dungeon-card:hover.rank-A-card { border-color: var(–a-rank); }
-.dungeon-card:hover.rank-B-card { border-color: var(–b-rank); }
-.dungeon-card:hover.rank-C-card { border-color: var(–c-rank); }
-.dungeon-card:hover.rank-D-card { border-color: var(–d-rank); }
-.dungeon-card:hover.rank-E-card { border-color: var(–e-rank); }
-
+.dungeon-card.rank-S-card { border-left: 3px solid var(–s-rank); }
+.dungeon-card.rank-A-card { border-left: 3px solid var(–a-rank); }
+.dungeon-card.rank-B-card { border-left: 3px solid var(–b-rank); }
+.dungeon-card.rank-C-card { border-left: 3px solid var(–c-rank); }
+.dungeon-card.rank-D-card { border-left: 3px solid var(–d-rank); }
+.dungeon-card.rank-E-card { border-left: 3px solid var(–e-rank); }
+.dungeon-card.exam-card   { border-left: 3px solid var(–gold); background: rgba(255,215,0,0.04); }
+.dungeon-card.cleared-card { opacity: 0.6; }
 .dungeon-card.locked {
 opacity: 0.4;
 cursor: not-allowed;
-filter: grayscale(0.8);
+filter: grayscale(0.7);
 }
+.dungeon-card.locked:hover { transform: none; border-color: var(–border); }
 
-.dungeon-card.locked:hover { transform: none; }
-
-.dungeon-rank-header {
+.dungeon-card-icon {
+font-size: 2rem;
+flex-shrink: 0;
+width: 2.6rem;
+text-align: center;
+}
+.dungeon-card-body { flex: 1; min-width: 0; }
+.dungeon-card-header {
 display: flex;
 align-items: center;
-justify-content: space-between;
-margin-bottom: 0.7rem;
-}
-
-.dungeon-icon { font-size: 1.8rem; }
-
-.dungeon-name {
-font-weight: 700;
-font-size: 0.95rem;
-color: #fff;
-margin-bottom: 0.3rem;
-}
-
-.dungeon-desc {
-font-size: 0.75rem;
-color: var(–text-dim);
-line-height: 1.5;
-margin-bottom: 0.7rem;
-}
-
-.dungeon-reward {
-display: flex;
 gap: 0.5rem;
+margin-bottom: 0.25rem;
 flex-wrap: wrap;
 }
+.dungeon-card-name {
+font-weight: 700;
+font-size: 0.92rem;
+color: #fff;
+}
+.dungeon-card-desc {
+font-size: 0.72rem;
+color: var(–text-dim);
+line-height: 1.5;
+margin-bottom: 0.4rem;
+}
+.dungeon-card-tags {
+display: flex;
+gap: 0.4rem;
+flex-wrap: wrap;
+align-items: center;
+}
+.dungeon-card-arrow {
+font-size: 1rem;
+color: var(–text-dim);
+flex-shrink: 0;
+align-self: center;
+}
+
+/* 旧スタイル（後方互換） */
+.dungeon-rank-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:0.7rem; }
+.dungeon-icon { font-size: 1.8rem; }
+.dungeon-name { font-weight:700; font-size:0.95rem; color:#fff; margin-bottom:0.3rem; }
+.dungeon-desc { font-size:0.75rem; color:var(–text-dim); line-height:1.5; margin-bottom:0.7rem; }
+.dungeon-reward { display:flex; gap:0.5rem; flex-wrap:wrap; }
 
 .reward-tag {
-font-size: 0.65rem;
-padding: 0.15rem 0.4rem;
+font-size: 0.62rem;
+padding: 0.12rem 0.4rem;
 border-radius: 2px;
 background: rgba(255,215,0,0.1);
 border: 1px solid rgba(255,215,0,0.2);
 color: var(–gold);
 }
+.reward-tag.exam { background:rgba(255,215,0,0.15); border-color:rgba(255,215,0,0.5); }
 
 .dungeon-locked-msg {
 font-size: 0.7rem;
@@ -664,7 +674,7 @@ color: var(–text-dim);
 
 .combat-field {
 display: flex;
-align-items: center;
+align-items: flex-end;  /* HPバーの底辺を水平に揃える */
 justify-content: space-between;
 margin-bottom: 0.6rem;
 gap: 0.5rem;
@@ -673,12 +683,19 @@ gap: 0.5rem;
 .combatant {
 flex: 1;
 text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
 }
 
+/* スプライトエリアを固定高にして揃える */
 .combatant-sprite {
 font-size: 3.5rem;
-display: block;
-margin-bottom: 0.3rem;
+width: 100%;
+height: 4rem;
+display: flex;
+align-items: center;
+justify-content: center;
 line-height: 1;
 filter: drop-shadow(0 0 20px rgba(74,158,255,0.5));
 animation: combatant-idle 2s ease-in-out infinite;
@@ -699,10 +716,27 @@ animation: enemy-idle 1.5s ease-in-out infinite;
 50% { transform: translateY(-5px) scale(1.04); }
 }
 
+/* 名前エリア固定高 */
 .combatant-name {
 font-weight: 700;
-margin-bottom: 0.25rem;
 font-size: 0.85rem;
+width: 100%;
+height: 1.3rem;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-bottom: 0.15rem;
+}
+
+/* 敵バッジエリア固定高（プレイヤー側にも同じ余白を確保） */
+#enemy-badges, #player-badge-spacer {
+height: 1.3rem;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 0.2rem;
+margin-bottom: 0.15rem;
+width: 100%;
 }
 
 .vs-text {
@@ -1553,7 +1587,7 @@ to   { opacity: 1; transform: translateY(0); }
       <span class="story-blank"></span>
       <span class="story-line">そして今。</span>
       <span class="story-blank"></span>
-      <span class="story-line">ひとりの<span class="story-em">新米ダイバー</span>が、初めてダンジョンへと足を踏み入れる。</span>
+      <span class="story-line">ひとりの<span class="story-em">新米ダイバー</span>が、初めてゲートへと足を踏み入れる。</span>
       <span class="story-blank"></span>
       <span class="story-line">それが——</span>
       <span class="story-indent story-dark">運命の分岐点になるとも、知らずに。</span>
@@ -1685,16 +1719,38 @@ to   { opacity: 1; transform: translateY(0); }
     <button class="tab-btn" onclick="switchTab('skills')" id="maintab-skills">✨ スキル</button>
   </div>
 
-  <!-- Dungeon Tab -->
+  <!-- Story Tab (redesigned) -->
   <div id="tab-dungeon" class="tab-content active">
-    <div class="window-panel">
-      <div class="window-header">
-        <div class="window-title"><span class="window-title-icon">🏛</span>ダイバー協会 — ゲート斡旋所</div>
-        <div style="font-size:0.7rem;color:var(--text-dim)">攻略可能ダンジョン</div>
+    <!-- ランク進捗バナー -->
+    <div id="story-rank-banner" style="
+      background:linear-gradient(135deg,rgba(8,12,26,0.98),rgba(16,22,42,0.98));
+      border-bottom:1px solid var(--border);
+      padding:0.75rem 1rem;
+      display:flex;align-items:center;gap:0.9rem;
+    ">
+      <div style="flex-shrink:0">
+        <div style="font-size:0.55rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:0.15rem">RANK</div>
+        <div id="story-rank-display" style="font-size:1.6rem;font-weight:900;font-family:'Courier New',monospace;line-height:1;color:var(--e-rank)">E</div>
+        <div style="font-size:0.55rem;color:var(--text-dim)">級</div>
       </div>
-      <div class="window-body">
-        <div class="dungeon-grid" id="dungeon-grid"></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem">
+          <span style="font-size:0.65rem;color:var(--text-dim)" id="story-progress-label">攻略済ゲート: 0</span>
+          <span style="font-size:0.62rem;color:var(--gold)" id="story-next-rank-info"></span>
+        </div>
+        <div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">
+          <div id="story-progress-bar" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width 0.5s ease;border-radius:3px"></div>
+        </div>
+        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:0.3rem" id="story-exam-hint"></div>
       </div>
+    </div>
+    <!-- ゲートリスト -->
+    <div style="padding:0.7rem 0.8rem">
+      <div style="font-size:0.62rem;color:var(--text-dim);letter-spacing:0.1em;margin-bottom:0.55rem;padding-bottom:0.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center">
+        <span>🏛 ダイバー協会 — ゲート斡旋所</span>
+        <span style="margin-left:auto">攻略可能ゲート</span>
+      </div>
+      <div id="dungeon-grid"></div>
     </div>
   </div>
 
@@ -1708,8 +1764,8 @@ to   { opacity: 1; transform: translateY(0); }
       <div class="window-body">
         <div style="font-size:0.73rem;color:var(--text-dim);line-height:1.7;margin-bottom:1rem;padding:0.6rem;background:rgba(200,100,150,0.05);border:1px solid rgba(200,100,150,0.2);border-radius:4px">
           ⚔ 各種族の頂点に立つ12人の王。Lv75で一斉解放・攻略順自由。<br>
-          🔺 王を1人倒すたびに残りの全ダンジョンの難易度が上昇する。<br>
-          🌌 12人全員撃破後、ラストダンジョンが開放される。
+          🔺 王を1人倒すたびに残りの全ゲートの難易度が上昇する。<br>
+          🌌 12人全員撃破後、ラストゲートが開放される。
         </div>
         <div id="kings-dungeon-grid" style="display:flex;flex-direction:column;gap:0.7rem"></div>
         <div id="kings-last-panel" style="display:none"></div>
@@ -1726,9 +1782,9 @@ to   { opacity: 1; transform: translateY(0); }
       </div>
       <div class="window-body">
         <div style="font-size:0.73rem;color:var(--text-dim);line-height:1.7;margin-bottom:1rem;padding:0.6rem;background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.15);border-radius:4px">
-          ⚠ 全君主ダンジョンはLv80到達と同時に一斉解放される。攻略順は自由。<br>
-          👑 君主を1人撃破するたびに残りの全ダンジョンの難易度が上昇する。<br>
-          🌌 12人全員撃破後、ラストダンジョンが開放される。
+          ⚠ 全君主ゲートはLv80到達と同時に一斉解放される。攻略順は自由。<br>
+          👑 君主を1人撃破するたびに残りの全ゲートの難易度が上昇する。<br>
+          🌌 12人全員撃破後、ラストゲートが開放される。
         </div>
         <div id="pillars-dungeon-grid" style="display:flex;flex-direction:column;gap:0.7rem"></div>
         <div id="last-dungeon-panel" style="display:none;margin-top:1rem"></div>
@@ -1807,7 +1863,7 @@ to   { opacity: 1; transform: translateY(0); }
       </div>
       <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0">
       <div>
-        <div style="color:var(--text-dim);font-size:0.65rem;margin-bottom:0.5rem">討伐数 / クリアダンジョン</div>
+        <div style="color:var(--text-dim);font-size:0.65rem;margin-bottom:0.5rem">討伐数 / クリアゲート</div>
         <div style="display:flex;gap:1rem;font-family:"Courier New",monospace;font-size:0.9rem">
           <span style="color:var(--red)">🗡 <span id="st-kills">0</span></span>
           <span style="color:var(--accent)">🏛 <span id="st-dungeons">0</span></span>
@@ -1850,10 +1906,7 @@ to   { opacity: 1; transform: translateY(0); }
       <div style="display:flex;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.2)">
         <button class="inv-tab-btn active" id="invtab-all"      onclick="switchInvTab('all')"      >全て</button>
         <button class="inv-tab-btn"        id="invtab-weapon"   onclick="switchInvTab('weapon')"   >⚔ 武器</button>
-        <button class="inv-tab-btn"        id="invtab-helm"     onclick="switchInvTab('helm')"     >⛑ 兜</button>
         <button class="inv-tab-btn"        id="invtab-body"     onclick="switchInvTab('body')"     >🛡 鎧</button>
-        <button class="inv-tab-btn"        id="invtab-legs"     onclick="switchInvTab('legs')"     >👢 脚</button>
-        <button class="inv-tab-btn"        id="invtab-offhand"  onclick="switchInvTab('offhand')"  >🔰 左手</button>
         <button class="inv-tab-btn"        id="invtab-accessory" onclick="switchInvTab('accessory')">💎 アクセ</button>
         <button class="inv-tab-btn"        id="invtab-consume"  onclick="switchInvTab('consume')"  >🧪 消耗品</button>
       </div>
@@ -1869,7 +1922,7 @@ to   { opacity: 1; transform: translateY(0); }
         <div class="window-title"><span class="window-title-icon">✨</span>習得スキル</div>
       </div>
       <div class="window-body" id="skills-list">
-        <div style="color:var(--text-dim);font-size:0.85rem;text-align:center;padding:2rem">スキルはダンジョン攻略で習得されます</div>
+        <div style="color:var(--text-dim);font-size:0.85rem;text-align:center;padding:2rem">スキルはゲート攻略で習得されます</div>
       </div>
     </div>
   </div>
@@ -1914,6 +1967,7 @@ to   { opacity: 1; transform: translateY(0); }
   <div class="combatant" id="player-combatant">
     <span class="combatant-sprite" id="player-sprite">🥷</span>
     <div class="combatant-name" style="color:var(--accent)" id="combat-player-name">shadow</div>
+    <div id="player-badge-spacer"></div>
     <div class="combat-hp-wrap">
       <div class="combat-hp-bar player-combat-hp" id="combat-player-hp" style="width:100%"></div>
     </div>
@@ -2003,8 +2057,9 @@ let G = {
   weaponType: null,   // 'sword'|'bow'|'rod'|'dagger'|'spear' — 初期選択・変更不可
   kills: 0,
   dungeonsCleared: 0,
-  clearedDungeonIds: [],  // クリア済みダンジョンID記録（段階解放用）
-  lastBossCleared: false, // ラストダンジョンクリア済み
+  clearedDungeonIds: [],
+  lastBossCleared: false,
+  rankExamCleared: [],    // 昇格試験クリア済みID
   skills: [],
   shadows: [],
   maxShadows: 0,
@@ -2020,7 +2075,7 @@ let G = {
   dailyQuests: [],
   ranksUnlocked: ['E'],
   // Equipment
-  equipped: { mainhand:null, offhand:null, helm:null, body:null, legs:null, acc1:null, acc2:null },
+  equipped: { weapon:null, body:null, acc1:null, acc2:null },
   fullInventory: [],
   invMax: 30,
   // Dungeon event state
@@ -2072,8 +2127,8 @@ const ITEM_TEMPLATES = {
   '創造の指輪':        { slot:'ring',   icon:'💫', rarity:'legendary', bonus:{ atk:30, def:20, spd:10 } },
 };
 
-const SLOT_LABELS = { mainhand:'右手', offhand:'左手', helm:'兜', body:'鎧', legs:'脚', acc1:'アクセサリ1', acc2:'アクセサリ2' };
-const SLOT_ICONS  = { mainhand:'⚔', offhand:'🛡', helm:'⛑', body:'🥋', legs:'👢', acc1:'💎', acc2:'💍' };
+const SLOT_LABELS = { weapon:'武器', body:'鎧', acc1:'アクセサリ1', acc2:'アクセサリ2' };
+const SLOT_ICONS  = { weapon:'⚔', body:'🛡', acc1:'💎', acc2:'💍' };
 
 
 // Consumables (not equippable)
@@ -2375,7 +2430,7 @@ function rerollRandomDungeons() {
     G_randomDungeons[2] = generateRandomDungeon();
   }
 
-  // ラストダンジョンクリア後：天司ダンジョンが低確率でランダム枠に出現
+  // ラストゲートクリア後：天司ダンジョンが低確率でランダム枠に出現
   if (G.lastBossCleared) {
     const pillarKeys = Object.keys(TWELVE_PILLARS);
     G_randomDungeons = G_randomDungeons.map(d => {
@@ -2804,42 +2859,31 @@ function rollLoot(rank, isBoss=false) {
   // 消耗品: 常時1個
   results.push(pick(table.consumables));
 
-  // 武器（系統フィルタ）
+  // 武器: 必ず系統別プールから。系統未設定の場合はスキップ
   if (rand() < (isBoss ? 0.85 : 0.35)) {
     const wt = G.weaponType;
-    const pool = (wt && WEAPON_POOLS[wt] && WEAPON_POOLS[wt][rank])
-      ? WEAPON_POOLS[wt][rank]
-      : table.weapons;
-    results.push(pick(pool));
+    if (wt && WEAPON_POOLS[wt]) {
+      const pool = WEAPON_POOLS[wt][rank] || WEAPON_POOLS[wt]['E'];
+      results.push(pick(pool));
+    }
   }
 
-  // 兜
-  if (rand() < (isBoss ? 0.60 : 0.18)) results.push(pick(table.helms));
-
-  // 鎧
-  if (rand() < (isBoss ? 0.65 : 0.20)) results.push(pick(table.bodies));
-
-  // 脚
-  if (rand() < (isBoss ? 0.55 : 0.16)) results.push(pick(table.legs));
-
-  // 盾/左手（弓・槍・杖以外のみ）
-  const canOffhand = !['bow','spear','rod'].includes(G.weaponType);
-  if (canOffhand && rand() < (isBoss ? 0.50 : 0.14)) results.push(pick(table.offhands));
+  // 鎧（body）
+  if (rand() < (isBoss ? 0.65 : 0.22)) results.push(pick(table.bodies));
 
   // アクセサリ
   if (rand() < (isBoss ? 0.65 : 0.15)) results.push(pick(table.accessories));
 
-  // レアボーナスドロップ
+  // レアボーナスドロップ（上位ランクの武器 or 鎧）
   if (rand() < (isBoss ? 0.28 : 0.05)) {
     const nextRanks = {E:'D',D:'C',C:'B',B:'A',A:'S',S:'S'};
     const higherTable = LOOT_TABLES[nextRanks[rank]] || table;
     const wt = G.weaponType;
     const higherRank = nextRanks[rank] || rank;
-    const wPool = (wt && WEAPON_POOLS[wt] && WEAPON_POOLS[wt][higherRank])
-      ? WEAPON_POOLS[wt][higherRank]
-      : higherTable.weapons;
-    const pool = [...wPool, ...higherTable.bodies, ...higherTable.helms];
-    results.push('✨ ' + pick(pool));
+    if (wt && WEAPON_POOLS[wt] && WEAPON_POOLS[wt][higherRank]) {
+      const pool = [...WEAPON_POOLS[wt][higherRank], ...higherTable.bodies];
+      results.push('✨ ' + pick(pool));
+    }
   }
 
   return results;
@@ -2888,7 +2932,7 @@ function makeRareBoss(base) {
 const DUNGEON_EVENTS = [
   {
     id: 'ambush',
-    chance: 0.18,
+    chance: 0.15,
     label: '⚠ 奇襲！',
     desc: '複数の敵が一斉に現れた！敵の攻撃力が1.4倍になる！',
     apply: (state) => { state.eventAtkMult = 1.4; },
@@ -2896,7 +2940,7 @@ const DUNGEON_EVENTS = [
   },
   {
     id: 'enrage',
-    chance: 0.15,
+    chance: 0.12,
     label: '🔥 激昂！',
     desc: '敵が激昂した！HPが2倍・攻撃が1.6倍になる！',
     apply: (state, enemy) => {
@@ -2909,7 +2953,7 @@ const DUNGEON_EVENTS = [
   },
   {
     id: 'curse',
-    chance: 0.14,
+    chance: 0.11,
     label: '💀 呪いの間！',
     desc: 'プレイヤーのATKが半減した！この部屋を抜けるまで解けない！',
     apply: (state) => { state.eventCurseAtk = true; },
@@ -2917,7 +2961,7 @@ const DUNGEON_EVENTS = [
   },
   {
     id: 'treasure',
-    chance: 0.20,
+    chance: 0.18,
     label: '💰 宝箱発見！',
     desc: '隠し宝箱を発見！敵を倒すとボーナスゴールド獲得！',
     apply: (state) => { state.eventGoldBonus = 2.0; },
@@ -2925,7 +2969,7 @@ const DUNGEON_EVENTS = [
   },
   {
     id: 'sanctuary',
-    chance: 0.13,
+    chance: 0.12,
     label: '✨ 聖域！',
     desc: '聖域の気が流れている。HP・MPが20%回復した！',
     apply: (state) => {
@@ -2936,22 +2980,59 @@ const DUNGEON_EVENTS = [
   },
   {
     id: 'darkness',
-    chance: 0.12,
+    chance: 0.10,
     label: '🌑 暗黒の間！',
     desc: '暗闇が視界を遮る。攻撃の命中率が下がった！',
     apply: (state) => { state.eventMissChance = 0.25; },
-    color: '#555',
+    color: 'var(--accent2)',
   },
   {
-    id: 'berserk',
-    chance: 0.08,
-    label: '💥 狂乱化！',
-    desc: '敵が狂乱化！毎ターン攻撃力が増加し続ける！',
+    id: 'berserk_all',
+    chance: 0.10,
+    label: '💢 狂乱化！',
+    desc: '全ての敵が狂乱状態に！毎ターン攻撃力が上昇していく！',
     apply: (state) => { state.eventBerserk = true; },
     color: 'var(--red)',
   },
+  // ── 新イベント: ゲートブレイク ──
+  {
+    id: 'gate_break',
+    chance: 0.07,
+    label: '💥 ゲートブレイク！',
+    desc: 'ゲートが暴走！モンスターが溢れ出した！敵のHP・ATK・DEFが全て5倍になる！',
+    apply: (state, enemy) => {
+      enemy.hp    = Math.floor(enemy.hp    * 5);
+      enemy.maxHp = Math.floor(enemy.maxHp * 5);
+      enemy.atk   = Math.floor(enemy.atk   * 5);
+      enemy.def   = Math.floor(enemy.def   * 5);
+      enemy.exp   = Math.floor(enemy.exp   * 5);
+      enemy.gold  = Math.floor(enemy.gold  * 5);
+      state.eventActive = 'gate_break';
+    },
+    color: '#ff6600',
+  },
+  // ── 新イベント: 宝物庫 ──
+  {
+    id: 'treasury',
+    chance: 0.05,
+    label: '🏺 宝物庫！',
+    desc: '宝物庫の守護者が現れた！倒すと高品質アイテムを入手できる！',
+    apply: (state, enemy) => {
+      // ユニークモンスターに変換
+      enemy.name    = '【守護者】' + enemy.name;
+      enemy.icon    = '🏺';
+      enemy.hp      = Math.floor(enemy.hp  * 3);
+      enemy.maxHp   = Math.floor(enemy.maxHp * 3);
+      enemy.atk     = Math.floor(enemy.atk * 2.5);
+      enemy.def     = Math.floor(enemy.def * 2.5);
+      enemy.exp     = Math.floor(enemy.exp * 4);
+      enemy.gold    = Math.floor(enemy.gold * 6);
+      enemy.isTreasureGuardian = true;
+      state.eventActive = 'treasury';
+    },
+    color: '#ffcc00',
+  },
 ];
-
 // Dungeon definitions (updated with loot tables instead of fixed rewards)
 // =====================================================
 // ===== 属性・種族システム =====
@@ -3025,7 +3106,7 @@ const DUNGEONS = [
   // ── E級 ──
   {
     id:'goblin-cave', name:'ゴブリンの洞窟', rank:'E',
-    icon:'🪨', desc:'複数属性の亜人族が潜む初心者向けダンジョン。属性の違いに注意。',
+    icon:'🪨', desc:'複数属性の亜人族が潜む初心者向けゲート。属性の違いに注意。',
     floors: 3,
     enemies: [
       { name:'ゴブリン',           icon:'👺', race:'humanoid', element:'none',  hp:30,  atk:5,  def:2,  exp:20, gold:15 },
@@ -3066,7 +3147,7 @@ const DUNGEONS = [
   },
   {
     id:'insect-swamp', name:'大蟲の沼地', rank:'D',
-    icon:'🪲', desc:'D級ダンジョン。昆虫族が群れをなす毒の沼地。風属性スキルが有効。',
+    icon:'🪲', desc:'D級ゲート。昆虫族が群れをなす毒の沼地。風属性スキルが有効。',
     floors: 5,
     enemies: [
       { name:'毒バッタ',         icon:'🦗', race:'insect', element:'wind',  hp:75,  atk:17, def:5,  exp:52, gold:33 },
@@ -3121,7 +3202,7 @@ const DUNGEONS = [
   },
   {
     id:'villain-diver-clash', name:'ヴィランダイバーの巣窟', rank:'B',
-    icon:'🗡', desc:'B級ダンジョン。ゲートを悪用する人族ヴィランダイバー達の拠点。同じダイバーとの戦いが待つ。',
+    icon:'🗡', desc:'B級ゲート。ゲートを悪用する人族ヴィランダイバー達の拠点。同じダイバーとの戦いが待つ。',
     floors: 8,
     storyNote: 'ヴィランダイバー編',
     enemies: [
@@ -3166,7 +3247,7 @@ const DUNGEONS = [
   // ── S級 ──
   {
     id:'s-rank-gate', name:'神話級ゲート 〜巨神の神殿〜', rank:'S',
-    icon:'⚡', desc:'S級ダンジョン。かつて仲間を殲滅したカルテノン神殿。神族・龍族が待つ。',
+    icon:'⚡', desc:'S級ゲート。かつて仲間を殲滅したカルテノン神殿。神族・龍族が待つ。',
     floors: 10,
     enemies: [
       { name:'神殿守護者',   icon:'🗿', race:'divine', element:'light', hp:800,  atk:120, def:80, exp:500, gold:400 },
@@ -3176,6 +3257,77 @@ const DUNGEONS = [
     boss:     { name:'神の君主 神威のアルケイオス', icon:'🌟', race:'divine', element:'light', isPillar:true, hp:5000,  atk:200, def:120, exp:5000,  gold:5000  },
     rareBoss: { name:'神の根源 カルテノン＝アーケイン',     icon:'💫', race:'divine', element:'light', hp:12000, atk:300, def:180, exp:14000, gold:14000 },
     rewardGold:10000, rewardExp:10000, minLevel:70,
+  },
+  // ── 昇格試験ゲート ──
+  {
+    id:'exam-e-to-d', name:'【昇格試験】D級昇格ゲート', rank:'E',
+    icon:'🎖', isRankExam:true, examFrom:'E', examTo:'D',
+    examKillGoal: 8,  // 8体討伐+ボス撃破で昇格
+    desc:'E級からD級への昇格試験。試験官ダイバーを撃破し、規定討伐数を達成せよ。',
+    floors: 3,
+    enemies: [
+      { name:'試験用ゴブリン', icon:'👺', race:'humanoid', element:'none', hp:60, atk:10, def:5, exp:40, gold:30 },
+      { name:'試験用コボルト', icon:'🐺', race:'beast',    element:'none', hp:80, atk:12, def:6, exp:50, gold:35 },
+    ],
+    boss: { name:'試験官ダイバー クロウ', icon:'🗡', race:'human', element:'wind', hp:400, atk:28, def:15, exp:400, gold:300, isExamBoss:true },
+    rareBoss: null,
+    rewardGold:500, rewardExp:500, minLevel:5,
+  },
+  {
+    id:'exam-d-to-c', name:'【昇格試験】C級昇格ゲート', rank:'D',
+    icon:'🎖', isRankExam:true, examFrom:'D', examTo:'C',
+    examKillGoal: 12,
+    desc:'D級からC級への昇格試験。ゲート内でC級相当の敵を規定数討伐せよ。',
+    floors: 4,
+    enemies: [
+      { name:'試験用オーク兵', icon:'🐗', race:'humanoid', element:'fire', hp:140, atk:22, def:12, exp:80, gold:55 },
+      { name:'試験用毒蜘蛛',   icon:'🕷', race:'beast',    element:'water',hp:110, atk:26, def:9,  exp:88, gold:60 },
+    ],
+    boss: { name:'試験官ダイバー フレア', icon:'🔥', race:'human', element:'fire', hp:800, atk:45, def:25, exp:800, gold:600, isExamBoss:true },
+    rareBoss: null,
+    rewardGold:1000, rewardExp:1000, minLevel:15,
+  },
+  {
+    id:'exam-c-to-b', name:'【昇格試験】B級昇格ゲート', rank:'C',
+    icon:'🎖', isRankExam:true, examFrom:'C', examTo:'B',
+    examKillGoal: 15,
+    desc:'C級からB級への昇格試験。歴戦の試験官と指定討伐をクリアせよ。',
+    floors: 5,
+    enemies: [
+      { name:'試験用アンデッド', icon:'💀', race:'wraith',   element:'dark',  hp:220, atk:38, def:20, exp:120, gold:85 },
+      { name:'試験用氷ゴーレム', icon:'🧊', race:'material', element:'water', hp:280, atk:32, def:28, exp:110, gold:78 },
+    ],
+    boss: { name:'試験官ダイバー シャドウ', icon:'🌑', race:'human', element:'dark', hp:1800, atk:80, def:45, exp:1800, gold:1500, isExamBoss:true },
+    rareBoss: null,
+    rewardGold:2000, rewardExp:2000, minLevel:28,
+  },
+  {
+    id:'exam-b-to-a', name:'【昇格試験】A級昇格ゲート', rank:'B',
+    icon:'🎖', isRankExam:true, examFrom:'B', examTo:'A',
+    examKillGoal: 18,
+    desc:'B級からA級への昇格試験。S級候補の強豪試験官に勝利せよ。',
+    floors: 6,
+    enemies: [
+      { name:'試験用悪魔騎士', icon:'😈', race:'demon', element:'dark', hp:400, atk:65, def:40, exp:220, gold:160 },
+      { name:'試験用天使兵',   icon:'👼', race:'angel', element:'light',hp:350, atk:72, def:36, exp:235, gold:170 },
+    ],
+    boss: { name:'S級候補 試験官アスト', icon:'⚔', race:'human', element:'light', hp:4000, atk:130, def:80, exp:4000, gold:3500, isExamBoss:true },
+    rareBoss: null,
+    rewardGold:5000, rewardExp:5000, minLevel:48,
+  },
+  {
+    id:'exam-a-to-s', name:'【昇格試験】S級昇格ゲート', rank:'A',
+    icon:'🏆', isRankExam:true, examFrom:'A', examTo:'S',
+    examKillGoal: 20,
+    desc:'A級からS級への最終昇格試験。現役S級ダイバーとの死闘を勝ち抜け。',
+    floors: 8,
+    enemies: [
+      { name:'試験用神殿守護者', icon:'🗿', race:'divine', element:'light', hp:700,  atk:105, def:72, exp:380, gold:280 },
+      { name:'試験用龍騎士',     icon:'🐉', race:'dragon', element:'wind',  hp:800,  atk:118, def:78, exp:400, gold:300 },
+    ],
+    boss: { name:'現役S級 試験官ヴェイン', icon:'🌟', race:'human', element:'dark', hp:8000, atk:200, def:130, exp:8000, gold:7000, isExamBoss:true },
+    rareBoss: null,
+    rewardGold:10000, rewardExp:10000, minLevel:68,
   },
 ];
 
@@ -3337,7 +3489,7 @@ function buildPillarDungeons() {
 }
 
 // =====================================================
-// ===== ラストダンジョン =====
+// ===== ラストゲート =====
 // =====================================================
 const LAST_DUNGEON = {
   id:'last-dungeon',
@@ -3555,8 +3707,8 @@ function showNameInputModal(onConfirm) {
       ...ITEM_TEMPLATES[initName],
       quality: 50,  // 初期装備は品質50固定
     };
-    G.equipped.mainhand = initItem;
-    G.fullInventory.push(Object.assign({}, initItem, { equippedIn:'mainhand' }));
+    G.equipped.weapon = initItem;
+    G.fullInventory.push(Object.assign({}, initItem, { equippedIn:'weapon' }));
     applyEquipStats();
     G.hp = G.maxHp;
     G.mp = G.maxMp;
@@ -3591,7 +3743,7 @@ function showScreen(id) {
 function initDailyQuests() {
   G.dailyQuests = [
     { id:'q1', name:'モンスターを5体討伐', goal:5, current:0, reward:'EXP+200', done:false },
-    { id:'q2', name:'ダンジョンを1つクリア', goal:1, current:0, reward:'Gold+500', done:false },
+    { id:'q2', name:'ゲートを1つクリア', goal:1, current:0, reward:'Gold+500', done:false },
     { id:'q3', name:'戦闘で勝利を3回', goal:3, current:0, reward:'ATK+2', done:false },
   ];
   renderQuests();
@@ -3640,51 +3792,108 @@ function applyQuestReward(q) {
 function renderDungeons() {
   const grid = document.getElementById('dungeon-grid');
   grid.innerHTML = '';
-  const cleared = new Set(G.clearedDungeonIds || []);
+  const cleared     = new Set(G.clearedDungeonIds || []);
+  const examCleared = new Set(G.rankExamCleared || []);
 
-  // 段階解放ロジック：1つ前のダンジョンをクリアしていると解放
-  // 最初のダンジョンは最初から開放
-  DUNGEONS.forEach((d, idx) => {
-    const levelLocked  = G.level < d.minLevel;
-    const prevCleared  = idx === 0 || cleared.has(DUNGEONS[idx - 1].id);
-    const isUnlocked   = prevCleared && !levelLocked;
-    const isHidden     = !prevCleared;      // 前をクリアしていなければ非表示
-    const isCleared    = cleared.has(d.id);
+  // ストーリーゲートと昇格試験を分離
+  const storyGates = DUNGEONS.filter(d => !d.isRankExam);
+  const examGates  = DUNGEONS.filter(d =>  d.isRankExam);
 
-    if (isHidden) return; // 前をクリアしていないものは表示しない
+  // ── ランク別セクションヘッダー付きでストーリーゲートを描画 ──
+  const rankOrder  = ['E','D','C','B','A','S'];
+  const rankLabels = { E:'E級ゲート', D:'D級ゲート', C:'C級ゲート', B:'B級ゲート', A:'A級ゲート', S:'S級ゲート' };
+  const rankColors = { E:'var(--e-rank)', D:'var(--d-rank)', C:'var(--c-rank)', B:'var(--b-rank)', A:'var(--a-rank)', S:'var(--s-rank)' };
 
-    const div = document.createElement('div');
-    div.className = `dungeon-card rank-${d.rank}-card ${levelLocked ? 'locked' : ''}`;
+  let lastRank = null;
+  storyGates.forEach((d, idx) => {
+    const levelLocked = G.level < (d.minLevel || 0);
+    const prevIdx     = storyGates.indexOf(d) - 1;
+    const prevCleared = prevIdx < 0 || cleared.has(storyGates[prevIdx].id);
+    const isHidden    = !prevCleared;
+    const isCleared   = cleared.has(d.id);
+    if (isHidden) return;
 
-    let statusBadge = '';
-    if (isCleared) {
-      statusBadge = `<span style="font-size:0.65rem;color:var(--green);margin-left:0.4rem">✓ 攻略済</span>`;
+    // ランクセクション区切り
+    if (d.rank !== lastRank) {
+      lastRank = d.rank;
+      const sec = document.createElement('div');
+      sec.style.cssText = `display:flex;align-items:center;gap:0.5rem;margin:${storyGates.indexOf(d) === 0 ? '0' : '0.8rem'} 0 0.3rem;`;
+      sec.innerHTML = `
+        <div style="height:1px;flex:1;background:${rankColors[d.rank]}44"></div>
+        <span style="font-size:0.68rem;color:${rankColors[d.rank]};letter-spacing:0.15em;font-weight:700">${rankLabels[d.rank] || d.rank+'級'}</span>
+        <div style="height:1px;flex:1;background:${rankColors[d.rank]}44"></div>`;
+      grid.appendChild(sec);
     }
 
-    div.innerHTML = `
-      <div class="dungeon-rank-header">
-        <span class="dungeon-icon">${d.icon}</span>
-        <span class="player-rank-badge rank-${d.rank}">${d.rank}級</span>
-        ${statusBadge}
+    const card = document.createElement('div');
+    card.className = `dungeon-card rank-${d.rank}-card ${levelLocked ? 'locked' : ''} ${isCleared ? 'cleared-card' : ''}`;
+
+    const rankColor = rankColors[d.rank] || '#aaa';
+    card.innerHTML = `
+      <div class="dungeon-card-icon">${d.icon}</div>
+      <div class="dungeon-card-body">
+        <div class="dungeon-card-header">
+          <span class="player-rank-badge rank-${d.rank}" style="font-size:0.6rem;padding:0.1rem 0.4rem">${d.rank}級</span>
+          <span class="dungeon-card-name">${d.name}</span>
+          ${isCleared ? '<span style="font-size:0.62rem;color:var(--green);margin-left:auto">✓ 攻略済</span>' : ''}
+        </div>
+        <div class="dungeon-card-desc">${d.desc}</div>
+        <div class="dungeon-card-tags">
+          <span class="reward-tag">⚔ ${d.floors}F</span>
+          <span class="reward-tag">💰 ${(d.rewardGold||0).toLocaleString()}G</span>
+          <span class="reward-tag">⭐ ${(d.rewardExp||0).toLocaleString()}EXP</span>
+          ${levelLocked ? `<span style="font-size:0.62rem;color:var(--red);margin-left:auto">🔒 Lv${d.minLevel}</span>` : ''}
+        </div>
       </div>
-      <div class="dungeon-name">${d.name}</div>
-      <div class="dungeon-desc">${d.desc}</div>
-      <div class="dungeon-reward">
-        <span class="reward-tag">⚔ ${d.floors}フロア</span>
-        <span class="reward-tag">💰 ${d.rewardGold.toLocaleString()}G</span>
-        <span class="reward-tag">⭐ ${d.rewardExp.toLocaleString()}EXP</span>
-      </div>
-      ${levelLocked ? `<div class="dungeon-locked-msg">🔒 Lv${d.minLevel}以上が必要</div>` : ''}
+      ${!levelLocked && !isCleared ? '<div class="dungeon-card-arrow">›</div>' : ''}
     `;
-    if (isUnlocked) {
-      div.onclick = () => enterDungeon(d);
-    }
-    grid.appendChild(div);
+    if (!levelLocked) card.onclick = () => enterDungeon(d);
+    grid.appendChild(card);
   });
 
-  // 十二王ダンジョン（S級ラストダンジョンクリア後に解放）
-  // ここには表示しない（ストーリー最終盤として別途実装）
+  // ── 昇格試験セクション ──
+  const availableExams = examGates.filter(e => {
+    const req = { 'E':'E', 'D':'D', 'C':'C', 'B':'B', 'A':'A' };
+    return G.rank === e.examFrom && G.level >= (e.minLevel || 0);
+  });
+
+  if (availableExams.length > 0) {
+    const examSec = document.createElement('div');
+    examSec.style.cssText = 'display:flex;align-items:center;gap:0.5rem;margin:0.8rem 0 0.3rem;';
+    examSec.innerHTML = `
+      <div style="height:1px;flex:1;background:rgba(255,215,0,0.4)"></div>
+      <span style="font-size:0.68rem;color:var(--gold);letter-spacing:0.15em;font-weight:700">🎖 昇格試験</span>
+      <div style="height:1px;flex:1;background:rgba(255,215,0,0.4)"></div>`;
+    grid.appendChild(examSec);
+
+    availableExams.forEach(d => {
+      const isCleared  = examCleared.has(d.id);
+      const isRankDone = G.rank !== d.examFrom; // すでに昇格済みなら達成
+      const card = document.createElement('div');
+      card.className = `dungeon-card exam-card ${isRankDone ? 'cleared-card' : ''}`;
+      card.innerHTML = `
+        <div class="dungeon-card-icon">🎖</div>
+        <div class="dungeon-card-body">
+          <div class="dungeon-card-header">
+            <span style="font-size:0.6rem;padding:0.1rem 0.4rem;border-radius:2px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.5);color:var(--gold)">昇格試験</span>
+            <span class="dungeon-card-name">${d.examFrom}級 → ${d.examTo}級</span>
+            ${isRankDone ? '<span style="font-size:0.62rem;color:var(--green);margin-left:auto">✓ 昇格済</span>' : ''}
+          </div>
+          <div class="dungeon-card-desc">${d.desc}</div>
+          <div class="dungeon-card-tags">
+            <span class="reward-tag exam">⚔ ${d.floors}F</span>
+            <span class="reward-tag exam">🎯 討伐ノルマ: ${d.examKillGoal}体</span>
+            <span class="reward-tag exam">👊 試験官撃破</span>
+          </div>
+        </div>
+        ${!isRankDone ? '<div class="dungeon-card-arrow" style="color:var(--gold)">›</div>' : ''}
+      `;
+      if (!isRankDone) card.onclick = () => enterDungeon(d);
+      grid.appendChild(card);
+    });
+  }
 }
+
 
 // ===== DUNGEON ENTER =====
 function enterDungeon(dungeon) {
@@ -3792,8 +4001,13 @@ function startCombat() {
     const ev = rollDungeonEvent();
     if (ev) {
       ev.apply(G, baseEnemy);
-      addLog(`<span style="color:${ev.color}">【フロアイベント】${ev.label} ${ev.desc}</span>`, 'highlight');
-      // Show event banner
+      let evMsg = `<span style="color:${ev.color}">【フロアイベント】${ev.label} ${ev.desc}</span>`;
+      if (ev.id === 'gate_break') {
+        evMsg = `<span style="color:#ff6600;font-weight:700">💥💥【ゲートブレイク発生！】💥💥<br>ゲートが暴走した！モンスターが溢れ出した！<br>「${baseEnemy.name}」のHP・ATK・DEFが5倍に跳ね上がった！</span>`;
+      } else if (ev.id === 'treasury') {
+        evMsg = `<span style="color:#ffcc00;font-weight:700">🏺【宝物庫の守護者出現！】<br>「${baseEnemy.name}」が宝物庫を守っている！<br>撃破すると高品質アイテムが手に入る！</span>`;
+      }
+      addLog(evMsg, 'highlight');
       showEventBanner(ev);
     }
   } else {
@@ -4076,6 +4290,18 @@ function enemyDefeated() {
   updateQuest('kills');
   updateQuest('win');
 
+  // 昇格試験ゲートでの討伐進捗ログ
+  if (G.currentDungeon?.isRankExam) {
+    const goal = G.currentDungeon.examKillGoal || 0;
+    const current = G.dungeonEnemiesKilled;
+    if (current <= goal) {
+      addLog(`<span style="color:var(--gold)">🎖 討伐進捗: ${current} / ${goal}体</span>`, 'highlight');
+    }
+    if (current >= goal) {
+      addLog(`<span style="color:var(--green)">✅ 討伐ノルマ達成！ボスを撃破してゲートをクリアせよ！</span>`, 'victory');
+    }
+  }
+
   // ── EXP にランダム幅を持たせる ──
   // 基本: ±30% のぶれ。レアモンスターは基礎値が2.5倍なので更に大きい
   const expVariance = 0.7 + Math.random() * 0.6;          // 0.70 〜 1.30
@@ -4135,13 +4361,57 @@ function enemyDefeated() {
 function dungeonClear() {
   const d = G.currentDungeon;
   G.dungeonsCleared++;
-  // クリア済みID記録（段階解放・ラスト解放用）
   if (!G.clearedDungeonIds) G.clearedDungeonIds = [];
   if (d.id && !G.clearedDungeonIds.includes(d.id)) {
     G.clearedDungeonIds.push(d.id);
   }
   updateQuest('dungeon');
   addActivity(`「${d.name}」をクリアした（${d.rank}級${d.isRandom?' ランダム':''}）`);
+
+  // ── 昇格試験クリア ──
+  if (d.isRankExam && d.examTo) {
+    if (!G.rankExamCleared) G.rankExamCleared = [];
+    if (!G.rankExamCleared.includes(d.id)) {
+      G.rankExamCleared.push(d.id);
+    }
+    // 討伐ノルマ達成チェック（G.dungeonEnemiesKilledが目標以上）
+    const killGoal = d.examKillGoal || 0;
+    if (G.dungeonEnemiesKilled >= killGoal) {
+      const oldRank = G.rank;
+      G.rank = d.examTo;
+      if (!G.ranksUnlocked) G.ranksUnlocked = [];
+      if (!G.ranksUnlocked.includes(d.examTo)) G.ranksUnlocked.push(d.examTo);
+      addActivity(`${d.examTo}級ダイバーに昇格した！`);
+      showNotification('🏆 ランク昇格！',
+        `${oldRank}級 → ${d.examTo}級ダイバーに昇格！\n新しいゲートが解放される`, true);
+      renderDungeons();
+    } else {
+      showNotification('⚠ 昇格失敗',
+        `討伐数が不足しています（${G.dungeonEnemiesKilled}/${killGoal}体）\n再挑戦してください`, false);
+    }
+  }
+
+  // ── 宝物庫イベント：高品質アイテムドロップ ──
+  if (G.eventActive === 'treasury') {
+    const rank = d.rank || 'E';
+    const table = LOOT_TABLES[rank] || LOOT_TABLES['E'];
+    const nextR = {E:'D',D:'C',C:'B',B:'A',A:'S',S:'S'}[rank];
+    const higherTable = LOOT_TABLES[nextR] || table;
+    // 上位ランクの鎧＋アクセサリを高品質でドロップ
+    const bodyPool = higherTable.bodies || table.bodies;
+    const accPool  = higherTable.accessories || table.accessories;
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+    [pick(bodyPool), pick(accPool)].forEach(name => {
+      const tpl = ITEM_TEMPLATES[name];
+      if (tpl) {
+        addInventoryItem(name, nextR);
+        // 最後に追加されたアイテムに高品質を付与
+        const item = G.fullInventory[0];
+        if (item && item.name === name) item.quality = Math.floor(80 + Math.random() * 20); // 80〜100%
+        addLog(`🏺 宝物庫ボーナス！「${name}」(高品質)を入手！`, 'victory');
+      }
+    });
+  }
 
   // 十二王・天司 専用装備ドロップ
   if (d.boss && (d.boss.isKing || d.boss.isPillar)) {
@@ -4173,7 +4443,7 @@ function dungeonClear() {
       showNotification('👑 王を撃破！',
         `${king.title} ${king.name}\n残り ${12 - count} 体 / 難易度が上昇`, true);
       if (count >= 12) {
-        showNotification('🌌 ラストダンジョン解放！',
+        showNotification('🌌 ラストゲート解放！',
           '十二王を全て撃破した！\n「虚座の間」への扉が開いた——', true);
       }
       setTimeout(() => renderKingDungeons(), 400);
@@ -4348,13 +4618,7 @@ function levelUp() {
 }
 
 function checkRankUp() {
-  const newRank = [...RANKS].reverse().find(r => G.level >= RANK_THRESHOLDS[r]);
-  if (newRank && newRank !== G.rank) {
-    G.rank = newRank;
-    G.ranksUnlocked.push(newRank);
-    addActivity(`${newRank}級ハンターに昇格した！`);
-    showNotification(`🏆 ランクアップ！`, `${newRank}級ハンターに昇格！`, true);
-  }
+  // ランクアップは昇格試験ゲートクリアで行う（自動昇格なし）
 }
 
 function checkSkillUnlock() {
@@ -4485,7 +4749,7 @@ function renderPillarDungeons() {
 
   if (!unlocked) {
     grid.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--text-dim);font-size:0.85rem">
-      🔒 Lv80に到達すると天司十二柱のダンジョンが一斉解放される<br>
+      🔒 Lv80に到達すると天司十二柱のゲートが一斉解放される<br>
       <span style="font-size:0.75rem;color:var(--accent2)">現在: Lv${G.level} / 必要: Lv80</span>
     </div>`;
     if (lastPanel) lastPanel.style.display = 'none';
@@ -5021,7 +5285,7 @@ function renderKingDungeons() {
 
   if (!unlocked) {
     grid.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--text-dim);font-size:0.85rem">
-      🔒 Lv75に到達すると十二王のダンジョンが一斉解放される<br>
+      🔒 Lv75に到達すると十二王のゲートが一斉解放される<br>
       <span style="font-size:0.75rem;color:#cc88aa">現在: Lv${G.level} / 必要: Lv75</span>
     </div>`;
     if (lastPanel) lastPanel.style.display = 'none';
@@ -5204,7 +5468,7 @@ function renderEquipTab() {
 
 function renderEquipSlots() {
   const el = document.getElementById('equip-slots-ui');
-  const slots = ['mainhand','offhand','helm','body','legs','acc1','acc2'];
+  const slots = ['weapon','body','acc1','acc2'];
 
   // 両手持ちスキル判定（右手のみ・左手空き）
   const wt = G.weaponType || 'sword';
@@ -5340,7 +5604,7 @@ function renderInvList() {
 
   if (!items.length) {
     el.innerHTML = autoSellBar + `<div style="color:var(--text-dim);font-size:0.82rem;text-align:center;padding:1.2rem 0">
-      ${G.fullInventory.length ? 'このカテゴリにアイテムなし' : 'ダンジョン攻略でアイテムを入手しよう'}
+      ${G.fullInventory.length ? 'このカテゴリにアイテムなし' : 'ゲート攻略でアイテムを入手しよう'}
     </div>`;
     return;
   }
@@ -5543,8 +5807,8 @@ const SHOP_ITEMS = {
   特殊: [
     { name:'インベントリ拡張',icon:'🎒', desc:'所持枠+10（現在の上限まで）', price: 2000, effect: () => { G.invMax = (G.invMax||30)+10; } },
     { name:'影の器',          icon:'👥', desc:'影の軍団スロット+1（転職後）', price: 3000, effect: () => { if (G.maxShadows > 0) { G.maxShadows++; renderShadowSlots(); } } },
-    { name:'経験値ブースト',  icon:'⭐', desc:'次のダンジョンEXP+50%（1回）', price: 1500, effect: () => { G.expBoost = (G.expBoost||0)+1; } },
-    { name:'ゴールドブースト', icon:'💰', desc:'次のダンジョンGold+50%（1回）',price: 1000, effect: () => { G.goldBoost = (G.goldBoost||0)+1; } },
+    { name:'経験値ブースト',  icon:'⭐', desc:'次のゲートEXP+50%（1回）', price: 1500, effect: () => { G.expBoost = (G.expBoost||0)+1; } },
+    { name:'ゴールドブースト', icon:'💰', desc:'次のゲートGold+50%（1回）',price: 1000, effect: () => { G.goldBoost = (G.goldBoost||0)+1; } },
   ],
 };
 
@@ -5762,32 +6026,15 @@ function equipItem(id) {
   const item = G.fullInventory.find(i => i.id == id);
   if (!item || !item.slot) return;
 
-  // slotからequipped keyへマッピング
-  const slotMap = {
-    weapon:    'mainhand',
-    offhand:   'offhand',
-    helm:      'helm',
-    body:      'body',
-    legs:      'legs',
-    accessory: 'acc1',
-    ring:      'acc2',
-  };
-  // アイテム自身のslotを使うが、accessoryはacc1/acc2の空きに入れる
+  // slotをequippedキーにマッピング
   let equipSlot = item.slot;
-  if (item.slot === 'accessory') {
+  if (item.slot === 'accessory' || item.slot === 'ring' || item.slot === 'acc1') {
     equipSlot = !G.equipped.acc1 ? 'acc1' : 'acc2';
-  } else if (item.slot === 'ring') {
-    equipSlot = 'acc2';
-  } else if (item.slot === 'weapon') {
-    equipSlot = 'mainhand';
-  } else if (item.slot === 'armor') {
+  } else if (item.slot === 'armor' || item.slot === 'helm' || item.slot === 'legs' || item.slot === 'offhand' || item.slot === 'mainhand') {
     equipSlot = 'body';
   }
-
-  // 弓・槍・杖はoffhand装備不可
-  const noOffhandTypes = ['bow','spear','rod'];
-  if (equipSlot === 'offhand' && noOffhandTypes.includes(G.weaponType)) {
-    showNotification('⚠ 装備不可', 'この系統は左手スロットを使用できません', false);
+  if (!['weapon','body','acc1','acc2'].includes(equipSlot)) {
+    showNotification('⚠ 装備不可', 'このスロットには装備できません', false);
     return;
   }
 
@@ -5823,21 +6070,14 @@ function applyEquipStats() {
   const equip = getTotalEquipBonus();
   const sets  = calcSetBonuses();
 
-  // 両手持ちボーナス（右手装備・左手空き・剣/短剣系統のみ）ATK+20%
-  const wt = G.weaponType || 'sword';
-  const isDualWield = ['sword','dagger'].includes(wt) && G.equipped.mainhand && !G.equipped.offhand;
-  const baseAtk = base.atk + (equip.atk||0) + (G.bonusAtk||0);
-  const dualBonus = isDualWield ? Math.floor(baseAtk * 0.20) : 0;
-
-  G.atk   = baseAtk + (sets.bonus.atk||0) + dualBonus;
+  G.atk   = base.atk + (equip.atk||0) + (G.bonusAtk||0) + (sets.bonus.atk||0);
   G.def   = base.def   + (equip.def||0) + (G.bonusDef||0) + (sets.bonus.def||0);
   G.spd   = base.spd   + (equip.spd||0) + (G.bonusSpd||0) + (sets.bonus.spd||0);
   G.maxHp = base.maxHp + (equip.hp||0)  + (G.bonusHp||0)  + (sets.bonus.hp||0);
   G.maxMp = base.maxMp + (equip.mp||0)  + (sets.bonus.mp||0) + (G.bonusMp||0);
   G.hp    = Math.min(G.hp, G.maxHp);
   G.mp    = Math.min(G.mp, G.maxMp);
-  G._activeSets     = sets.activeSets;
-  G._dualWieldBonus = dualBonus;
+  G._activeSets = sets.activeSets;
 }
 
 function calcBaseStats(lv) {
@@ -5911,9 +6151,11 @@ function renderSkillsTab() {
   const typeColor = { damage:'var(--red)', heal:'var(--green)', buff:'var(--accent)', debuff:'var(--accent2)', multi:'var(--gold)' };
   const typeLabel = { damage:'攻撃', heal:'回復', buff:'バフ', debuff:'デバフ', multi:'連撃' };
 
+  const wt = G.weaponType || 'sword';
+  const visibleSkills = ALL_SKILLS.filter(s => s.wt === 'all' || s.wt === wt);
   const unlockedIds = new Set(G.skills.map(s => s.id));
 
-  el.innerHTML = ALL_SKILLS.map((s, i) => {
+  el.innerHTML = visibleSkills.map((s, i) => {
     const unlocked = unlockedIds.has(s.id);
     const isActive = unlocked && G.skills[G.activeSkillIdx]?.id === s.id;
     const skillIdx = G.skills.findIndex(sk => sk.id === s.id);
@@ -6003,6 +6245,31 @@ function updateUI() {
   document.getElementById('status-class').textContent = G.jobClass;
   document.getElementById('status-rank-display').textContent = G.rank + '級';
   document.getElementById('status-rank-display').style.color = rankColors[G.rank];
+  // ゲートタブのランク情報バナー更新
+  const storyRankEl = document.getElementById('story-rank-display');
+  if (storyRankEl) {
+    storyRankEl.textContent = G.rank;
+    storyRankEl.style.color = rankColors[G.rank];
+  }
+  // 進捗バー（クリア済みゲート数 / 全ストーリーゲート数）
+  const totalStory = DUNGEONS.filter(d => !d.isRankExam).length;
+  const clearedCount = (G.clearedDungeonIds || []).filter(id => DUNGEONS.find(d => d.id === id && !d.isRankExam)).length;
+  const progressPct = totalStory > 0 ? Math.round(clearedCount / totalStory * 100) : 0;
+  const progressBar = document.getElementById('story-progress-bar');
+  if (progressBar) progressBar.style.width = progressPct + '%';
+  const progressLabel = document.getElementById('story-progress-label');
+  if (progressLabel) progressLabel.textContent = `攻略済ゲート: ${clearedCount} / ${totalStory}`;
+  // 昇格試験ヒント
+  const examHint = document.getElementById('story-exam-hint');
+  const nextExam = DUNGEONS.find(d => d.isRankExam && d.examFrom === G.rank && G.level >= (d.minLevel||0));
+  const nextRankInfo = document.getElementById('story-next-rank-info');
+  if (examHint) examHint.textContent = nextExam ? `🎖 昇格試験が受験可能です — ${G.rank}→${nextExam.examTo}級` : '';
+  if (nextRankInfo) {
+    const rankOrder = ['E','D','C','B','A','S'];
+    const curIdx = rankOrder.indexOf(G.rank);
+    const nextR = rankOrder[curIdx + 1];
+    nextRankInfo.textContent = nextR ? `次: ${nextR}級` : '最高ランク';
+  }
   document.getElementById('status-title-display').textContent = G.title || '—';
   document.getElementById('st-level').textContent = G.level;
   document.getElementById('st-hp').textContent = G.maxHp;
@@ -6073,23 +6340,26 @@ function switchTab(name) {
 }
 
 // ===== SAVE / LOAD =====
-const SAVE_KEY = 'shadowHunterSave_v1';
+const SAVE_KEY = 'gateDiverSave_v1';
 
 function saveGame() {
   const saveData = {
     ...G,
     savedAt: new Date().toISOString(),
   };
+  const json = JSON.stringify(saveData);
   try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+    localStorage.setItem(SAVE_KEY, json);
   } catch(e) {
-    console.warn('Save failed:', e);
+    // localStorage が使えない環境（sandbox等）ではsessionStorageにフォールバック
+    try { sessionStorage.setItem(SAVE_KEY, json); } catch(e2) {}
+    console.warn('localStorage unavailable, used sessionStorage:', e);
   }
 }
 
 function loadGame() {
   try {
-    const raw = localStorage.getItem(SAVE_KEY);
+    const raw = localStorage.getItem(SAVE_KEY) || sessionStorage.getItem(SAVE_KEY);
     if (!raw) return null;
     return JSON.parse(raw);
   } catch(e) {
@@ -6243,7 +6513,7 @@ function dismissPrologue() {
     const d = new Date(data.savedAt);
     const dateStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
     const savedName = data.name || 'ダイバー';
-    info.textContent = `${savedName} / Lv${data.level} ${data.rank}級｜${data.dungeonsCleared}ダンジョン攻略｜${dateStr}`;
+    info.textContent = `${savedName} / Lv${data.level} ${data.rank}級｜${data.dungeonsCleared}ゲート攻略｜${dateStr}`;
   }
 })();
 </script>
