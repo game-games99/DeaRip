@@ -636,25 +636,29 @@ min-height: 100vh;
 .combat-arena {
 max-width: 700px;
 margin: 0 auto;
-padding: 2rem 1rem;
+padding: 0.7rem 1rem 0.5rem;
+display: flex;
+flex-direction: column;
+min-height: 100vh;
+box-sizing: border-box;
 }
 
 .combat-header {
 display: flex;
 align-items: center;
 justify-content: space-between;
-margin-bottom: 2rem;
+margin-bottom: 0.6rem;
 }
 
 .combat-dungeon-name {
 font-family: “Courier New”, “Lucida Console”, monospace; letter-spacing: 0.05em;
-font-size: 1rem;
+font-size: 0.9rem;
 color: var(–accent);
-letter-spacing: 0.2em;
+letter-spacing: 0.15em;
 }
 
 .combat-floor {
-font-size: 0.8rem;
+font-size: 0.75rem;
 color: var(–text-dim);
 }
 
@@ -662,8 +666,8 @@ color: var(–text-dim);
 display: flex;
 align-items: center;
 justify-content: space-between;
-margin-bottom: 2rem;
-gap: 1rem;
+margin-bottom: 0.6rem;
+gap: 0.5rem;
 }
 
 .combatant {
@@ -672,9 +676,9 @@ text-align: center;
 }
 
 .combatant-sprite {
-font-size: 5rem;
+font-size: 3.5rem;
 display: block;
-margin-bottom: 0.5rem;
+margin-bottom: 0.3rem;
 line-height: 1;
 filter: drop-shadow(0 0 20px rgba(74,158,255,0.5));
 animation: combatant-idle 2s ease-in-out infinite;
@@ -687,23 +691,23 @@ animation: enemy-idle 1.5s ease-in-out infinite;
 
 @keyframes combatant-idle {
 0%, 100% { transform: translateY(0); }
-50% { transform: translateY(-5px); }
+50% { transform: translateY(-4px); }
 }
 
 @keyframes enemy-idle {
 0%, 100% { transform: translateY(0) scale(1); }
-50% { transform: translateY(-8px) scale(1.05); }
+50% { transform: translateY(-5px) scale(1.04); }
 }
 
 .combatant-name {
 font-weight: 700;
-margin-bottom: 0.3rem;
-font-size: 0.9rem;
+margin-bottom: 0.25rem;
+font-size: 0.85rem;
 }
 
 .vs-text {
 font-family: “Courier New”, “Lucida Console”, monospace; letter-spacing: 0.05em;
-font-size: 1.5rem;
+font-size: 1.2rem;
 color: var(–red);
 font-weight: 900;
 text-shadow: 0 0 20px var(–red);
@@ -711,12 +715,12 @@ flex-shrink: 0;
 }
 
 .combat-hp-wrap {
-height: 10px;
+height: 7px;
 background: rgba(255,51,102,0.1);
 border: 1px solid rgba(255,51,102,0.3);
-border-radius: 5px;
+border-radius: 4px;
 overflow: hidden;
-margin-bottom: 0.3rem;
+margin-bottom: 0.2rem;
 }
 
 .combat-hp-bar {
@@ -728,7 +732,7 @@ transition: width 0.5s ease;
 .player-combat-hp { background: linear-gradient(90deg, #00aa55, #00ff88); }
 
 .combat-hp-text {
-font-size: 0.7rem;
+font-size: 0.65rem;
 color: var(–text-dim);
 text-align: center;
 }
@@ -737,12 +741,13 @@ text-align: center;
 background: var(–panel);
 border: 1px solid var(–border);
 border-radius: 4px;
-height: 120px;
+height: 72px;
 overflow-y: auto;
-padding: 0.75rem;
-margin-bottom: 1.2rem;
-font-size: 0.82rem;
-line-height: 1.7;
+padding: 0.5rem 0.65rem;
+margin-bottom: 0.6rem;
+font-size: 0.78rem;
+line-height: 1.6;
+flex-shrink: 0;
 }
 
 .log-line { color: var(–text-dim); }
@@ -757,20 +762,20 @@ line-height: 1.7;
 .combat-actions {
 display: grid;
 grid-template-columns: repeat(2, 1fr);
-gap: 0.75rem;
-margin-bottom: 1rem;
+gap: 0.5rem;
+margin-bottom: 0.5rem;
 }
 
 .btn-action {
 background: var(–panel);
 border: 1px solid var(–border);
 color: var(–text);
-padding: 0.85rem 1rem;
+padding: 0.55rem 0.7rem;
 border-radius: 4px;
 cursor: pointer;
 font-family: “Hiragino Sans”, “Hiragino Kaku Gothic ProN”, “Yu Gothic”, “Meiryo”, sans-serif;
-font-size: 0.85rem;
-transition: all 0.2s;
+font-size: 0.8rem;
+transition: all 0.15s;
 text-align: left;
 position: relative;
 overflow: hidden;
@@ -801,20 +806,20 @@ transition: opacity 0.2s;
 .btn-item::before { background: rgba(255,215,0,0.1); }
 .btn-item:hover { border-color: var(–gold); color: #fff; }
 
-.action-icon { font-size: 1.2rem; margin-bottom: 0.2rem; display: block; }
-.action-name { font-weight: 700; font-size: 0.85rem; }
-.action-desc { font-size: 0.7rem; color: var(–text-dim); margin-top: 0.1rem; }
-.action-cost { font-size: 0.65rem; color: var(–accent2); margin-top: 0.2rem; }
+.action-icon { font-size: 1rem; margin-bottom: 0.1rem; display: block; }
+.action-name { font-weight: 700; font-size: 0.8rem; }
+.action-desc { font-size: 0.64rem; color: var(–text-dim); margin-top: 0.05rem; }
+.action-cost { font-size: 0.6rem; color: var(–accent2); margin-top: 0.1rem; }
 
 .btn-flee {
 width: 100%;
 background: transparent;
 border: 1px solid rgba(255,51,102,0.3);
 color: rgba(255,51,102,0.6);
-padding: 0.5rem;
+padding: 0.38rem;
 border-radius: 4px;
 cursor: pointer;
-font-size: 0.8rem;
+font-size: 0.75rem;
 transition: all 0.2s;
 }
 
@@ -1251,9 +1256,9 @@ flex-shrink: 0;
 .combat-exp-row {
 display: flex;
 align-items: center;
-gap: 0.6rem;
-margin-bottom: 1rem;
-font-size: 0.7rem;
+gap: 0.5rem;
+margin-bottom: 0.45rem;
+font-size: 0.68rem;
 color: var(–text-dim);
 }
 
@@ -1736,7 +1741,7 @@ to   { opacity: 1; transform: translateY(0); }
     <div class="window-panel">
       <div class="window-header">
         <div class="window-title"><span class="window-title-icon">🎲</span>ランダムゲート — 未知の亀裂</div>
-        <button onclick="rerollRandomDungeons()" style="font-size:0.68rem;padding:0.2rem 0.6rem;background:rgba(123,74,255,0.15);border:1px solid var(--accent2);color:var(--accent2);cursor:pointer;border-radius:3px;transition:all 0.2s">🔄 再抽選</button>
+        <div style="font-size:0.65rem;color:var(--text-dim)">毎回変動</div>
       </div>
       <div class="window-body">
         <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:1rem;line-height:1.6">
@@ -1754,11 +1759,15 @@ to   { opacity: 1; transform: translateY(0); }
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;font-size:0.85rem">
         <div>
           <div style="color:var(--text-dim);font-size:0.7rem;margin-bottom:0.2rem">名前</div>
-          <div style="color:#fff;font-weight:700">shadow</div>
+          <div id="status-name-display" onclick="editPlayerName()" title="タップして変更"
+            style="color:#fff;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:0.3rem">
+            <span id="status-name-text">shadow</span>
+            <span style="font-size:0.55rem;color:var(--text-dim);opacity:0.6">✎</span>
+          </div>
         </div>
         <div>
           <div style="color:var(--text-dim);font-size:0.7rem;margin-bottom:0.2rem">職業</div>
-          <div id="status-class" style="color:var(--accent)">ハンター</div>
+          <div id="status-class" style="color:var(--accent)">ダイバー</div>
         </div>
         <div>
           <div style="color:var(--text-dim);font-size:0.7rem;margin-bottom:0.2rem">ランク</div>
@@ -1809,12 +1818,7 @@ to   { opacity: 1; transform: translateY(0); }
         <div style="color:var(--text-dim);font-size:0.65rem;margin-bottom:0.6rem;letter-spacing:0.1em">⚡ クラスチェンジ</div>
         <div id="job-progress"></div>
       </div>
-      <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0">
-      <div>
-        <div style="color:var(--text-dim);font-size:0.65rem;margin-bottom:0.6rem;letter-spacing:0.1em">👑 天司十二柱</div>
-        <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:0.6rem;line-height:1.6">各種族の頂点に君臨する十二の権能者。主人公の権能は<span style="color:var(--accent2)">???（未設定）</span>。</div>
-        <div id="twelve-pillars-list"></div>
-      </div>
+
     </div>
   </div>
 
@@ -1844,12 +1848,14 @@ to   { opacity: 1; transform: translateY(0); }
       </div>
       <!-- Category sub-tabs -->
       <div style="display:flex;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.2)">
-        <button class="inv-tab-btn active" id="invtab-all"     onclick="switchInvTab('all')"    >全て</button>
-        <button class="inv-tab-btn"        id="invtab-weapon"  onclick="switchInvTab('weapon')" >⚔ 武器</button>
-        <button class="inv-tab-btn"        id="invtab-armor"   onclick="switchInvTab('armor')"  >🛡 防具</button>
+        <button class="inv-tab-btn active" id="invtab-all"      onclick="switchInvTab('all')"      >全て</button>
+        <button class="inv-tab-btn"        id="invtab-weapon"   onclick="switchInvTab('weapon')"   >⚔ 武器</button>
+        <button class="inv-tab-btn"        id="invtab-helm"     onclick="switchInvTab('helm')"     >⛑ 兜</button>
+        <button class="inv-tab-btn"        id="invtab-body"     onclick="switchInvTab('body')"     >🛡 鎧</button>
+        <button class="inv-tab-btn"        id="invtab-legs"     onclick="switchInvTab('legs')"     >👢 脚</button>
+        <button class="inv-tab-btn"        id="invtab-offhand"  onclick="switchInvTab('offhand')"  >🔰 左手</button>
         <button class="inv-tab-btn"        id="invtab-accessory" onclick="switchInvTab('accessory')">💎 アクセ</button>
-        <button class="inv-tab-btn"        id="invtab-ring"    onclick="switchInvTab('ring')"   >💍 指輪</button>
-        <button class="inv-tab-btn"        id="invtab-consume" onclick="switchInvTab('consume')">🧪 消耗品</button>
+        <button class="inv-tab-btn"        id="invtab-consume"  onclick="switchInvTab('consume')"  >🧪 消耗品</button>
       </div>
       <div class="window-body" style="padding:0.6rem" id="inv-list">
       </div>
@@ -1907,7 +1913,7 @@ to   { opacity: 1; transform: translateY(0); }
 <div class="combat-field">
   <div class="combatant" id="player-combatant">
     <span class="combatant-sprite" id="player-sprite">🥷</span>
-    <div class="combatant-name" style="color:var(--accent)">shadow</div>
+    <div class="combatant-name" style="color:var(--accent)" id="combat-player-name">shadow</div>
     <div class="combat-hp-wrap">
       <div class="combat-hp-bar player-combat-hp" id="combat-player-hp" style="width:100%"></div>
     </div>
@@ -1935,9 +1941,9 @@ to   { opacity: 1; transform: translateY(0); }
 </div>
 
 <!-- MP bar -->
-<div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem;font-size:0.7rem;color:var(--text-dim)">
+<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;font-size:0.68rem;color:var(--text-dim)">
   <span style="flex-shrink:0">MP</span>
-  <div style="flex:1;height:5px;background:rgba(123,74,255,0.15);border:1px solid rgba(123,74,255,0.3);border-radius:3px;overflow:hidden">
+  <div style="flex:1;height:4px;background:rgba(123,74,255,0.15);border:1px solid rgba(123,74,255,0.3);border-radius:3px;overflow:hidden">
     <div id="combat-mp-bar" style="height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width 0.4s ease;width:100%"></div>
   </div>
   <span id="combat-mp-text" style="white-space:nowrap;color:var(--accent2)">50 / 50</span>
@@ -1993,7 +1999,8 @@ let G = {
   gold: 0,
   rank: 'E',
   title: null,
-  jobClass: 'ハンター',
+  jobClass: 'ダイバー',
+  weaponType: null,   // 'sword'|'bow'|'rod'|'dagger'|'spear' — 初期選択・変更不可
   kills: 0,
   dungeonsCleared: 0,
   clearedDungeonIds: [],  // クリア済みダンジョンID記録（段階解放用）
@@ -2013,7 +2020,7 @@ let G = {
   dailyQuests: [],
   ranksUnlocked: ['E'],
   // Equipment
-  equipped: { weapon: null, armor: null, accessory: null, ring: null },
+  equipped: { mainhand:null, offhand:null, helm:null, body:null, legs:null, acc1:null, acc2:null },
   fullInventory: [],
   invMax: 30,
   // Dungeon event state
@@ -2025,7 +2032,7 @@ let G = {
   eventActive: null,
   dungeonBerserkTurn: 0,
   // Shop / permanent bonuses
-  bonusAtk: 0, bonusDef: 0, bonusSpd: 0, bonusHp: 0,
+  bonusAtk: 0, bonusDef: 0, bonusSpd: 0, bonusHp: 0, bonusMp: 0,
   revive: 0, expBoost: 0, goldBoost: 0,
   atkTrainCount: 0, defTrainCount: 0, hpTrainCount: 0, spdTrainCount: 0,
   // Skill selection
@@ -2065,8 +2072,9 @@ const ITEM_TEMPLATES = {
   '創造の指輪':        { slot:'ring',   icon:'💫', rarity:'legendary', bonus:{ atk:30, def:20, spd:10 } },
 };
 
-const SLOT_LABELS = { weapon:'武器', armor:'防具', accessory:'アクセサリ', ring:'リング' };
-const SLOT_ICONS  = { weapon:'⚔', armor:'🛡', accessory:'💎', ring:'💍' };
+const SLOT_LABELS = { mainhand:'右手', offhand:'左手', helm:'兜', body:'鎧', legs:'脚', acc1:'アクセサリ1', acc2:'アクセサリ2' };
+const SLOT_ICONS  = { mainhand:'⚔', offhand:'🛡', helm:'⛑', body:'🥋', legs:'👢', acc1:'💎', acc2:'💍' };
+
 
 // Consumables (not equippable)
 const CONSUMABLES = new Set(['HPポーション x2','HPポーション x3','MPポーション x2','エリクシル','大エリクシル']);
@@ -2453,45 +2461,301 @@ function enterRandomDungeon(idx) {
   startCombat();
 }
 
+// =====================================================
+// ===== 武器系統・クラスチェンジ定義 =====
+// =====================================================
+const WEAPON_TYPES = {
+  sword:  { label:'剣',  icon:'⚔',  startItem:'ブロンズの剣',   desc:'バランス型。攻守ともに優れる王道の戦士系統。' },
+  bow:    { label:'弓',  icon:'🏹', startItem:'見習いの短弓',    desc:'高速・遠距離型。先手必勝のスナイパー系統。' },
+  rod:    { label:'杖',  icon:'🪄', startItem:'見習いの魔杖',    desc:'高火力魔法型。MPを使った必殺スキルが光る。' },
+  dagger: { label:'短剣',icon:'🗡', startItem:'錆びたナイフ',    desc:'スピード特化型。クリティカル連発の暗殺系統。' },
+  spear:  { label:'槍',  icon:'🔱', startItem:'木の槍',          desc:'リーチ重視型。防御を貫通する突撃戦法。' },
+};
+
+// 各系統のクラスチェンジツリー（ステータスボーナス+スキル解放付き）
+const JOB_TREES = {
+  sword: [
+    { job:'ソードダイバー',   req:1,  icon:'⚔',  color:'#88aaff',
+      desc:'剣を手に取ったダイバー。全ての基礎がここにある。',
+      statBonus:{atk:0,def:0,hp:0,mp:0,spd:0}, skillUnlock:['focus','sw-slash','regen'], unlockShadow:false, maxShadows:0 },
+    { job:'ブレイドマスター', req:20, icon:'🗡', color:'#4488ff',
+      desc:'剣技を極めた達人。ATK+25 DEF+15 HP+80 が永続付与される。',
+      statBonus:{atk:25,def:15,hp:80,mp:20,spd:5}, skillUnlock:['sw-cross','sw-flame','dark-bind'], unlockShadow:false, maxShadows:0 },
+    { job:'剣聖',             req:50, icon:'⚡', color:'#66bbff',
+      desc:'剣と一体化した者。ATK+60 DEF+35 HP+200 が永続付与される。',
+      statBonus:{atk:60,def:35,hp:200,mp:50,spd:15}, skillUnlock:['sw-master','sw-guard','shadow-veil'], unlockShadow:false, maxShadows:0 },
+    { job:'覇剣の神格',       req:80, icon:'🌌', color:'var(--s-rank)',
+      desc:'剣そのものとなった究極の存在。ATK+120 DEF+70 HP+400 が永続付与される。',
+      statBonus:{atk:120,def:70,hp:400,mp:80,spd:25}, skillUnlock:['sw-domain'], unlockShadow:true, maxShadows:10 },
+  ],
+  bow: [
+    { job:'アローダイバー',   req:1,  icon:'🏹', color:'#aaff88',
+      desc:'弓を選んだダイバー。速度と遠距離攻撃が得意。',
+      statBonus:{atk:0,def:0,hp:0,mp:0,spd:0}, skillUnlock:['focus','bw-shot','regen'], unlockShadow:false, maxShadows:0 },
+    { job:'スナイパー',       req:20, icon:'🎯', color:'#66ff66',
+      desc:'精密射撃の達人。ATK+20 SPD+30 が永続付与される。',
+      statBonus:{atk:20,def:8,hp:60,mp:30,spd:30}, skillUnlock:['bw-pierce','bw-triple','dark-bind'], unlockShadow:false, maxShadows:0 },
+    { job:'影矢の狩人',       req:50, icon:'🌑', color:'#44cc44',
+      desc:'影の矢を放つ狩人。ATK+50 SPD+60 が永続付与される。',
+      statBonus:{atk:50,def:20,hp:160,mp:80,spd:60}, skillUnlock:['bw-shadow','bw-storm','shadow-veil'], unlockShadow:false, maxShadows:0 },
+    { job:'天弓の神格',       req:80, icon:'🌌', color:'var(--s-rank)',
+      desc:'天空から全てを撃ち落とす神格。ATK+90 SPD+120 が永続付与される。',
+      statBonus:{atk:90,def:40,hp:300,mp:150,spd:120}, skillUnlock:['bw-domain'], unlockShadow:true, maxShadows:10 },
+  ],
+  rod: [
+    { job:'ロッドダイバー',   req:1,  icon:'🪄', color:'#ff88ff',
+      desc:'杖を構えたダイバー。MPとスキル威力に特化する。',
+      statBonus:{atk:0,def:0,hp:0,mp:0,spd:0}, skillUnlock:['focus','rd-fire','regen'], unlockShadow:false, maxShadows:0 },
+    { job:'アルケミスト',     req:20, icon:'🔮', color:'#dd66ff',
+      desc:'魔法の錬金術師。ATK+15 MP+80 が永続付与される。',
+      statBonus:{atk:15,def:5,hp:50,mp:80,spd:8}, skillUnlock:['rd-ice','rd-thunder','dark-bind'], unlockShadow:false, maxShadows:0 },
+    { job:'魔導覇王',         req:50, icon:'💥', color:'#aa44ff',
+      desc:'魔力の頂点に立つ者。ATK+40 MP+200 が永続付与される。',
+      statBonus:{atk:40,def:15,hp:120,mp:200,spd:15}, skillUnlock:['rd-meteor','rd-mp-restore','shadow-veil'], unlockShadow:false, maxShadows:0 },
+    { job:'魔焔の神格',       req:80, icon:'🌌', color:'var(--s-rank)',
+      desc:'魔法と炎を司る神格。ATK+80 MP+400 が永続付与される。',
+      statBonus:{atk:80,def:30,hp:250,mp:400,spd:20}, skillUnlock:['rd-domain'], unlockShadow:true, maxShadows:10 },
+  ],
+  dagger: [
+    { job:'ダガーダイバー',   req:1,  icon:'🗡', color:'#ffaa44',
+      desc:'短剣を選んだダイバー。速度とクリティカル率が高い。',
+      statBonus:{atk:0,def:0,hp:0,mp:0,spd:0}, skillUnlock:['focus','dg-stab','regen'], unlockShadow:true, maxShadows:3 },
+    { job:'シャドウブレード',  req:20, icon:'🌑', color:'#ff8822',
+      desc:'影の刃使い。ATK+22 SPD+25 が永続付与される。',
+      statBonus:{atk:22,def:8,hp:60,mp:40,spd:25}, skillUnlock:['dg-poison','dg-backstab','dark-bind'], unlockShadow:true, maxShadows:5 },
+    { job:'暗殺鬼',           req:50, icon:'☠',  color:'#dd4400',
+      desc:'完全な闇に溶ける暗殺者。ATK+55 SPD+55 が永続付与される。',
+      statBonus:{atk:55,def:20,hp:150,mp:90,spd:55}, skillUnlock:['dg-flurry','dg-vanish','shadow-veil'], unlockShadow:true, maxShadows:8 },
+    { job:'虚刃の神格',       req:80, icon:'🌌', color:'var(--s-rank)',
+      desc:'存在すら曖昧な神格。ATK+100 SPD+110 が永続付与される。',
+      statBonus:{atk:100,def:40,hp:280,mp:160,spd:110}, skillUnlock:['dg-domain'], unlockShadow:true, maxShadows:12 },
+  ],
+  spear: [
+    { job:'ランサーダイバー',  req:1,  icon:'🔱', color:'#ffdd44',
+      desc:'槍を構えたダイバー。高いATKと貫通力が持ち味。',
+      statBonus:{atk:0,def:0,hp:0,mp:0,spd:0}, skillUnlock:['focus','sp-thrust','regen'], unlockShadow:false, maxShadows:0 },
+    { job:'ヴァルキリー',     req:20, icon:'⚡', color:'#ffcc00',
+      desc:'戦乙女の魂を宿す者。ATK+30 DEF+12 HP+90 が永続付与される。',
+      statBonus:{atk:30,def:12,hp:90,mp:30,spd:12}, skillUnlock:['sp-sweep','sp-charge','dark-bind'], unlockShadow:false, maxShadows:0 },
+    { job:'神槍士',           req:50, icon:'🌪', color:'#ffaa00',
+      desc:'嵐を呼ぶ槍士。ATK+75 DEF+30 HP+220 が永続付与される。',
+      statBonus:{atk:75,def:30,hp:220,mp:60,spd:25}, skillUnlock:['sp-lightning','sp-valkyrie','shadow-veil'], unlockShadow:false, maxShadows:0 },
+    { job:'烈槍の神格',       req:80, icon:'🌌', color:'var(--s-rank)',
+      desc:'天を貫く神格。ATK+150 DEF+60 HP+450 が永続付与される。',
+      statBonus:{atk:150,def:60,hp:450,mp:100,spd:40}, skillUnlock:['sp-domain'], unlockShadow:true, maxShadows:10 },
+  ],
+};
+
+// 系統別武器プール（各ランク）
+const WEAPON_POOLS = {
+  sword: {
+    E:['ブロンズの剣','アイアンソード','黒鉄の剣'],
+    D:['アイアンソード','戦士の大剣','聖騎士の剣','血の大剣'],
+    C:['フロストソード','炎の剣','天雷の剣'],
+    B:['古代の魔剣','悪魔の大剣','混沌の刃'],
+    A:['覇王の剣','滅亡の刃','龍殺しの剣'],
+    S:['神話の聖剣','覇王の剣','影の王の権杖'],
+  },
+  bow: {
+    E:['見習いの短弓'],
+    D:['ハンターの弓','銀の矢弓'],
+    C:['雷鳴の弓','影の短弓'],
+    B:['嵐の弓','深淵の矢'],
+    A:['覇弓','滅亡の矢'],
+    S:['世界樹の弓','神話の弓'],
+  },
+  rod: {
+    E:['見習いの魔杖','呪術師の杖'],
+    D:['魔導師の杖','炎の杖'],
+    C:['古代の魔杖','氷の杖'],
+    B:['深淵の鎌','魔力の杖'],
+    A:['神滅の杖','影の王の権杖'],
+    S:['影の王の権杖','神滅の杖'],
+  },
+  dagger: {
+    E:['錆びたナイフ','盗賊のナイフ'],
+    D:['銀の短剣','毒牙の短剣'],
+    C:['影の短剣','深淵の刃'],
+    B:['影の刃双剣','混沌の刃'],
+    A:['暗黒の鎌','滅亡の刃'],
+    S:['虚無の刃','暗黒の鎌'],
+  },
+  spear: {
+    E:['木の槍','見習いの槍'],
+    D:['嵐の槍','鉄の槍'],
+    C:['大地の槌','聖槍'],
+    B:['業火の斧','雷の槍'],
+    A:['神槍','覇王の槍'],
+    S:['神話の聖剣','世界樹の弓'],
+  },
+};
+
+// 弓・杖・短剣・槍の追加アイテムテンプレートを登録
+Object.assign(ITEM_TEMPLATES, {
+  '見習いの短弓': { slot:'weapon', icon:'🏹', rarity:'common',    bonus:{ atk:2, spd:5 } },
+  'ハンターの弓': { slot:'weapon', icon:'🏹', rarity:'common',    bonus:{ atk:8, spd:4 } },
+  '銀の矢弓':     { slot:'weapon', icon:'🏹', rarity:'common',    bonus:{ atk:10, spd:6 } },
+  '雷鳴の弓':     { slot:'weapon', icon:'⚡', rarity:'rare',      bonus:{ atk:16, spd:8 } },
+  '影の短弓':     { slot:'weapon', icon:'🌑', rarity:'rare',      bonus:{ atk:14, spd:10 } },
+  '嵐の弓':       { slot:'weapon', icon:'🌪', rarity:'epic',      bonus:{ atk:28, spd:15 } },
+  '深淵の矢':     { slot:'weapon', icon:'💀', rarity:'epic',      bonus:{ atk:30, spd:12 } },
+  '覇弓':         { slot:'weapon', icon:'🏹', rarity:'legendary', bonus:{ atk:55, spd:25 } },
+  '滅亡の矢':     { slot:'weapon', icon:'☠',  rarity:'legendary', bonus:{ atk:58, spd:20 } },
+  '神話の弓':     { slot:'weapon', icon:'🌟', rarity:'legendary', bonus:{ atk:68, spd:30 } },
+  '見習いの魔杖': { slot:'weapon', icon:'🪄', rarity:'common',    bonus:{ atk:2, mp:20 } },
+  '炎の杖':       { slot:'weapon', icon:'🔥', rarity:'common',    bonus:{ atk:8, mp:15 } },
+  '古代の魔杖':   { slot:'weapon', icon:'🔮', rarity:'rare',      bonus:{ atk:14, mp:35 } },
+  '氷の杖':       { slot:'weapon', icon:'❄',  rarity:'rare',      bonus:{ atk:12, mp:40 } },
+  '魔力の杖':     { slot:'weapon', icon:'💫', rarity:'epic',      bonus:{ atk:26, mp:60 } },
+  '木の槍':       { slot:'weapon', icon:'🔱', rarity:'common',    bonus:{ atk:4, def:2 } },
+  '見習いの槍':   { slot:'weapon', icon:'🔱', rarity:'common',    bonus:{ atk:5, def:3 } },
+  '鉄の槍':       { slot:'weapon', icon:'🔱', rarity:'common',    bonus:{ atk:9, def:4 } },
+  '聖槍':         { slot:'weapon', icon:'⚔',  rarity:'rare',      bonus:{ atk:16, def:8 } },
+  '雷の槍':       { slot:'weapon', icon:'⚡', rarity:'epic',      bonus:{ atk:35, def:12 } },
+  '神槍':         { slot:'weapon', icon:'🔱', rarity:'legendary', bonus:{ atk:62, def:25 } },
+  '覇王の槍':     { slot:'weapon', icon:'🌪', rarity:'legendary', bonus:{ atk:58, def:20 } },
+  '深淵の刃':     { slot:'weapon', icon:'🌑', rarity:'rare',      bonus:{ atk:14, spd:12 } },
+});
+
+// =====================================================
 // ===== LOOT TABLES =====
+// =====================================================
 const LOOT_TABLES = {
   E: {
-    weapons:     ['ブロンズの剣','アイアンソード','錆びたナイフ','見習いの杖','黒鉄の剣','呪術師の杖','盗賊のナイフ'],
-    armors:      ['布の鎧','皮の盾','見習いのローブ','革の鎧','鎖帷子','魔導師のローブ'],
-    accessories: ['魔力の指輪','魔法の石','お守り','力の護符','知恵の護符','速度の護符','力の指輪','守りの指輪'],
+    weapons:     ['ブロンズの剣','アイアンソード','錆びたナイフ','見習いの杖','黒鉄の剣','呪術師の杖','盗賊のナイフ','木の槍','見習いの短弓'],
+    helms:       ['皮の兜','布の頭巾','見習いのヘルム'],
+    bodies:      ['布の鎧','革の鎧','見習いのローブ','鎖帷子'],
+    legs:        ['革のブーツ','布の脚当て'],
+    offhands:    ['木の盾','粗末な盾'],
+    accessories: ['魔力の指輪','魔法の石','お守り','力の護符','知恵の護符','速度の護符'],
     consumables: ['HPポーション x2','HPポーション x3','MPポーション x2'],
   },
   D: {
     weapons:     ['アイアンソード','銀の短剣','戦士の大剣','魔導師の杖','黒鉄の剣','盗賊のナイフ','聖騎士の剣','嵐の槍'],
-    armors:      ['アイアンアーマー','毒耐性の盾','騎士の兜','革の鎧','鎖帷子','騎士の甲冑'],
+    helms:       ['騎士の兜','鉄の兜','魔法使いのフード'],
+    bodies:      ['アイアンアーマー','革の鎧','鎖帷子','騎士の甲冑'],
+    legs:        ['鉄のグリーブ','革のロングブーツ','魔法のサンダル'],
+    offhands:    ['アイアンシールド','魔法の小盾','騎士の盾'],
     accessories: ['魔法の石','魔晶石','戦士のお守り','力の護符','速度の護符','炎の指輪','氷の指輪'],
     consumables: ['HPポーション x3','MPポーション x2','エリクシル'],
   },
   C: {
     weapons:     ['フロストソード','炎の剣','雷鳴の弓','影の短剣','聖騎士の剣','血の大剣','嵐の槍','毒牙の短剣','大地の槌'],
-    armors:      ['毒耐性の盾','ミスリルアーマー','古代の盾','騎士の甲冑','シャドウコート','聖なる外套'],
-    accessories: ['魔晶石','魔力の大結晶','古代の護符','竜の爪','月光の石','炎の指輪','氷の指輪'],
+    helms:       ['ミスリルの兜','古代の頭冠','シャドウフード'],
+    bodies:      ['毒耐性の鎧','ミスリルアーマー','シャドウコート','聖なる外套'],
+    legs:        ['ミスリルのグリーブ','影の脚当て','聖なるサンダル'],
+    offhands:    ['ミスリルの盾','古代の盾','魔力の小楯'],
+    accessories: ['魔晶石','魔力の大結晶','古代の護符','竜の爪','月光の石'],
     consumables: ['エリクシル','大エリクシル','MPポーション x2'],
   },
   B: {
     weapons:     ['古代の魔剣','悪魔の大剣','混沌の刃','暗黒の鎌','深淵の鎌','天雷の剣','業火の斧','影の刃双剣'],
-    armors:      ['王者のローブ','悪魔の鎧','闇の外套','竜鱗の盾','闇の鎧','精霊の衣'],
-    accessories: ['魔力の大結晶','魔力結晶x5','悪魔の指輪','影の心臓','時の砂時計','破壊の宝珠','古代王の指輪','影の指輪'],
+    helms:       ['悪魔の兜','竜鱗の兜','闇の仮面'],
+    bodies:      ['王者のローブ','悪魔の鎧','闇の外套','竜鱗の鎧B'],
+    legs:        ['竜鱗のグリーブ','悪魔の脚当て','闇のブーツ'],
+    offhands:    ['竜鱗の盾','魔将の盾','影の盾'],
+    accessories: ['魔力の大結晶','魔力結晶x5','悪魔の指輪','影の心臓','時の砂時計'],
     consumables: ['大エリクシル','神聖な薬'],
   },
   A: {
     weapons:     ['悪魔の大剣','影の王の権杖','覇王の剣','滅亡の刃','天雷の剣','深淵の鎌','業火の斧','龍殺しの剣','神滅の杖'],
-    armors:      ['神話の鎧','龍鱗の鎧','天使の外套','竜鱗の盾','虚空の鎧','精霊の衣'],
-    accessories: ['魔力結晶x5','闇の王冠','創造の指輪','神の欠片','影の心臓','時の砂時計','破壊の宝珠','神話の指輪'],
+    helms:       ['神話の兜','龍皇の兜','天使の冠'],
+    bodies:      ['神話の鎧','龍鱗の鎧','天使の外套','虚空の鎧'],
+    legs:        ['神話のグリーブ','龍鱗のブーツ','天使の足甲'],
+    offhands:    ['神話の盾','龍王の盾','天使の聖盾'],
+    accessories: ['魔力結晶x5','闇の王冠','創造の指輪','神の欠片','影の心臓'],
     consumables: ['大エリクシル','神聖な薬'],
   },
   S: {
     weapons:     ['影の王の権杖','神話の聖剣','世界樹の弓','虚無の刃','龍殺しの剣','神滅の杖','覇王の剣','滅亡の刃'],
-    armors:      ['神話の鎧','創造の鎧','世界の心臓','虚空の鎧','龍鱗の鎧','天使の外套'],
-    accessories: ['創造の指輪','闇の王冠','運命の石','神の欠片','神話の指輪','時の砂時計'],
+    helms:       ['創造の兜','神威の冠','絶対の仮面'],
+    bodies:      ['神話の鎧','創造の鎧','世界の心臓'],
+    legs:        ['創造のグリーブ','神威の足甲','絶対のブーツ'],
+    offhands:    ['創造の盾','神威の盾','絶対の守護盾'],
+    accessories: ['創造の指輪','闇の王冠','運命の石','神の欠片','神話の指輪'],
     consumables: ['大エリクシル'],
   },
 };
+
+// ── 新規 ITEM_TEMPLATES（helm/body/legs/offhand スロット） ──
+Object.assign(ITEM_TEMPLATES, {
+  // 兜 (helm)
+  '皮の兜':          { slot:'helm', icon:'⛑', rarity:'common',    bonus:{ def:3, hp:15 } },
+  '布の頭巾':        { slot:'helm', icon:'🎩', rarity:'common',    bonus:{ def:2, mp:10 } },
+  '見習いのヘルム':  { slot:'helm', icon:'⛑', rarity:'common',    bonus:{ def:4, hp:20 } },
+  '鉄の兜':          { slot:'helm', icon:'⛑', rarity:'common',    bonus:{ def:8, hp:30 } },
+  '魔法使いのフード':{ slot:'helm', icon:'🎩', rarity:'common',    bonus:{ def:5, mp:25 } },
+  'ミスリルの兜':    { slot:'helm', icon:'⛑', rarity:'rare',      bonus:{ def:16, hp:55 } },
+  '古代の頭冠':      { slot:'helm', icon:'👑', rarity:'rare',      bonus:{ def:12, atk:8 } },
+  'シャドウフード':  { slot:'helm', icon:'🌑', rarity:'rare',      bonus:{ def:10, spd:10 } },
+  '悪魔の兜':        { slot:'helm', icon:'😈', rarity:'epic',      bonus:{ def:24, hp:80 } },
+  '竜鱗の兜':        { slot:'helm', icon:'🐉', rarity:'epic',      bonus:{ def:28, hp:70 } },
+  '闇の仮面':        { slot:'helm', icon:'🌑', rarity:'epic',      bonus:{ def:20, spd:15, mp:30 } },
+  '神話の兜':        { slot:'helm', icon:'✨', rarity:'legendary', bonus:{ def:45, hp:150 } },
+  '龍皇の兜':        { slot:'helm', icon:'🐉', rarity:'legendary', bonus:{ def:50, hp:130, atk:20 } },
+  '天使の冠':        { slot:'helm', icon:'👼', rarity:'legendary', bonus:{ def:40, hp:120, mp:80 } },
+  '創造の兜':        { slot:'helm', icon:'🌟', rarity:'legendary', bonus:{ def:60, hp:200, mp:100 } },
+  '神威の冠':        { slot:'helm', icon:'⭐', rarity:'legendary', bonus:{ def:55, hp:180, atk:30 } },
+  '絶対の仮面':      { slot:'helm', icon:'🌌', rarity:'legendary', bonus:{ def:52, hp:160, spd:30 } },
+  // 鎧 (body) — 旧armor → body に統合
+  '布の鎧':          { slot:'body', icon:'👕', rarity:'common',    bonus:{ def:3, hp:15 } },
+  '革の鎧':          { slot:'body', icon:'🧥', rarity:'common',    bonus:{ def:5, hp:25 } },
+  '見習いのローブ':  { slot:'body', icon:'🧥', rarity:'common',    bonus:{ def:4, mp:12 } },
+  '鎖帷子':          { slot:'body', icon:'🛡', rarity:'common',    bonus:{ def:7, hp:30 } },
+  'アイアンアーマー':{ slot:'body', icon:'🛡', rarity:'common',    bonus:{ def:10, hp:40 } },
+  '騎士の甲冑':      { slot:'body', icon:'⚔',  rarity:'common',    bonus:{ def:12, hp:50 } },
+  '毒耐性の鎧':      { slot:'body', icon:'🛡', rarity:'rare',      bonus:{ def:14, hp:45 } },
+  'ミスリルアーマー':{ slot:'body', icon:'🛡', rarity:'rare',      bonus:{ def:18, hp:70 } },
+  'シャドウコート':  { slot:'body', icon:'🌑', rarity:'rare',      bonus:{ def:14, spd:12 } },
+  '聖なる外套':      { slot:'body', icon:'👼', rarity:'rare',      bonus:{ def:16, mp:50 } },
+  '王者のローブ':    { slot:'body', icon:'👑', rarity:'epic',      bonus:{ def:20, mp:80 } },
+  '悪魔の鎧':        { slot:'body', icon:'😈', rarity:'epic',      bonus:{ def:26, hp:90 } },
+  '闇の外套':        { slot:'body', icon:'🌑', rarity:'epic',      bonus:{ def:20, mp:70 } },
+  '竜鱗の鎧B':       { slot:'body', icon:'🐉', rarity:'epic',      bonus:{ def:30, hp:100 } },
+  '精霊の衣':        { slot:'body', icon:'✨', rarity:'epic',      bonus:{ def:22, mp:60, spd:10 } },
+  '神話の鎧':        { slot:'body', icon:'🌟', rarity:'legendary', bonus:{ def:48, hp:160 } },
+  '龍鱗の鎧':        { slot:'body', icon:'🐉', rarity:'legendary', bonus:{ def:52, hp:180 } },
+  '天使の外套':      { slot:'body', icon:'👼', rarity:'legendary', bonus:{ def:44, mp:90 } },
+  '虚空の鎧':        { slot:'body', icon:'🌌', rarity:'legendary', bonus:{ def:55, hp:200 } },
+  '創造の鎧':        { slot:'body', icon:'⭐', rarity:'legendary', bonus:{ def:65, hp:250, mp:60 } },
+  '世界の心臓':      { slot:'body', icon:'💫', rarity:'legendary', bonus:{ def:58, hp:300 } },
+  // 脚 (legs)
+  '革のブーツ':      { slot:'legs', icon:'👢', rarity:'common',    bonus:{ def:2, spd:5 } },
+  '布の脚当て':      { slot:'legs', icon:'👖', rarity:'common',    bonus:{ def:2, hp:10 } },
+  '鉄のグリーブ':    { slot:'legs', icon:'⚙', rarity:'common',    bonus:{ def:6, spd:3 } },
+  '革のロングブーツ':{ slot:'legs', icon:'👢', rarity:'common',    bonus:{ def:5, spd:8 } },
+  '魔法のサンダル':  { slot:'legs', icon:'✨', rarity:'common',    bonus:{ def:3, mp:15, spd:5 } },
+  'ミスリルのグリーブ':{ slot:'legs', icon:'⚙', rarity:'rare',    bonus:{ def:14, spd:8 } },
+  '影の脚当て':      { slot:'legs', icon:'🌑', rarity:'rare',      bonus:{ def:10, spd:18 } },
+  '聖なるサンダル':  { slot:'legs', icon:'✨', rarity:'rare',      bonus:{ def:12, mp:35, spd:6 } },
+  '竜鱗のグリーブ':  { slot:'legs', icon:'🐉', rarity:'epic',      bonus:{ def:22, spd:12, hp:40 } },
+  '悪魔の脚当て':    { slot:'legs', icon:'😈', rarity:'epic',      bonus:{ def:20, atk:15, spd:8 } },
+  '闇のブーツ':      { slot:'legs', icon:'🌑', rarity:'epic',      bonus:{ def:16, spd:25 } },
+  '神話のグリーブ':  { slot:'legs', icon:'✨', rarity:'legendary', bonus:{ def:38, spd:22, hp:80 } },
+  '龍鱗のブーツ':    { slot:'legs', icon:'🐉', rarity:'legendary', bonus:{ def:42, spd:18, hp:100 } },
+  '天使の足甲':      { slot:'legs', icon:'👼', rarity:'legendary', bonus:{ def:36, spd:20, mp:50 } },
+  '創造のグリーブ':  { slot:'legs', icon:'🌟', rarity:'legendary', bonus:{ def:50, spd:30, hp:120 } },
+  '神威の足甲':      { slot:'legs', icon:'⭐', rarity:'legendary', bonus:{ def:46, spd:28, atk:20 } },
+  '絶対のブーツ':    { slot:'legs', icon:'🌌', rarity:'legendary', bonus:{ def:44, spd:40 } },
+  // 左手 (offhand) 盾系
+  '木の盾':          { slot:'offhand', icon:'🔰', rarity:'common',    bonus:{ def:5, hp:20 } },
+  '粗末な盾':        { slot:'offhand', icon:'🔰', rarity:'common',    bonus:{ def:4, hp:15 } },
+  'アイアンシールド':{ slot:'offhand', icon:'🛡', rarity:'common',    bonus:{ def:10, hp:35 } },
+  '魔法の小盾':      { slot:'offhand', icon:'🔰', rarity:'common',    bonus:{ def:7, mp:20 } },
+  '騎士の盾':        { slot:'offhand', icon:'🛡', rarity:'common',    bonus:{ def:12, hp:45 } },
+  'ミスリルの盾':    { slot:'offhand', icon:'🛡', rarity:'rare',      bonus:{ def:20, hp:70 } },
+  '古代の盾':        { slot:'offhand', icon:'🔰', rarity:'rare',      bonus:{ def:22, hp:60 } },
+  '魔力の小楯':      { slot:'offhand', icon:'🔮', rarity:'rare',      bonus:{ def:15, mp:45 } },
+  '竜鱗の盾':        { slot:'offhand', icon:'🐉', rarity:'epic',      bonus:{ def:32, hp:90 } },
+  '魔将の盾':        { slot:'offhand', icon:'😈', rarity:'epic',      bonus:{ def:28, atk:12, hp:60 } },
+  '影の盾':          { slot:'offhand', icon:'🌑', rarity:'epic',      bonus:{ def:25, spd:10, hp:50 } },
+  '神話の盾':        { slot:'offhand', icon:'✨', rarity:'legendary', bonus:{ def:48, hp:150 } },
+  '龍王の盾':        { slot:'offhand', icon:'🐉', rarity:'legendary', bonus:{ def:55, hp:180, atk:15 } },
+  '天使の聖盾':      { slot:'offhand', icon:'👼', rarity:'legendary', bonus:{ def:50, hp:140, mp:60 } },
+  '創造の盾':        { slot:'offhand', icon:'🌟', rarity:'legendary', bonus:{ def:65, hp:220 } },
+  '神威の盾':        { slot:'offhand', icon:'⭐', rarity:'legendary', bonus:{ def:60, hp:200, atk:20 } },
+  '絶対の守護盾':    { slot:'offhand', icon:'🌌', rarity:'legendary', bonus:{ def:70, hp:250 } },
+});
 
 // Add missing items to ITEM_TEMPLATES
 Object.assign(ITEM_TEMPLATES, {
@@ -2535,31 +2799,47 @@ function rollLoot(rank, isBoss=false) {
   const table = LOOT_TABLES[rank] || LOOT_TABLES['E'];
   const results = [];
   const rand = () => Math.random();
+  const pick = arr => arr[Math.floor(rand() * arr.length)];
 
-  // Consumable: always 1
-  results.push(table.consumables[Math.floor(rand() * table.consumables.length)]);
+  // 消耗品: 常時1個
+  results.push(pick(table.consumables));
 
-  // Weapon: boss=80%, normal=30%
+  // 武器（系統フィルタ）
   if (rand() < (isBoss ? 0.85 : 0.35)) {
-    results.push(table.weapons[Math.floor(rand() * table.weapons.length)]);
+    const wt = G.weaponType;
+    const pool = (wt && WEAPON_POOLS[wt] && WEAPON_POOLS[wt][rank])
+      ? WEAPON_POOLS[wt][rank]
+      : table.weapons;
+    results.push(pick(pool));
   }
 
-  // Armor: boss=70%, normal=20%
-  if (rand() < (isBoss ? 0.75 : 0.22)) {
-    results.push(table.armors[Math.floor(rand() * table.armors.length)]);
-  }
+  // 兜
+  if (rand() < (isBoss ? 0.60 : 0.18)) results.push(pick(table.helms));
 
-  // Accessory: boss=60%, normal=15%
-  if (rand() < (isBoss ? 0.65 : 0.15)) {
-    results.push(table.accessories[Math.floor(rand() * table.accessories.length)]);
-  }
+  // 鎧
+  if (rand() < (isBoss ? 0.65 : 0.20)) results.push(pick(table.bodies));
 
-  // Rare bonus drop: boss=25%, normal=5%
+  // 脚
+  if (rand() < (isBoss ? 0.55 : 0.16)) results.push(pick(table.legs));
+
+  // 盾/左手（弓・槍・杖以外のみ）
+  const canOffhand = !['bow','spear','rod'].includes(G.weaponType);
+  if (canOffhand && rand() < (isBoss ? 0.50 : 0.14)) results.push(pick(table.offhands));
+
+  // アクセサリ
+  if (rand() < (isBoss ? 0.65 : 0.15)) results.push(pick(table.accessories));
+
+  // レアボーナスドロップ
   if (rand() < (isBoss ? 0.28 : 0.05)) {
     const nextRanks = {E:'D',D:'C',C:'B',B:'A',A:'S',S:'S'};
     const higherTable = LOOT_TABLES[nextRanks[rank]] || table;
-    const pool = [...higherTable.weapons, ...higherTable.armors];
-    results.push('✨ ' + pool[Math.floor(rand() * pool.length)]);
+    const wt = G.weaponType;
+    const higherRank = nextRanks[rank] || rank;
+    const wPool = (wt && WEAPON_POOLS[wt] && WEAPON_POOLS[wt][higherRank])
+      ? WEAPON_POOLS[wt][higherRank]
+      : higherTable.weapons;
+    const pool = [...wPool, ...higherTable.bodies, ...higherTable.helms];
+    results.push('✨ ' + pick(pool));
   }
 
   return results;
@@ -3089,21 +3369,46 @@ const LAST_DUNGEON = {
 
 
 const ALL_SKILLS = [
-  { id:'focus',        name:'集中',            icon:'🎯', desc:'精神を研ぎ澄まし次の攻撃が必ずクリティカル',            mpCost:8,  dmgMult:2.2, type:'damage', element:'none',  unlockLevel:1,  unlockDesc:'覚醒時に習得' },
-  { id:'dash',         name:'シャドウダッシュ', icon:'💨', desc:'瞬速の踏み込みで敵の防御を無視した一撃 [風]',          mpCost:12, dmgMult:1.9, type:'damage', element:'wind',  unlockLevel:5,  unlockDesc:'Lv5で習得' },
-  { id:'regen',        name:'影の回復',         icon:'💚', desc:'影の力でHP20%を回復する',                              mpCost:15, dmgMult:0,   type:'heal',   element:'dark',  unlockLevel:7,  unlockDesc:'Lv7で習得' },
-  { id:'shadow-step',  name:'シャドウステップ', icon:'🌑', desc:'影を踏み台に連続3ヒット [闇] 光属性に特効',           mpCost:20, dmgMult:2.8, type:'multi',  element:'dark',  unlockLevel:15, unlockDesc:'Lv15で習得' },
-  { id:'dark-bind',    name:'暗黒縛鎖',         icon:'⛓', desc:'敵ATKを2ターン半減 [闇]',                              mpCost:18, dmgMult:1.2, type:'debuff', element:'dark',  unlockLevel:18, unlockDesc:'Lv18で習得' },
-  { id:'mana-burst',   name:'魔力爆発',         icon:'💥', desc:'溜め込んだ魔力を爆発させる広域攻撃 [火]',             mpCost:25, dmgMult:3.2, type:'damage', element:'fire',  unlockLevel:22, unlockDesc:'Lv22で習得' },
-  { id:'arise',        name:'アライズ',         icon:'💀', desc:'倒したモンスターを影の兵士として召喚 [闇]',           mpCost:30, dmgMult:3.0, type:'damage', element:'dark',  unlockLevel:30, unlockDesc:'Lv30で習得' },
-  { id:'shadow-army',  name:'影の猛攻',         icon:'👥', desc:'全影の兵士が一斉突撃（兵士数×倍率）[闇]',            mpCost:35, dmgMult:2.5, type:'multi',  element:'dark',  unlockLevel:35, unlockDesc:'Lv35で習得' },
-  { id:'death-mark',   name:'死の刻印',         icon:'☠', desc:'敵に刻印を刻み受けるダメージを1.5倍 [闇]',            mpCost:28, dmgMult:1.5, type:'debuff', element:'dark',  unlockLevel:40, unlockDesc:'Lv40で習得' },
-  { id:'void-slash',   name:'虚無斬',           icon:'🌀', desc:'空間を切り裂く極大の斬撃 [闇]',                       mpCost:40, dmgMult:4.0, type:'damage', element:'dark',  unlockLevel:50, unlockDesc:'Lv50で習得' },
-  { id:'shadow-veil',  name:'影のヴェール',     icon:'🛡', desc:'次の被ダメージを80%軽減する [闇]',                    mpCost:35, dmgMult:0,   type:'buff',   element:'dark',  unlockLevel:55, unlockDesc:'Lv55で習得' },
-  { id:'flame-slash',  name:'烈火の斬撃',       icon:'🔥', desc:'炎を纏う強力な斬撃 [火] 水属性が弱点',               mpCost:38, dmgMult:3.5, type:'damage', element:'fire',  unlockLevel:58, unlockDesc:'Lv58で習得' },
-  { id:'domain',       name:'???の領域',        icon:'👑', desc:'未知の権能が世界を支配する究極奥義 [闇]',             mpCost:60, dmgMult:6.0, type:'damage', element:'dark',  unlockLevel:60, unlockDesc:'Lv60で習得' },
-  { id:'soul-devour',  name:'魂喰らい',         icon:'🌟', desc:'敵の魂を喰らいHP30%回復＋ATK永続+10 [闇]',           mpCost:50, dmgMult:3.5, type:'damage', element:'dark',  unlockLevel:70, unlockDesc:'Lv70で習得' },
-  { id:'eternal-night',name:'永劫の夜',         icon:'🌌', desc:'永遠の闇に覆われた最凶の全体殲滅技 [闇] 全属性特効', mpCost:80, dmgMult:8.0, type:'damage', element:'dark',  unlockLevel:80, unlockDesc:'Lv80で習得' },
+  // 共通
+  { id:'focus',        wt:'all',    name:'集中',           icon:'🎯', desc:'次の攻撃が必ずクリティカル',                           mpCost:8,  dmgMult:2.2, type:'damage', element:'none',  unlockLevel:1  },
+  { id:'regen',        wt:'all',    name:'回復',           icon:'💚', desc:'体内の力でHP20%を回復する',                            mpCost:15, dmgMult:0,   type:'heal',   element:'none',  unlockLevel:7  },
+  { id:'dark-bind',    wt:'all',    name:'縛鎖',           icon:'⛓', desc:'敵ATKを2ターン半減する',                               mpCost:18, dmgMult:1.2, type:'debuff', element:'dark',  unlockLevel:18 },
+  { id:'shadow-veil',  wt:'all',    name:'防護の構え',     icon:'🛡', desc:'次の被ダメージを80%軽減する',                          mpCost:35, dmgMult:0,   type:'buff',   element:'none',  unlockLevel:55 },
+  // 剣
+  { id:'sw-slash',     wt:'sword',  name:'斬撃',           icon:'⚔',  desc:'鋭い一閃で敵を斬る [無]',                             mpCost:10, dmgMult:2.0, type:'damage', element:'none',  unlockLevel:3  },
+  { id:'sw-cross',     wt:'sword',  name:'十字斬り',       icon:'✝',  desc:'十字を描く二段斬撃 [無] 2ヒット',                     mpCost:18, dmgMult:2.6, type:'multi',  element:'none',  unlockLevel:12 },
+  { id:'sw-flame',     wt:'sword',  name:'炎刃',           icon:'🔥', desc:'炎を纏った剣撃 [火] 水属性に特効',                    mpCost:22, dmgMult:3.0, type:'damage', element:'fire',  unlockLevel:22 },
+  { id:'sw-guard',     wt:'sword',  name:'鉄壁の構え',     icon:'🛡', desc:'自身のDEFを1ターン2倍にする',                          mpCost:20, dmgMult:0,   type:'buff',   element:'none',  unlockLevel:30 },
+  { id:'sw-master',    wt:'sword',  name:'剣聖の一撃',     icon:'⚡', desc:'防御無視の超高火力 [無]',                             mpCost:40, dmgMult:5.0, type:'damage', element:'none',  unlockLevel:50 },
+  { id:'sw-domain',    wt:'sword',  name:'覇剣領域',       icon:'🌌', desc:'剣の気配が世界を支配する [無] 全属性特効',            mpCost:65, dmgMult:7.0, type:'damage', element:'none',  unlockLevel:75 },
+  // 弓
+  { id:'bw-shot',      wt:'bow',    name:'速射',           icon:'🏹', desc:'素早い一射 [風]',                                     mpCost:8,  dmgMult:1.8, type:'damage', element:'wind',  unlockLevel:3  },
+  { id:'bw-pierce',    wt:'bow',    name:'貫通矢',         icon:'🎯', desc:'敵の防御を無視する一矢 [風]',                          mpCost:16, dmgMult:2.2, type:'damage', element:'wind',  unlockLevel:10 },
+  { id:'bw-triple',    wt:'bow',    name:'三連射',         icon:'💨', desc:'3本の矢を同時に放つ [風] 3ヒット',                    mpCost:24, dmgMult:2.4, type:'multi',  element:'wind',  unlockLevel:20 },
+  { id:'bw-shadow',    wt:'bow',    name:'影矢',           icon:'🌑', desc:'闇の矢が敵を貫通する [闇] 光に特効',                  mpCost:28, dmgMult:3.2, type:'damage', element:'dark',  unlockLevel:35 },
+  { id:'bw-storm',     wt:'bow',    name:'嵐の矢群',       icon:'🌪', desc:'無数の矢で敵を包囲する [風] 5ヒット',                 mpCost:45, dmgMult:3.0, type:'multi',  element:'wind',  unlockLevel:55 },
+  { id:'bw-domain',    wt:'bow',    name:'天弓領域',       icon:'🌌', desc:'天空から全てを撃ち落とす究極技 [風]',                 mpCost:65, dmgMult:6.5, type:'damage', element:'wind',  unlockLevel:75 },
+  // 杖
+  { id:'rd-fire',      wt:'rod',    name:'ファイアボール', icon:'🔥', desc:'炎の球を投げつける [火]',                             mpCost:12, dmgMult:2.2, type:'damage', element:'fire',  unlockLevel:3  },
+  { id:'rd-ice',       wt:'rod',    name:'アイスランス',   icon:'❄',  desc:'氷の槍を放つ [水]',                                   mpCost:14, dmgMult:2.0, type:'damage', element:'water', unlockLevel:10 },
+  { id:'rd-thunder',   wt:'rod',    name:'サンダーボルト', icon:'⚡', desc:'雷撃を放つ [風] 2ヒット',                             mpCost:20, dmgMult:2.8, type:'multi',  element:'wind',  unlockLevel:20 },
+  { id:'rd-meteor',    wt:'rod',    name:'メテオ',         icon:'💥', desc:'隕石を召喚する超高火力魔法 [火]',                    mpCost:35, dmgMult:4.0, type:'damage', element:'fire',  unlockLevel:35 },
+  { id:'rd-mp-restore',wt:'rod',    name:'魔力収束',       icon:'🔮', desc:'MP+30回復し次スキル威力+50%',                         mpCost:0,  dmgMult:0,   type:'buff',   element:'none',  unlockLevel:45 },
+  { id:'rd-domain',    wt:'rod',    name:'魔焔領域',       icon:'🌌', desc:'全属性の魔法が炸裂する究極奥義',                     mpCost:60, dmgMult:7.5, type:'damage', element:'fire',  unlockLevel:75 },
+  // 短剣
+  { id:'dg-stab',      wt:'dagger', name:'刺突',           icon:'🗡', desc:'急所を狙う鋭い一刺し [無]',                           mpCost:8,  dmgMult:2.0, type:'damage', element:'none',  unlockLevel:3  },
+  { id:'dg-poison',    wt:'dagger', name:'毒刃',           icon:'🐍', desc:'毒を塗った刃で敵ATK継続半減 [水]',                   mpCost:16, dmgMult:1.5, type:'debuff', element:'water', unlockLevel:12 },
+  { id:'dg-backstab',  wt:'dagger', name:'バックスタブ',   icon:'🌑', desc:'影から飛び出す必殺の一撃 [闇] 防御無視',             mpCost:24, dmgMult:3.5, type:'damage', element:'dark',  unlockLevel:22 },
+  { id:'dg-flurry',    wt:'dagger', name:'乱れ刺し',       icon:'💀', desc:'超高速の連続刺突 [無] 5ヒット',                       mpCost:32, dmgMult:2.2, type:'multi',  element:'none',  unlockLevel:38 },
+  { id:'dg-vanish',    wt:'dagger', name:'霞斬り',         icon:'☠',  desc:'消えた瞬間に急所を断つ [闇] 防御完全無視',           mpCost:45, dmgMult:5.5, type:'damage', element:'dark',  unlockLevel:55 },
+  { id:'dg-domain',    wt:'dagger', name:'虚刃領域',       icon:'🌌', desc:'存在を消して全ての急所を貫く [闇]',                  mpCost:65, dmgMult:7.0, type:'damage', element:'dark',  unlockLevel:75 },
+  // 槍
+  { id:'sp-thrust',    wt:'spear',  name:'突き',           icon:'🔱', desc:'力強い突撃の一撃 [無]',                               mpCost:10, dmgMult:2.1, type:'damage', element:'none',  unlockLevel:3  },
+  { id:'sp-sweep',     wt:'spear',  name:'薙ぎ払い',       icon:'🌪', desc:'広範囲を薙ぐ回転攻撃 [風] 2ヒット',                  mpCost:18, dmgMult:2.4, type:'multi',  element:'wind',  unlockLevel:12 },
+  { id:'sp-charge',    wt:'spear',  name:'突撃',           icon:'💨', desc:'全力で突進する防御貫通攻撃 [風]',                    mpCost:22, dmgMult:3.0, type:'damage', element:'wind',  unlockLevel:22 },
+  { id:'sp-lightning', wt:'spear',  name:'雷槍',           icon:'⚡', desc:'雷を纏った槍で貫く [風]',                             mpCost:30, dmgMult:3.8, type:'damage', element:'wind',  unlockLevel:38 },
+  { id:'sp-valkyrie',  wt:'spear',  name:'神槍突き',       icon:'✨', desc:'神の槍威で天を貫く [光] 防御完全無視',               mpCost:42, dmgMult:5.0, type:'damage', element:'light', unlockLevel:55 },
+  { id:'sp-domain',    wt:'spear',  name:'烈槍領域',       icon:'🌌', desc:'嵐の槍が世界を砕く究極技 [風] 全属性特効',           mpCost:65, dmgMult:6.8, type:'damage', element:'wind',  unlockLevel:75 },
 ];
 
 // Active skill selected by player (index into G.skills)
@@ -3128,6 +3433,13 @@ function initParticles() {
 initParticles();
 
 function startGame() {
+  // 新規開始時: 名前入力ダイアログを表示してからゲーム開始
+  showNameInputModal(() => {
+    _launchGame();
+  });
+}
+
+function _launchGame() {
   showScreen('game-screen');
   initDailyQuests();
   renderDungeons();
@@ -3136,12 +3448,138 @@ function startGame() {
   renderSkillsTab();
   renderEquipTab();
   renderJobProgress();
-  renderTwelvePillars();
   renderPillarDungeons();
   renderKingDungeons();
   updateUI();
   addActivity('ゲームを開始した');
   showNotification('システムウィンドウが現れた！', '再覚醒を確認しました', false);
+}
+
+function showNameInputModal(onConfirm) {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position:fixed;inset:0;z-index:9999;
+    background:rgba(5,8,16,0.97);
+    display:flex;align-items:flex-start;justify-content:center;
+    overflow-y:auto;padding:2rem 1.2rem 3rem;
+  `;
+
+  overlay.innerHTML = `
+    <div style="background:var(--panel);border:1px solid var(--accent);border-radius:6px;
+      padding:1.8rem 1.5rem;max-width:400px;width:100%">
+
+      <!-- 名前入力 -->
+      <div style="font-family:'Courier New',monospace;font-size:0.7rem;letter-spacing:0.4em;
+        color:var(--accent);margin-bottom:1.4rem;text-align:center">[ DIVER REGISTRATION ]</div>
+      <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:0.4rem">ダイバー名</div>
+      <input id="name-modal-input" type="text" maxlength="16" placeholder="ダイバー"
+        style="width:100%;background:rgba(74,158,255,0.1);border:1px solid var(--accent);
+          color:#fff;font-size:1.05rem;font-weight:700;padding:0.55rem 0.7rem;
+          border-radius:4px;outline:none;box-sizing:border-box;
+          font-family:'Hiragino Sans','Yu Gothic',sans-serif;margin-bottom:1.6rem">
+
+      <!-- 武器系統選択 -->
+      <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:0.6rem">
+        武器系統を選択 <span style="color:var(--red);font-size:0.65rem">※後から変更不可</span>
+      </div>
+      <div id="weapon-select-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:0.8rem">
+        ${Object.entries(WEAPON_TYPES).map(([key, wt]) => `
+          <div class="weapon-choice" data-key="${key}"
+            onclick="selectWeaponChoice('${key}')"
+            style="padding:0.75rem 0.6rem;border:1px solid var(--border);border-radius:4px;
+              cursor:pointer;transition:all 0.2s;background:rgba(0,0,0,0.3)">
+            <div style="font-size:1.4rem;margin-bottom:0.3rem">${wt.icon}</div>
+            <div style="font-size:0.82rem;font-weight:700;color:#fff">${wt.label}</div>
+            <div style="font-size:0.64rem;color:var(--text-dim);margin-top:0.25rem;line-height:1.4">${wt.desc}</div>
+          </div>`).join('')}
+      </div>
+
+      <div id="weapon-selected-info" style="min-height:1.2rem;font-size:0.72rem;color:var(--gold);text-align:center;margin-bottom:1.2rem"></div>
+
+      <button id="name-modal-btn" disabled style="
+        width:100%;padding:0.75rem;
+        background:rgba(74,158,255,0.2);
+        border:1px solid var(--border);color:var(--text-dim);font-size:1rem;font-weight:700;
+        border-radius:4px;cursor:not-allowed;transition:all 0.3s;
+        font-family:'Hiragino Sans','Yu Gothic',sans-serif;letter-spacing:0.1em
+      ">武器系統を選択してください</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const input   = overlay.querySelector('#name-modal-input');
+  const btn     = overlay.querySelector('#name-modal-btn');
+  let selectedWeapon = null;
+  input.focus();
+
+  window.selectWeaponChoice = (key) => {
+    selectedWeapon = key;
+    overlay.querySelectorAll('.weapon-choice').forEach(el => {
+      const isSelected = el.dataset.key === key;
+      el.style.border    = isSelected ? '1px solid var(--accent)' : '1px solid var(--border)';
+      el.style.background = isSelected ? 'rgba(74,158,255,0.12)' : 'rgba(0,0,0,0.3)';
+    });
+    const wt = WEAPON_TYPES[key];
+    overlay.querySelector('#weapon-selected-info').textContent =
+      `${wt.icon} ${wt.label}を選択中 — 初期装備: ${wt.startItem}`;
+    btn.disabled = false;
+    btn.style.background = 'linear-gradient(135deg,var(--accent2),var(--accent))';
+    btn.style.borderColor = 'transparent';
+    btn.style.color = '#fff';
+    btn.style.cursor = 'pointer';
+    btn.textContent = 'ゲームを開始する ▶';
+  };
+
+  const confirm = () => {
+    if (!selectedWeapon) return;
+    const name = input.value.trim() || 'ダイバー';
+    G.name       = name;
+    G.weaponType = selectedWeapon;
+
+    // 初期クラスを設定
+    const tree   = JOB_TREES[selectedWeapon];
+    G.jobClass   = tree[0].job;
+    G.maxShadows = tree[0].maxShadows;
+    if (tree[0].unlockShadow) G.maxShadows = tree[0].maxShadows;
+
+    // 初期装備を付与
+    const wt       = WEAPON_TYPES[selectedWeapon];
+    const initName = wt.startItem;
+    if (!ITEM_TEMPLATES[initName]) {
+      // フォールバック
+      ITEM_TEMPLATES[initName] = { slot:'weapon', icon:wt.icon, rarity:'common', bonus:{ atk:2 } };
+    }
+    const initItem = {
+      id: 'init_weapon_1',
+      name: initName,
+      ...ITEM_TEMPLATES[initName],
+      quality: 50,  // 初期装備は品質50固定
+    };
+    G.equipped.mainhand = initItem;
+    G.fullInventory.push(Object.assign({}, initItem, { equippedIn:'mainhand' }));
+    applyEquipStats();
+    G.hp = G.maxHp;
+    G.mp = G.maxMp;
+
+    // 初期スキルを系統から付与
+    const tree0 = JOB_TREES[selectedWeapon][0];
+    (tree0.skillUnlock || []).forEach(sid => {
+      const skill = ALL_SKILLS.find(s => s.id === sid);
+      if (skill) G.skills.push(skill);
+    });
+
+    // 名前反映
+    ['player-name-text','status-name-text'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.textContent = name;
+    });
+
+    delete window.selectWeaponChoice;
+    overlay.remove();
+    onConfirm();
+  };
+
+  btn.addEventListener('click', confirm);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); confirm(); } });
 }
 
 function showScreen(id) {
@@ -3279,6 +3717,17 @@ function rollDungeonEvent() {
 function startCombat() {
   const d = G.currentDungeon;
   showScreen('combat-screen');
+
+  // プレイヤー名を反映
+  const combatNameEl = document.getElementById('combat-player-name');
+  if (combatNameEl) combatNameEl.textContent = G.name || 'ダイバー';
+
+  // 武器系統のアイコンをそのままスプライトに使用
+  const spriteEl = document.getElementById('player-sprite');
+  if (spriteEl) {
+    const wt = WEAPON_TYPES[G.weaponType];
+    spriteEl.textContent = wt ? wt.icon : '🥷';
+  }
   document.getElementById('combat-dungeon-name').textContent = d.name;
   // ストーリーノートがあれば表示
   const storyEl = document.getElementById('combat-story-note') || (() => {
@@ -3839,16 +4288,16 @@ function closeRewardModal() {
 }
 
 function playerDefeated() {
-  addLog(`<span class="defeat">💀 倒れた... HP回復して再挑戦しよう</span>`, 'defeat');
+  addLog(`<span class="defeat">💀 戦闘不能... 体力が全回復した状態でダイバー協会に撤退した</span>`, 'defeat');
   disableCombatActions();
-  G.hp = Math.floor(G.maxHp * 0.3); // Recover some HP
+  G.hp = G.maxHp; // 全回復
   G.inCombat = false;
 
   setTimeout(() => {
-    addActivity(`「${G.currentDungeon.name}」で敗北した`);
+    addActivity(`「${G.currentDungeon.name}」で全滅した`);
     showScreen('game-screen');
     updateUI();
-    showNotification('💀 敗北', 'HPが30%回復した状態で撤退した', false);
+    showNotification('💀 全滅', 'HPは全回復。\nダイバー協会に撤退した。', false);
   }, 1500);
 }
 
@@ -3909,71 +4358,112 @@ function checkRankUp() {
 }
 
 function checkSkillUnlock() {
+  // レベルアップ時：系統一致スキルのみ自動解放
+  const wt = G.weaponType || 'sword';
   ALL_SKILLS.forEach(skill => {
-    if (G.level >= skill.unlockLevel && !G.skills.find(s => s.id === skill.id)) {
+    if ((skill.wt === 'all' || skill.wt === wt) &&
+        G.level >= skill.unlockLevel &&
+        !G.skills.find(s => s.id === skill.id)) {
       G.skills.push(skill);
       addActivity(`スキル「${skill.name}」を習得！`);
-      showNotification(`✨ スキル習得！`, `「${skill.name}」を習得した！\n${skill.desc}`, true);
+      showNotification('✨ スキル習得！', `「${skill.name}」を習得した！\n${skill.desc}`, true);
       renderSkillsTab();
     }
   });
 }
 
 function checkJobChange() {
-  if (G.level >= 20 && G.jobClass === 'ハンター') {
-    G.jobClass = 'ネクロマンサー';
-    G.title = '影の君主';
-    G.maxShadows = 5;
-    addActivity('職業が「ネクロマンサー」に転職した！称号「影の君主」を獲得！');
-    showNotification('⚡ 転職！', '「ネクロマンサー」に転職！\n称号「影の君主」を獲得！\n影の軍団が解放された！', true);
-    document.getElementById('player-avatar').textContent = '⚔️';
-    document.getElementById('shadow-unlock-hint').textContent = '影の兵士を使役できる';
-    renderShadowSlots();
-    renderJobProgress();
-  }
-  if (G.level >= 50 && G.jobClass === 'ネクロマンサー') {
-    G.maxShadows = 10;
-    G.jobClass = '影の君主';
-    G.title = '影の王';
-    addActivity('「影の君主」に昇格した！称号「影の王」を獲得！');
-    showNotification('👑 昇格！', '「影の君主」に昇格！\n称号「影の王」を獲得！\n影の軍団スロットが10に拡張！', true);
-    renderJobProgress();
-  }
-  if (G.level >= 80 && G.jobClass === '影の君主') {
-    G.jobClass = '影の神格';
-    G.title = '絶対なる影';
-    G.maxShadows = 15;
-    addActivity('「影の神格」に覚醒した！');
-    showNotification('🌑 神格覚醒！', '最終形態「影の神格」に覚醒！\n全スキルが強化された！', true);
-    renderJobProgress();
-  }
+  const wt   = G.weaponType || 'sword';
+  const tree = JOB_TREES[wt] || JOB_TREES['sword'];
+
+  tree.forEach((stage, i) => {
+    if (i === 0) return;
+    if (G.level >= stage.req && G.jobClass === tree[i-1].job) {
+      G.jobClass = stage.job;
+
+      // ── ステータスボーナス永続付与 ──
+      const b = stage.statBonus;
+      G.bonusAtk = (G.bonusAtk||0) + (b.atk||0);
+      G.bonusDef = (G.bonusDef||0) + (b.def||0);
+      G.bonusHp  = (G.bonusHp ||0) + (b.hp ||0);
+      G.bonusSpd = (G.bonusSpd||0) + (b.spd||0);
+      // MPボーナスは直接maxMpに加算（bonusMpを新設）
+      G.bonusMp  = (G.bonusMp ||0) + (b.mp ||0);
+      applyEquipStats();
+      G.hp = G.maxHp;
+      G.mp = G.maxMp;
+
+      // ── スキル解放 ──
+      (stage.skillUnlock || []).forEach(sid => {
+        const skill = ALL_SKILLS.find(s => s.id === sid);
+        if (skill && !G.skills.find(s => s.id === sid)) {
+          G.skills.push(skill);
+          addActivity(`スキル「${skill.name}」を習得！`);
+          showNotification('✨ スキル習得！', `「${skill.name}」を習得した！\n${skill.desc}`, true);
+        }
+      });
+
+      // 影の軍団
+      if (stage.unlockShadow && G.maxShadows < stage.maxShadows) {
+        G.maxShadows = stage.maxShadows;
+        const hint = document.getElementById('shadow-unlock-hint');
+        if (hint) hint.textContent = '影の兵士を使役できる';
+        renderShadowSlots();
+      }
+
+      // ボーナス内訳をログ表示
+      const bLines = [];
+      if (b.atk)  bLines.push(`ATK+${b.atk}`);
+      if (b.def)  bLines.push(`DEF+${b.def}`);
+      if (b.hp)   bLines.push(`HP+${b.hp}`);
+      if (b.mp)   bLines.push(`MP+${b.mp}`);
+      if (b.spd)  bLines.push(`SPD+${b.spd}`);
+
+      addActivity(`「${stage.job}」に転職した！`);
+      showNotification('⚡ クラスチェンジ！',
+        `「${stage.job}」に転職！\n${bLines.join('  ')}`, true);
+      renderJobProgress();
+      renderSkillsTab();
+    }
+  });
 }
 
 function renderJobProgress() {
   const el = document.getElementById('job-progress');
   if (!el) return;
-  const stages = [
-    { job:'ハンター',     req:1,  icon:'🥷', desc:'初期クラス',                  color:'var(--e-rank)' },
-    { job:'ネクロマンサー',req:20, icon:'💀', desc:'影の軍団を使役できる',         color:'var(--accent2)' },
-    { job:'影の君主',     req:50, icon:'👑', desc:'影の力が極限まで高まる',        color:'var(--s-rank)' },
-    { job:'影の神格',     req:80, icon:'🌑', desc:'影そのものと化した究極の存在', color:'var(--shadow)' },
-  ];
-  el.innerHTML = stages.map(s => {
+  const wt    = G.weaponType || 'sword';
+  const tree  = JOB_TREES[wt] || JOB_TREES['sword'];
+  const wInfo = WEAPON_TYPES[wt];
+
+  // 現在クラスのみフル表示、未来クラスはネタバレ隠し
+  el.innerHTML = `
+    <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:0.7rem">
+      ${wInfo ? wInfo.icon + ' ' + wInfo.label + '系統ダイバー' : ''}
+    </div>
+  ` + tree.map((s, i) => {
     const isCurrent = G.jobClass === s.job;
     const isDone    = G.level >= s.req;
+    const isFuture  = !isDone && i > 0;
+
+    // 未来のクラスはネタバレなし（名前のみ・詳細隠し）
+    const displayName = isFuture ? '？？？' : s.job;
+    const displayDesc = isFuture ? 'Lv' + s.req + 'に到達すると解放される' : s.desc;
+
     return `
       <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0.6rem;border-radius:4px;margin-bottom:0.35rem;
         background:${isCurrent ? 'rgba(74,158,255,0.08)' : 'rgba(0,0,0,0.2)'};
         border:1px solid ${isCurrent ? s.color : isDone ? 'rgba(255,255,255,0.08)' : 'var(--border)'}">
-        <span style="font-size:1.3rem;flex-shrink:0;filter:${isDone?'none':'grayscale(1) opacity(0.4)'}">${s.icon}</span>
+        <span style="font-size:1.3rem;flex-shrink:0;filter:${isDone?'none':'grayscale(1) opacity(0.35)'}">
+          ${isFuture ? '🔒' : s.icon}
+        </span>
         <div style="flex:1">
           <div style="font-size:0.82rem;font-weight:700;color:${isCurrent ? s.color : isDone ? '#ccc' : 'var(--text-dim)'}">
-            ${s.job}${isCurrent ? ' <span style="font-size:0.6rem;padding:0.1rem 0.3rem;background:rgba(74,158,255,0.2);border:1px solid var(--accent);border-radius:2px;color:var(--accent)">現在</span>' : ''}
+            ${displayName}${isCurrent ? ' <span style="font-size:0.6rem;padding:0.1rem 0.3rem;background:rgba(74,158,255,0.2);border:1px solid var(--accent);border-radius:2px;color:var(--accent)">現在</span>' : ''}
           </div>
-          <div style="font-size:0.68rem;color:var(--text-dim)">${s.desc}</div>
+          <div style="font-size:0.68rem;color:var(--text-dim)">${displayDesc}</div>
         </div>
         <div style="font-size:0.7rem;text-align:right;flex-shrink:0;color:${isDone ? 'var(--green)' : 'var(--text-dim)'}">
-          ${isDone ? '✓ 解放済' : `Lv${s.req}`}
+          ${isDone ? '✓' : 'Lv' + s.req}
           ${!isDone ? `<div style="font-size:0.6rem;color:var(--text-dim)">あと${s.req - G.level}Lv</div>` : ''}
         </div>
       </div>`;
@@ -4611,6 +5101,38 @@ function enterKingDungeon(kingKey) {
   startCombat();
 }
 
+// 品質生成: レアリティが高いほど高品質が出やすい
+function generateQuality(rarity) {
+  const ranges = {
+    common:    [1,  70],
+    rare:      [20, 85],
+    epic:      [40, 95],
+    legendary: [60, 100],
+  };
+  const [min, max] = ranges[rarity] || [1, 70];
+  // 中央値寄りの分布
+  const roll = Math.floor((Math.random() + Math.random()) / 2 * (max - min + 1)) + min;
+  return Math.min(100, Math.max(1, roll));
+}
+
+function qualityLabel(q) {
+  if (!q) return '';
+  if (q >= 95) return '🌟完璧';
+  if (q >= 80) return '✨優良';
+  if (q >= 60) return '🔵良質';
+  if (q >= 40) return '⚪標準';
+  return '⬛粗悪';
+}
+
+function qualityColor(q) {
+  if (!q) return '#aaa';
+  if (q >= 95) return 'var(--gold)';
+  if (q >= 80) return 'var(--green)';
+  if (q >= 60) return 'var(--accent)';
+  if (q >= 40) return '#aaa';
+  return '#666';
+}
+
 function addInventoryItem(name, rank) {
   const tpl = ITEM_TEMPLATES[name];
   const rarities = {S:'legendary', A:'legendary', B:'epic', C:'rare', D:'common', E:'common'};
@@ -4650,6 +5172,7 @@ function addInventoryItem(name, rank) {
     bonus: tpl ? tpl.bonus : {},
     equippedIn: null,
     qty: 1,
+    quality: tpl && tpl.slot ? generateQuality(tpl.rarity) : null,
   };
   G.fullInventory.unshift(item);
   G.inventory.unshift({ name, icon: item.icon, rarity: item.rarity });
@@ -4681,22 +5204,47 @@ function renderEquipTab() {
 
 function renderEquipSlots() {
   const el = document.getElementById('equip-slots-ui');
-  const slots = ['weapon','armor','accessory','ring'];
+  const slots = ['mainhand','offhand','helm','body','legs','acc1','acc2'];
+
+  // 両手持ちスキル判定（右手のみ・左手空き）
+  const wt = G.weaponType || 'sword';
+  const isOffhandEmpty = !G.equipped.offhand;
+  const DUAL_BONUS_TYPES = ['sword','dagger']; // 両手持ちボーナス対象
+  const noOffhandTypes   = ['bow','spear','rod']; // 盾/サブ装備不可系統
+  const canOffhand = !noOffhandTypes.includes(wt);
+
   el.innerHTML = slots.map(slot => {
     const item = G.equipped[slot];
+    const isOffhandSlot = slot === 'offhand';
+    const isDisabled = isOffhandSlot && !canOffhand;
+
+    if (isDisabled) {
+      return `
+        <div class="equip-slot" style="opacity:0.35" title="${SLOT_LABELS[slot]}（この系統は装備不可）">
+          <div class="equip-slot-label">${SLOT_ICONS[slot]} ${SLOT_LABELS[slot]}</div>
+          <div style="font-size:0.65rem;color:var(--text-dim);margin-top:0.3rem">— 装備不可 —</div>
+        </div>`;
+    }
+
     if (item) {
       const bonusStr = Object.entries(item.bonus).map(([k,v]) => `${statLabel(k)}+${v}`).join(' ');
+      const qualityColor = item.quality >= 90 ? 'var(--gold)' : item.quality >= 70 ? 'var(--green)' : item.quality >= 40 ? 'var(--accent)' : 'var(--text-dim)';
+      const qualityLabel = item.quality ? `<span style="font-size:0.6rem;color:${qualityColor};margin-left:0.3rem">品質${item.quality}%</span>` : '';
       return `
         <div class="equip-slot filled rarity-${item.rarity}" onclick="unequipItem('${slot}')" title="クリックで外す">
           <div class="equip-slot-label">${SLOT_ICONS[slot]} ${SLOT_LABELS[slot]}</div>
-          <div class="equip-slot-name"><span class="equip-slot-icon">${item.icon}</span><span style="color:${{'legendary':'var(--s-rank)','epic':'var(--a-rank)','rare':'var(--b-rank)'}[item.rarity]||'#fff'}">${item.name}</span></div>
+          <div class="equip-slot-name"><span class="equip-slot-icon">${item.icon}</span><span style="color:${{'legendary':'var(--s-rank)','epic':'var(--a-rank)','rare':'var(--b-rank)'}[item.rarity]||'#fff'}">${item.name}</span>${qualityLabel}</div>
           <div class="equip-slot-bonus">${bonusStr}</div>
         </div>`;
     } else {
+      const hint = isOffhandSlot && isOffhandEmpty && DUAL_BONUS_TYPES.includes(wt)
+        ? '<div style="font-size:0.6rem;color:var(--gold);margin-top:0.2rem">⚡ 空きで両手持ちボーナス発動中</div>'
+        : '';
       return `
         <div class="equip-slot" title="${SLOT_LABELS[slot]}スロット（空）">
           <div class="equip-slot-label">${SLOT_ICONS[slot]} ${SLOT_LABELS[slot]}</div>
           <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.3rem">— 空き —</div>
+          ${hint}
         </div>`;
     }
   }).join('');
@@ -4751,11 +5299,13 @@ function renderInvList() {
   document.getElementById('inv-count').textContent = `${G.fullInventory.length} / ${G.invMax || 30}`;
 
   let items = G.fullInventory;
-  if (currentInvTab === 'weapon')    items = items.filter(i => i.slot === 'weapon');
-  else if (currentInvTab === 'armor')     items = items.filter(i => i.slot === 'armor');
-  else if (currentInvTab === 'accessory') items = items.filter(i => i.slot === 'accessory');
-  else if (currentInvTab === 'ring')      items = items.filter(i => i.slot === 'ring');
-  else if (currentInvTab === 'consume')   items = items.filter(i => !i.slot || CONSUMABLES.has(i.name));
+  if (currentInvTab === 'weapon')    items = items.filter(i => i.slot === 'weapon' || i.slot === 'mainhand');
+  else if (currentInvTab === 'helm')     items = items.filter(i => i.slot === 'helm');
+  else if (currentInvTab === 'body')     items = items.filter(i => i.slot === 'body' || i.slot === 'armor');
+  else if (currentInvTab === 'legs')     items = items.filter(i => i.slot === 'legs');
+  else if (currentInvTab === 'offhand')  items = items.filter(i => i.slot === 'offhand');
+  else if (currentInvTab === 'accessory') items = items.filter(i => i.slot === 'accessory' || i.slot === 'ring' || i.slot === 'acc1' || i.slot === 'acc2');
+  else if (currentInvTab === 'consume')  items = items.filter(i => !i.slot || CONSUMABLES.has(i.name));
 
   const rarityOrder = ['common','rare','epic','legendary'];
   const autoThreshIdx = G.autoSellRarity ? rarityOrder.indexOf(G.autoSellRarity) : -1;
@@ -4799,7 +5349,11 @@ function renderInvList() {
 
   const itemsHtml = items.map(item => {
     const isEquipped   = item.equippedIn != null;
-    const bonusStr     = Object.entries(item.bonus||{}).map(([k,v]) => `${statLabel(k)}+${v}`).join('  ');
+    const qMult        = item.quality ? (item.quality / 100) : 1.0;
+    const effectiveBonus = Object.fromEntries(
+      Object.entries(item.bonus||{}).map(([k,v]) => [k, Math.floor(v * qMult)])
+    );
+    const bonusStr = Object.entries(effectiveBonus).map(([k,v]) => `${statLabel(k)}+${v}`).join('  ');
     const canEquip     = item.slot && !CONSUMABLES.has(item.name);
     const sellPrice    = getSellPrice(item);
     const qty          = item.qty || 1;
@@ -4813,7 +5367,7 @@ function renderInvList() {
         <span class="inv-item-icon">${item.icon}</span>
         <div class="inv-item-info" style="cursor:${canEquip && !isEquipped ? 'pointer' : 'default'}"
           onclick="${canEquip && !isEquipped ? `equipItem('${item.id}')` : ''}">
-          <div class="inv-item-name rname-${item.rarity}">${item.name}${qtyBadge}${willAutoSell ? ' <span style="font-size:0.58rem;color:var(--red)">自動売却対象</span>' : ''}</div>
+          <div class="inv-item-name rname-${item.rarity}">${item.name}${qtyBadge}${item.quality ? `<span style="font-size:0.58rem;padding:0.05rem 0.25rem;border-radius:3px;background:${qualityColor(item.quality)}22;color:${qualityColor(item.quality)};margin-left:0.3rem;border:1px solid ${qualityColor(item.quality)}55">${qualityLabel(item.quality)} ${item.quality}%</span>` : ''}${willAutoSell ? ' <span style="font-size:0.58rem;color:var(--red)">自動売却対象</span>' : ''}</div>
           <div class="inv-item-sub" style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap">
             <span class="item-rarity rarity-${item.rarity}">${rarityLabel[item.rarity]||item.rarity}</span>
             ${bonusStr
@@ -5196,7 +5750,10 @@ function getTotalEquipBonus() {
   const total = { atk:0, def:0, spd:0, hp:0, mp:0 };
   Object.values(G.equipped).forEach(item => {
     if (!item) return;
-    Object.entries(item.bonus).forEach(([k,v]) => { if (total[k] !== undefined) total[k] += v; });
+    const qMult = item.quality ? (item.quality / 100) : 1.0;
+    Object.entries(item.bonus).forEach(([k,v]) => {
+      if (total[k] !== undefined) total[k] += Math.floor(v * qMult);
+    });
   });
   return total;
 }
@@ -5204,19 +5761,49 @@ function getTotalEquipBonus() {
 function equipItem(id) {
   const item = G.fullInventory.find(i => i.id == id);
   if (!item || !item.slot) return;
-  const slot = item.slot;
-  // Unequip current item in slot
-  if (G.equipped[slot]) {
-    const old = G.equipped[slot];
+
+  // slotからequipped keyへマッピング
+  const slotMap = {
+    weapon:    'mainhand',
+    offhand:   'offhand',
+    helm:      'helm',
+    body:      'body',
+    legs:      'legs',
+    accessory: 'acc1',
+    ring:      'acc2',
+  };
+  // アイテム自身のslotを使うが、accessoryはacc1/acc2の空きに入れる
+  let equipSlot = item.slot;
+  if (item.slot === 'accessory') {
+    equipSlot = !G.equipped.acc1 ? 'acc1' : 'acc2';
+  } else if (item.slot === 'ring') {
+    equipSlot = 'acc2';
+  } else if (item.slot === 'weapon') {
+    equipSlot = 'mainhand';
+  } else if (item.slot === 'armor') {
+    equipSlot = 'body';
+  }
+
+  // 弓・槍・杖はoffhand装備不可
+  const noOffhandTypes = ['bow','spear','rod'];
+  if (equipSlot === 'offhand' && noOffhandTypes.includes(G.weaponType)) {
+    showNotification('⚠ 装備不可', 'この系統は左手スロットを使用できません', false);
+    return;
+  }
+
+  // 既存アイテムを外す
+  if (G.equipped[equipSlot]) {
+    const old = G.equipped[equipSlot];
     const oldInInv = G.fullInventory.find(i => i.id == old.id);
     if (oldInInv) oldInInv.equippedIn = null;
   }
-  G.equipped[slot] = item;
-  item.equippedIn = slot;
+  G.equipped[equipSlot] = item;
+  item.equippedIn = equipSlot;
   applyEquipStats();
   renderEquipTab();
   updateUI();
-  showNotification('⚔ 装備', `「${item.name}」を装備した！`, true);
+  const qualityStr = item.quality ? ` (品質${item.quality}%)` : '';
+  showNotification('⚔ 装備', `「${item.name}」${qualityStr}を装備した！`, true);
 }
 
 function unequipItem(slot) {
@@ -5235,14 +5822,22 @@ function applyEquipStats() {
   const base  = calcBaseStats(G.level);
   const equip = getTotalEquipBonus();
   const sets  = calcSetBonuses();
-  G.atk   = base.atk   + (equip.atk || 0) + (G.bonusAtk || 0) + (sets.bonus.atk || 0);
-  G.def   = base.def   + (equip.def || 0) + (G.bonusDef || 0) + (sets.bonus.def || 0);
-  G.spd   = base.spd   + (equip.spd || 0) + (G.bonusSpd || 0) + (sets.bonus.spd || 0);
-  G.maxHp = base.maxHp + (equip.hp  || 0) + (G.bonusHp  || 0) + (sets.bonus.hp  || 0);
-  G.maxMp = base.maxMp + (equip.mp  || 0) + (sets.bonus.mp || 0);
+
+  // 両手持ちボーナス（右手装備・左手空き・剣/短剣系統のみ）ATK+20%
+  const wt = G.weaponType || 'sword';
+  const isDualWield = ['sword','dagger'].includes(wt) && G.equipped.mainhand && !G.equipped.offhand;
+  const baseAtk = base.atk + (equip.atk||0) + (G.bonusAtk||0);
+  const dualBonus = isDualWield ? Math.floor(baseAtk * 0.20) : 0;
+
+  G.atk   = baseAtk + (sets.bonus.atk||0) + dualBonus;
+  G.def   = base.def   + (equip.def||0) + (G.bonusDef||0) + (sets.bonus.def||0);
+  G.spd   = base.spd   + (equip.spd||0) + (G.bonusSpd||0) + (sets.bonus.spd||0);
+  G.maxHp = base.maxHp + (equip.hp||0)  + (G.bonusHp||0)  + (sets.bonus.hp||0);
+  G.maxMp = base.maxMp + (equip.mp||0)  + (sets.bonus.mp||0) + (G.bonusMp||0);
   G.hp    = Math.min(G.hp, G.maxHp);
   G.mp    = Math.min(G.mp, G.maxMp);
-  G._activeSets = sets.activeSets;
+  G._activeSets     = sets.activeSets;
+  G._dualWieldBonus = dualBonus;
 }
 
 function calcBaseStats(lv) {
@@ -5387,9 +5982,20 @@ function updateUI() {
   badge.textContent = G.rank + '級';
   badge.className = 'player-rank-badge rank-' + G.rank;
 
+  // プレイヤーアバター（武器系統アイコン）
+  const avatarEl = document.getElementById('player-avatar');
+  if (avatarEl) {
+    const wt = WEAPON_TYPES[G.weaponType];
+    avatarEl.textContent = wt ? wt.icon : '🥷';
+  }
+
   // Player name
   const nameEl = document.getElementById('player-name-text');
-  if (nameEl) nameEl.textContent = G.name || 'shadow';
+  if (nameEl) nameEl.textContent = G.name || 'ダイバー';
+  const statusNameEl = document.getElementById('status-name-text');
+  if (statusNameEl) statusNameEl.textContent = G.name || 'ダイバー';
+  const combatNameEl = document.getElementById('combat-player-name');
+  if (combatNameEl) combatNameEl.textContent = G.name || 'ダイバー';
 
   document.getElementById('player-title').textContent = G.title ? `『${G.title}』` : '— 称号なし —';
 
@@ -5508,6 +6114,12 @@ function continueGame() {
     saveGame();
   }
 
+  // 名前を復元
+  if (G.name) {
+    const el = document.getElementById('player-name-text');
+    if (el) el.textContent = G.name;
+  }
+
   showScreen('game-screen');
   renderDungeons();
   rerollRandomDungeons();
@@ -5517,6 +6129,8 @@ function continueGame() {
   renderInventory();
   renderEquipTab();
   renderJobProgress();
+  renderPillarDungeons();
+  renderKingDungeons();
   renderActivityLog();
   updateUI();
   showNotification('↩ ロード完了', `Lv${G.level} ${G.rank}級のデータを読み込みました`, false);
@@ -5541,37 +6155,62 @@ const _origDungeonClear = dungeonClear;
 const _origLevelUp = levelUp;
 
 function editPlayerName() {
-  const current = G.name || 'shadow';
-  // インラインフォーム表示
-  const display = document.getElementById('player-name-display');
-  if (!display) return;
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.value = current;
-  input.maxLength = 16;
-  input.style.cssText = `
-    background:rgba(74,158,255,0.1);border:1px solid var(--accent);
-    color:#fff;font-size:1rem;font-weight:700;width:120px;
-    padding:0.15rem 0.4rem;border-radius:3px;outline:none;
-    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  const current = G.name || 'ダイバー';
+
+  // モーダルで入力（左パネルとステータスタブ両方から呼ばれる）
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position:fixed;inset:0;z-index:9999;
+    background:rgba(5,8,16,0.9);
+    display:flex;align-items:center;justify-content:center;padding:2rem;
   `;
-  display.style.display = 'none';
-  display.parentNode.insertBefore(input, display.nextSibling);
+  overlay.innerHTML = `
+    <div style="background:var(--panel);border:1px solid var(--accent);border-radius:6px;
+      padding:1.6rem 1.5rem;max-width:320px;width:100%;text-align:center">
+      <div style="font-size:0.7rem;letter-spacing:0.3em;color:var(--accent);margin-bottom:1rem;
+        font-family:'Courier New',monospace">[ NAME CHANGE ]</div>
+      <input id="name-edit-input" type="text" maxlength="16" value="${current}"
+        style="width:100%;background:rgba(74,158,255,0.1);border:1px solid var(--accent);
+          color:#fff;font-size:1.1rem;font-weight:700;padding:0.55rem 0.7rem;
+          border-radius:4px;outline:none;text-align:center;box-sizing:border-box;
+          font-family:'Hiragino Sans','Yu Gothic',sans-serif;margin-bottom:1rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem">
+        <button id="name-edit-cancel" style="padding:0.55rem;background:transparent;
+          border:1px solid var(--border);color:var(--text-dim);border-radius:4px;cursor:pointer;font-size:0.85rem">
+          キャンセル
+        </button>
+        <button id="name-edit-ok" style="padding:0.55rem;
+          background:linear-gradient(135deg,var(--accent2),var(--accent));
+          border:none;color:#fff;border-radius:4px;cursor:pointer;font-size:0.85rem;font-weight:700">
+          決定
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  const input = overlay.querySelector('#name-edit-input');
   input.focus();
   input.select();
 
   const commit = () => {
     const newName = input.value.trim() || current;
     G.name = newName;
-    document.getElementById('player-name-text').textContent = newName;
-    input.remove();
-    display.style.display = 'flex';
+    // 全ての名前表示を更新
+    ['player-name-text', 'status-name-text', 'combat-player-name'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = newName;
+    });
+    overlay.remove();
     saveGame();
   };
-  input.addEventListener('blur', commit);
+  const cancel = () => overlay.remove();
+
+  overlay.querySelector('#name-edit-ok').addEventListener('click', commit);
+  overlay.querySelector('#name-edit-cancel').addEventListener('click', cancel);
+  overlay.addEventListener('click', e => { if (e.target === overlay) cancel(); });
   input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') { e.preventDefault(); commit(); }
-    if (e.key === 'Escape') { input.remove(); display.style.display = 'flex'; }
+    if (e.key === 'Enter')  { e.preventDefault(); commit(); }
+    if (e.key === 'Escape') cancel();
   });
 }
 
@@ -5603,7 +6242,7 @@ function dismissPrologue() {
     wrap.style.display = 'block';
     const d = new Date(data.savedAt);
     const dateStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
-    const savedName = data.name || 'shadow';
+    const savedName = data.name || 'ダイバー';
     info.textContent = `${savedName} / Lv${data.level} ${data.rank}級｜${data.dungeonsCleared}ダンジョン攻略｜${dateStr}`;
   }
 })();
